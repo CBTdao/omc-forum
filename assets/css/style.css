@@ -54,6 +54,7 @@ a { text-decoration: none; color: inherit; }
 .chip.deep { background: #e8f0fd; color: #1d4ed8; }
 .chip.pricing { background: #e5f6ec; color: #047857; }
 .chip.land { background: #f3e8fd; color: #7c3aed; }
+.chip.game { background: #e0f2fe; color: #0369a1; }
 .post-card b { font-size: 17px; line-height: 1.35; letter-spacing: -.2px; font-family: Georgia, serif; }
 .post-card b a:hover { color: var(--brand); }
 .post-dek { font-size: 13.5px; color: var(--muted); line-height: 1.5; }

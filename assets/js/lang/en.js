@@ -18,6 +18,9 @@ window.I18N.en = {
   "sec.pricing.note": "Real GPU market rates, tracked",
   "sec.land": "Landscape",
   "sec.land.note": "Who's who, reviewed honestly",
+  "nav.gaming": "On-Chain Gaming",
+  "sec.gaming": "On-Chain Gaming",
+  "sec.gaming.note": "Games, economies — and their compute bills",
 
   "about.h": "About this forum",
   "about.p1": "The Decentralized Compute Forum (DCF) is an editorial publication about GPU markets, DePIN networks and the economics of AI compute. We write it, we argue in it, we publish our sources — and we change our minds in public when the data does.",
