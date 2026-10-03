@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Renting vs Buying GPUs: The Math Changed in 2025 — DCF</title>
+  <meta name="description" content="The old rule was 'always rent'. The new rule needs a spreadsheet. Depreciation curves, utilization thresholds and break-even points for GPU ownership in 2026." />
+  <link rel="canonical" href="https://forum.omc.network/posts/renting-vs-buying-gpus-2026" />
+  <meta property="og:title" content="Renting vs Buying GPUs: The Math Changed in 2025" />
+  <meta property="og:description" content="The old rule was 'always rent'. The new rule needs a spreadsheet." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23b45309'/%3E%3Ctext x='16' y='22' font-size='16' font-family='sans-serif' font-weight='800' fill='#fff' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Renting vs Buying GPUs: The Math Changed in 2025","datePublished":"2026-10-02","dateModified":"2026-10-02","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip pricing">Pricing Watch</span>
+        <h1>Renting vs buying GPUs: the math changed in 2025</h1>
+        <p class="article-dek">The old rule was "always rent". The new rule needs a spreadsheet. Depreciation curves, utilization thresholds and break-even points.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 2, 2026</span><span>8 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h">TL;DR</b>
+        <p>For a decade the advice was simple: never buy GPUs, rent by the hour. Two things broke that rule. GPU prices at retail stopped falling relative to rental rates, and open resale markets turned used accelerators from depreciating paperweights into liquid assets. The 2026 version: under ~30% utilization, rent (or better, use decentralized markets); 30-70%, a hybrid; above ~70% sustained, ownership now wins on pure math — provided you have a resale exit and the stomach for hardware risk.</p>
+      </div>
+
+      <div class="article-body">
+        <p>Used to be, this article was three sentences long. "Renting GPUs beats owning: someone else handles the failures, the depreciation is their problem, and capital is better spent on people." That advice was correct from roughly 2016 to 2024. Then the ground moved.</p>
+
+        <h2>What changed</h2>
+        <h3>1. The rental floor stopped falling</h3>
+        <p>Rental rates for a given card class bottomed out and stabilized. H100-class hours settled into the $1.40-$2.20 range on open markets — cheap versus hyperscalers, but no longer collapsing year over year, because power, real estate and hardware costs set a floor that competition can't dig through. Meanwhile list prices for the cards themselves kept behaving normally.</p>
+        <h3>2. Used GPUs became liquid</h3>
+        <p>This is the underrated one. A three-year-old accelerator used to be landfill with a warranty. Today there's a real secondary market — inference shops, sovereign AI programs, regional clouds and yes, DePIN supplier networks all buy used enterprise cards. Recovering 40-55% of purchase price after three years is now a reasonable planning assumption, not a fantasy. Depreciation is no longer a cliff; it's a ramp.</p>
+        <h3>3. Spare capacity became sellable</h3>
+        <p>Here's the twist that connects this whole column: if you own GPUs, you can now list idle hours on decentralized marketplaces. Your hardware's "unused" state has a market price. That changes the utilization math for everyone who owns any compute at all.</p>
+
+        <h2>The break-even, roughly</h2>
+        <table>
+          <tr><th>Your sustained utilization</th><th>Sensible play</th><th>Why</th></tr>
+          <tr><td>&lt; 30%</td><td>Rent — preferably open market</td><td>Ownership overhead (power, cooling, failures, ops) exceeds savings. Idle capital.</td></tr>
+          <tr><td>30-70%</td><td>Hybrid</td><td>Own the baseline, rent the peaks. Sell your off-peak idle hours back to the market if you can.</td></tr>
+          <tr><td>&gt; 70%, sustained</td><td>Own</td><td>At this point you're paying rental margins on nearly every hour anyway. Buy, and treat resale as your exit liquidity.</td></tr>
+        </table>
+        <p>Sketch of the arithmetic for a data-center-grade card at ~$25K: owning costs (power, cooling, networking, a slice of an ops person) run maybe $150-250/month. Full ownership cost over 36 months, net of 45% resale recovery, lands near $19-21K — about $7.5/hr if run flat-out, before you sell a single idle hour. Every hour you rent instead at $1.80 only makes sense below roughly 35-40% utilization. Above that, the spreadsheet flips. Your numbers will differ; the shape won't.</p>
+
+        <h2>The risks nobody prices</h2>
+        <ul>
+          <li><b>Architecture risk.</b> If inference demand shifts to hardware features your card lacks, resale value craters faster than any depreciation schedule. This is the big one, and it's a bet on software ecosystems, not silicon.</li>
+          <li><b>Operational drag.</b> A dead node at 2am is now your problem. Renting outsources on-call. If you don't have hardware people, add real money for them.</li>
+          <li><b>Capital opportunity cost.</b> $25K in GPUs is $25K not in payroll or GPUs-next-year. Buying early is a bet that your utilization forecast is right. It usually isn't, in the direction of optimism.</li>
+        </ul>
+
+        <h2>What we actually do</h2>
+        <p>We rent what's bursty, own what's constant, and treat everything idle as inventory rather than overhead. Ten years ago that sentence would have been heretical in this industry. Today it's just the spreadsheet. The rule didn't get reversed — it got conditional. Which, coincidentally, is what happens to every "always rent" market the moment a liquid secondary market shows up. Ask anyone who ever said "nobody should own a car."</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h">Key takeaways</b>
+          <ul>
+            <li>Under ~30% utilization, rent on open markets; above ~70% sustained, ownership now wins.</li>
+            <li>Liquid secondary markets turned GPU depreciation from a cliff into a recoverable 40-55% ramp.</li>
+            <li>Idle owned hours are now sellable inventory via decentralized marketplaces — this changes everyone's math.</li>
+            <li>The real risk isn't power bills, it's architecture shift: betting on the wrong card's ecosystem.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>Brought to you by Omniverse Compute</b>
+          <p>OMC is a decentralized GPU network on BNB Chain — zk-verified nodes, L2 micropayments, compute at 50-70% below hyperscaler rates.</p>
+          <a href="https://omc.network">Explore the network →</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/ai-labs-buying-crypto-compute"><i>Previous</i>Why AI labs quietly buy compute from crypto networks</a>
+          <a href="/posts/depin-2026-who-actually-has-users"><i>Next</i>DePIN in 2026: who actually has users?</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span>Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC mainnet site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/OmniVerseCompute">X / Twitter</a>
+      </div>
+      <span>© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "", repoId: "", category: "Comments", categoryId: "" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://forum.omc.network/sitemap.xml
