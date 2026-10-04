@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://forum.omc.network/</loc><lastmod>2026-10-03</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://forum.omc.network/</loc><lastmod>2026-10-04</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://forum.omc.network/about</loc><lastmod>2026-10-04</lastmod><priority>0.5</priority></url>
+  <url><loc>https://forum.omc.network/contact</loc><lastmod>2026-10-04</lastmod><priority>0.4</priority></url>
+  <url><loc>https://forum.omc.network/privacy</loc><lastmod>2026-10-04</lastmod><priority>0.4</priority></url>
+  <url><loc>https://forum.omc.network/terms</loc><lastmod>2026-10-04</lastmod><priority>0.4</priority></url>
   <url><loc>https://forum.omc.network/posts/gpu-cloud-pricing-is-a-scam</loc><lastmod>2026-09-18</lastmod><priority>0.8</priority></url>
   <url><loc>https://forum.omc.network/posts/real-cost-of-training-a-model-2026</loc><lastmod>2026-09-22</lastmod><priority>0.8</priority></url>
   <url><loc>https://forum.omc.network/posts/h100-rates-centralized-vs-decentralized</loc><lastmod>2026-09-25</lastmod><priority>0.8</priority></url>
