@@ -119,8 +119,77 @@ a { text-decoration: none; color: inherit; }
 .pager a:hover { border-color: var(--brand-2); color: var(--ink); }
 .pager a i { display: block; font-style: normal; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted-2); margin-bottom: 4px; }
 
+/* ============ Decentralized Compute Tracker ============ */
+.tracker-hero { padding: 50px 0 26px; max-width: 860px; margin: 0 auto; font-family: Georgia, serif; }
+.tracker-hero h1 { font-size: clamp(29px, 4.6vw, 42px); line-height: 1.16; letter-spacing: -.5px; margin: 14px 0 12px; }
+.tracker-hero .article-dek { font-size: 17.5px; }
+.tracker-hero .article-meta { justify-content: flex-start; }
+
+.method-box { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--brand); border-radius: 10px; padding: 18px 22px; max-width: 860px; margin: 6px auto 26px; font-family: "Segoe UI", sans-serif; }
+.method-box .tbl-h { display: block; font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--brand); margin-bottom: 10px; }
+.method-box ul { margin-left: 18px; }
+.method-box li { font-size: 14px; line-height: 1.62; color: var(--ink); margin-bottom: 9px; }
+.method-box li:last-child { margin-bottom: 0; }
+
+/* filter bar */
+.filter-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 16px; font-family: "Segoe UI", sans-serif; }
+.filter-label { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted-2); margin-right: 4px; }
+.filter-btn { border: 1px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 6px 14px; font-size: 13px; font-family: inherit; cursor: pointer; transition: background .12s, color .12s, border-color .12s; }
+.filter-btn:hover { border-color: var(--brand-2); color: var(--ink); }
+.filter-btn.is-active { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 600; }
+
+/* comparison table */
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); -webkit-overflow-scrolling: touch; }
+.tracker-table { width: 100%; min-width: 1020px; border-collapse: collapse; font-family: "Segoe UI", sans-serif; font-size: 13px; }
+.tracker-table th { background: var(--brand-soft); font-weight: 700; font-size: 11.5px; letter-spacing: .5px; text-transform: uppercase; color: var(--brand); text-align: left; padding: 11px 13px; border-bottom: 1px solid #f0dfc2; white-space: nowrap; position: sticky; top: 0; }
+.tracker-table td { padding: 12px 13px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.5; color: var(--ink); }
+.tracker-table tr:last-child td { border-bottom: none; }
+.tracker-table tbody tr:hover { background: #fdfaf4; }
+.tracker-table tbody tr.is-hidden { display: none; }
+.tracker-table td b { font-weight: 700; }
+.tk-token { display: inline-block; margin-left: 6px; font-size: 10.5px; font-weight: 800; letter-spacing: .5px; color: var(--brand); background: var(--brand-soft); border-radius: 5px; padding: 1px 6px; vertical-align: 1px; }
+.tk-src { display: inline-block; margin-top: 5px; font-size: 11.5px; color: var(--brand); border-bottom: 1px solid #e5c9a4; }
+.tk-src:hover { color: var(--brand-2); }
+.tk-check { display: block; font-size: 10.5px; color: var(--muted-2); margin-top: 3px; letter-spacing: .3px; }
+.tk-sub { display: block; font-size: 11px; color: var(--muted-2); margin-top: 3px; line-height: 1.4; }
+.tk-tag { display: inline-block; font-size: 11px; color: var(--muted); background: #f4f1ea; border: 1px solid var(--line); border-radius: 5px; padding: 1px 7px; margin: 0 4px 4px 0; white-space: nowrap; }
+.tk-warn { display: block; font-size: 11.5px; color: #9a3412; padding-left: 12px; position: relative; margin-bottom: 4px; line-height: 1.45; }
+.tk-warn::before { content: "▸"; position: absolute; left: 0; top: 0; color: #c2410c; }
+.table-legend { font-family: "Segoe UI", sans-serif; font-size: 12.5px; color: var(--muted-2); line-height: 1.55; margin: 12px 0 4px; }
+.table-legend b { color: var(--muted); }
+
+/* editorial callouts for the excluded / unknown lists */
+.callout { border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; margin: 26px 0 0; font-family: "Segoe UI", sans-serif; background: var(--card); }
+.callout .tbl-h { display: block; font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 10px; }
+.callout p { font-size: 14.5px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+.callout ul { margin-left: 20px; }
+.callout li { font-size: 14px; color: var(--ink); line-height: 1.6; margin-bottom: 8px; }
+.callout li:last-child { margin-bottom: 0; }
+.callout.excluded { background: #fbfaf7; border-left: 4px solid var(--muted-2); }
+.callout.excluded .tbl-h { color: var(--muted); }
+.callout.unknown { background: var(--brand-soft); border-left: 4px solid var(--brand-2); }
+.callout.unknown .tbl-h { color: var(--brand); }
+
+.tracker-body { max-width: 860px; }
+.tracker-body .log { margin-left: 20px; }
+.tracker-body .log li { font-size: 14.5px; }
+
 @media (max-width: 760px) {
   .post-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
   .hero { padding: 44px 0 34px; }
+  /* header must never force a horizontal page overflow on narrow screens:
+     the long logo text + language select used to widen the layout viewport
+     and clip every section on ~430px phones (site-wide, all pages) */
+  .header-in { gap: 12px; height: 56px; }
+  .logo { min-width: 0; flex: 1 1 auto; }
+  .logo-text { font-size: 15px; line-height: 1.25; }
+  .lang-select { flex: 0 0 auto; }
+  /* footer link row is a no-wrap flex line; its max-content (~500px with 8
+     links) used to widen the whole layout viewport on narrow phones */
+  .footer-links { flex-wrap: wrap; row-gap: 6px; }
+  .tracker-hero { padding: 36px 0 22px; }
+  .method-box, .callout { padding: 16px 18px; }
+  .table-scroll { border-radius: 10px; }
+  .filter-btn { padding: 5px 12px; font-size: 12.5px; }
 }

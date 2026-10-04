@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Decentralized Compute Tracker — GPU networks compared, with sources — DCF</title>
+  <meta name="description" content="A dated, sourced comparison of 12 decentralized GPU networks — Akash, io.net, Render, Aethir, Nosana and more. Price, verification, uptime, payment and the watch-outs other comparison sites leave out." />
+  <link rel="canonical" href="https://forum.omc.network/tracker" />
+  <meta property="og:title" content="Decentralized Compute Tracker — GPU networks compared, with sources" />
+  <meta property="og:description" content="12 decentralized GPU networks, one table. Prices with source links and check dates — plus the risks nobody else lists." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Dataset","name":"Decentralized Compute Tracker","description":"A dated, sourced comparison of decentralized GPU networks: price, verification mechanism, reported uptime, payment rails and documented watch-outs.","creator":{"@type":"Organization","name":"Decentralized Compute Forum","url":"https://forum.omc.network"},"datePublished":"2026-10-04","dateModified":"2026-10-04","isAccessibleForFree":true,"license":"https://forum.omc.network/terms","keywords":["decentralized GPU","DePIN","H100 pricing","compute marketplace","Akash Network","io.net","Render Network","Aethir","Nosana"]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"DCF","item":"https://forum.omc.network/"},{"@type":"ListItem","position":2,"name":"Compute Tracker","item":"https://forum.omc.network/tracker"}]}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text" data-i18n="hero.kicker">The Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot" data-i18n="nav.hot">Hot Takes</a>
+        <a href="/#deep" data-i18n="nav.deep">Deep Dives</a>
+        <a href="/#pricing" data-i18n="nav.pricing">Pricing Watch</a>
+        <a href="/#landscape" data-i18n="nav.landscape">Landscape</a>
+        <a href="/#gaming" data-i18n="nav.gaming">On-Chain Gaming</a>
+        <a href="/tracker" data-i18n="nav.tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="tracker-hero">
+      <span class="chip pricing" data-i18n="tracker.chip">Tracker</span>
+      <h1 data-i18n="tracker.h1">Decentralized compute, tracked and sourced.</h1>
+      <p class="article-dek" data-i18n="tracker.dek">Twelve decentralized GPU networks in one table — price, verification, uptime, payment, and the watch-outs most comparison pages leave out. Every figure carries a link and the date we checked it.</p>
+      <div class="article-meta">
+        <span data-i18n="tracker.meta.by">DCF Editorial</span>
+        <span data-i18n="tracker.meta.checked">Last checked Oct 4, 2026</span>
+        <span data-i18n="tracker.meta.cadence">Refreshed monthly</span>
+      </div>
+    </div>
+
+    <div class="method-box">
+      <b class="tbl-h" data-i18n="tracker.method.h">How to read this table</b>
+      <ul>
+        <li data-i18n="tracker.method.1">Basis: one NVIDIA H100 80GB-class GPU-hour, on-demand, US or EU region, taxes excluded. Where a network only sells consumer cards, we say so and quote that tier instead — we never mix an H100 with an RTX 4090 and call the result a price.</li>
+        <li data-i18n="tracker.method.2">Every row links to the page we read and shows when we read it. Marketplace prices move continuously, so a number here is a dated snapshot, not a quote. Confirm it at the source before you commit.</li>
+        <li data-i18n="tracker.method.3">Uptime figures are self-reported network averages, not audited SLAs. No decentralized network below publishes a contractual uptime guarantee, so treat every figure as a claim rather than a promise.</li>
+        <li data-i18n="tracker.method.4">Watch-outs are the part other comparison sites skip. We only list ones we can document. If we can't source a claim, it doesn't go in the table — including claims that would flatter these networks.</li>
+      </ul>
+    </div>
+
+    <div class="filter-bar" id="filterBar">
+      <span class="filter-label" data-i18n="tracker.filter.label">Filter by workload</span>
+      <button class="filter-btn is-active" data-filter="all" data-i18n="tracker.filter.all">All 12</button>
+      <button class="filter-btn" data-filter="inference" data-i18n="tracker.filter.inference">Inference</button>
+      <button class="filter-btn" data-filter="finetune" data-i18n="tracker.filter.finetune">Fine-tuning</button>
+      <button class="filter-btn" data-filter="rendering" data-i18n="tracker.filter.rendering">Rendering</button>
+      <button class="filter-btn" data-filter="training" data-i18n="tracker.filter.training">Multi-node training</button>
+      <button class="filter-btn" data-filter="budget" data-i18n="tracker.filter.budget">Consumer budget</button>
+    </div>
+
+    <div class="table-scroll">
+      <table class="tracker-table">
+        <thead>
+          <tr>
+            <th data-i18n="tk.network">Network</th>
+            <th data-i18n="tk.focus">Best for</th>
+            <th data-i18n="tk.rate">H100-class rate</th>
+            <th data-i18n="tk.verif">Verification</th>
+            <th data-i18n="tk.uptime">Reported uptime</th>
+            <th data-i18n="tk.pay">Payment</th>
+            <th data-i18n="tk.watch">Watch-outs</th>
+          </tr>
+        </thead>
+        <tbody id="trackerBody">
+
+          <tr data-focus="inference finetune">
+            <td><b>Akash Network</b><span class="tk-token">AKT</span>
+              <a class="tk-src" href="https://akash.network/the-bid/h100-rental-price-2026-cost-per-hour" target="_blank" rel="noopener" data-i18n="tk.src.provider">provider</a>
+              <span class="tk-check">checked 09-12</span></td>
+            <td><span class="tk-tag">Inference</span><span class="tk-tag">Fine-tuning</span><span class="tk-tag">Kubernetes</span></td>
+            <td><b>$2.04–$3.16</b><span class="tk-sub" data-i18n="tk.rate.liveavg">live weighted average</span></td>
+            <td data-i18n="tk.v.akash">On-chain attestation; audited provider tier</td>
+            <td>99.4%</td>
+            <td>AKT · USDC</td>
+            <td><span class="tk-warn" data-i18n="tk.w.akash1">Popular regions sell out</span><span class="tk-warn" data-i18n="tk.w.akash2">Quality varies by provider tier</span></td>
+          </tr>
+
+          <tr data-focus="inference finetune training">
+            <td><b>io.net</b><span class="tk-token">IO</span>
+              <a class="tk-src" href="https://io.net/" target="_blank" rel="noopener" data-i18n="tk.src.provider">provider</a>
+              <span class="tk-check">checked 10-04</span></td>
+            <td><span class="tk-tag">Inference</span><span class="tk-tag">Fine-tuning</span><span class="tk-tag">Multi-node</span></td>
+            <td><b>$1.49–$2.20</b><span class="tk-sub" data-i18n="tk.rate.ionet">H100 80GB, mixed modes</span></td>
+            <td data-i18n="tk.v.ionet">Proof-of-time-difference; hardware scans</td>
+            <td>98.6%</td>
+            <td>IO · USDC · card</td>
+            <td><span class="tk-warn" data-i18n="tk.w.io1">No contractual SLA</span><span class="tk-warn" data-i18n="tk.w.io2">Fat tail on residential nodes</span></td>
+          </tr>
+
+          <tr data-focus="rendering inference">
+            <td><b>Render Network</b><span class="tk-token">RENDER</span>
+              <a class="tk-src" href="https://decentralised.news/the-decentralized-compute-risk-matrix" target="_blank" rel="noopener" data-i18n="tk.src.tracker">tracker</a>
+              <span class="tk-check">checked 09</span></td>
+            <td><span class="tk-tag">Rendering</span><span class="tk-tag">Inference</span></td>
+            <td><b>$1.85</b><span class="tk-sub" data-i18n="tk.rate.network">network figure</span></td>
+            <td data-i18n="tk.v.render">Proof-of-Render; node tiers</td>
+            <td>99.8%</td>
+            <td>RENDER</td>
+            <td><span class="tk-warn" data-i18n="tk.w.render1">Rendering-first job flow, not a general shell</span><span class="tk-warn" data-i18n="tk.w.render2">Enterprise AI support is newer</span></td>
+          </tr>
+
+          <tr data-focus="inference rendering">
+            <td><b>Aethir</b><span class="tk-token">ATH</span>
+              <a class="tk-src" href="https://gygo.com/resources/gpu-staking-returns-2026" target="_blank" rel="noopener" data-i18n="tk.src.tracker">tracker</a>
+              <span class="tk-check">checked 09-12</span></td>
+            <td><span class="tk-tag">Cloud gaming</span><span class="tk-tag">Inference</span></td>
+            <td><b data-i18n="tk.rate.na">no public buyer rate</b><span class="tk-sub" data-i18n="tk.rate.hostest">host estimate $1.45–$3.50, paid in ATH</span></td>
+            <td data-i18n="tk.v.aethir">Enterprise agreements; network-level checks</td>
+            <td data-i18n="tk.na">not published</td>
+            <td>ATH</td>
+            <td><span class="tk-warn" data-i18n="tk.w.aethir1">Host payouts denominated in token</span><span class="tk-warn" data-i18n="tk.w.aethir2">Disclosed host economics assume 95%+ utilization</span></td>
+          </tr>
+
+          <tr data-focus="inference budget">
+            <td><b>Nosana</b><span class="tk-token">NOS</span>
+              <a class="tk-src" href="https://www.bestcloudmining.net/best/llm-inference" target="_blank" rel="noopener" data-i18n="tk.src.tracker">tracker</a>
+              <span class="tk-check">checked 10-04</span></td>
+            <td><span class="tk-tag">Inference</span><span class="tk-tag">Consumer GPU</span></td>
+            <td><b data-i18n="tk.rate.nosana">from $0.048</b><span class="tk-sub" data-i18n="tk.rate.noH100">no H100 — consumer cards only</span></td>
+            <td data-i18n="tk.v.nosana">Bonded reputation; not published in detail</td>
+            <td data-i18n="tk.na">not published</td>
+            <td>NOS</td>
+            <td><span class="tk-warn" data-i18n="tk.w.nosana1">No datacenter-grade H100</span><span class="tk-warn" data-i18n="tk.w.nosana2">Earnings and uptime undisclosed</span></td>
+          </tr>
+
+          <tr data-focus="inference finetune">
+            <td><b>Hyperbolic</b><span class="tk-token">—</span>
+              <a class="tk-src" href="https://www.bestcloudmining.net/best/llm-inference" target="_blank" rel="noopener" data-i18n="tk.src.tracker">tracker</a>
+              <span class="tk-check">checked 10-04</span></td>
+            <td><span class="tk-tag">Inference API</span><span class="tk-tag">Fine-tuning</span></td>
+            <td><b>$3.19</b><span class="tk-sub" data-i18n="tk.rate.h100">H100 80GB</span></td>
+            <td data-i18n="tk.v.hyperbolic">Not published</td>
+            <td data-i18n="tk.na">not published</td>
+            <td data-i18n="tk.pay.cryptoFiat">crypto · fiat</td>
+            <td><span class="tk-warn" data-i18n="tk.w.hyper1">H100 priced above most decentralized peers</span><span class="tk-warn" data-i18n="tk.w.hyper2">Verification undocumented</span></td>
+          </tr>
+
+          <tr data-focus="training inference">
+            <td><b>Spheron Network</b><span class="tk-token">SPHN</span>
+              <a class="tk-src" href="https://getdeploying.com/spheron-vs-theta-edgecloud" target="_blank" rel="noopener" data-i18n="tk.src.tracker">tracker</a>
+              <span class="tk-check">checked 10-04</span></td>
+            <td><span class="tk-tag">Multi-node</span><span class="tk-tag">Spot GPU</span></td>
+            <td><b>$2.91</b><span class="tk-sub" data-i18n="tk.rate.spot">H100 spot · H200 $5.92</span></td>
+            <td data-i18n="tk.v.spheron">Partner facilities: ISO 27001 / SOC 2 / HIPAA</td>
+            <td data-i18n="tk.na">not published</td>
+            <td data-i18n="tk.pay.cryptoFiat">crypto · fiat</td>
+            <td><span class="tk-warn" data-i18n="tk.w.spheron1">Supply is aggregated from a fixed partner set, not permissionless</span><span class="tk-warn" data-i18n="tk.w.spheron2">Newest cards are spot-only</span></td>
+          </tr>
+
+          <tr data-focus="inference rendering budget">
+            <td><b>Theta EdgeCloud</b><span class="tk-token">THETA</span>
+              <a class="tk-src" href="https://nodepedia.com/providers/thetaedgecloud-com" target="_blank" rel="noopener" data-i18n="tk.src.tracker">tracker</a>
+              <span class="tk-check">checked 09-17</span></td>
+            <td><span class="tk-tag">Edge inference</span><span class="tk-tag">Rendering</span></td>
+            <td><b>$3.69</b><span class="tk-sub" data-i18n="tk.rate.h200">H200 · RTX 4090 $0.38</span></td>
+            <td data-i18n="tk.v.theta">Not published</td>
+            <td data-i18n="tk.na">not published</td>
+            <td data-i18n="tk.pay.cardCrypto">card · crypto</td>
+            <td><span class="tk-warn" data-i18n="tk.w.theta1">Beta-grade tooling — no K8s, no persistent storage in some tiers</span><span class="tk-warn" data-i18n="tk.w.theta2">No SOC 2, no reserved instances, no SLA</span></td>
+          </tr>
+
+          <tr data-focus="inference budget">
+            <td><b>Clore.ai</b><span class="tk-token">CLORE</span>
+              <a class="tk-src" href="https://www.bestcloudmining.net/best/rtx-4090" target="_blank" rel="noopener" data-i18n="tk.src.tracker">tracker</a>
+              <span class="tk-check">checked 10-04</span></td>
+            <td><span class="tk-tag">Consumer GPU</span><span class="tk-tag">Rental market</span></td>
+            <td><b data-i18n="tk.rate.clore">from $0.027</b><span class="tk-sub" data-i18n="tk.rate.rtx5090">RTX 5090 · H100 available</span></td>
+            <td data-i18n="tk.v.clore">Not published</td>
+            <td data-i18n="tk.na">not published</td>
+            <td>CLORE</td>
+            <td><span class="tk-warn" data-i18n="tk.w.clore1">Consumer-grade supply dominates</span><span class="tk-warn" data-i18n="tk.w.clore2">Lowest independent reliability score in this set</span></td>
+          </tr>
+
+          <tr data-focus="inference finetune">
+            <td><b>Fluence</b><span class="tk-token">FLT</span>
+              <a class="tk-src" href="https://www.bestcloudmining.net/best/llm-inference" target="_blank" rel="noopener" data-i18n="tk.src.tracker">tracker</a>
+              <span class="tk-check">checked 10-04</span></td>
+            <td><span class="tk-tag">General compute</span><span class="tk-tag">Inference</span></td>
+            <td><b data-i18n="tk.rate.fluence">from $2.80</b><span class="tk-sub" data-i18n="tk.rate.h100">H100 80GB</span></td>
+            <td data-i18n="tk.v.fluence">Verification-first design; GPU support younger</td>
+            <td data-i18n="tk.na">not published</td>
+            <td>FLT</td>
+            <td><span class="tk-warn" data-i18n="tk.w.fluence1">Compute lineup is CPU-centric; GPUs are newer</span><span class="tk-warn" data-i18n="tk.w.fluence2">GPU pricing above peers</span></td>
+          </tr>
+
+          <tr data-focus="training finetune">
+            <td><b>Prime Intellect</b><span class="tk-token" data-i18n="tk.token.none">no token</span>
+              <a class="tk-src" href="https://www.bestcloudmining.net/providers/prime-intellect" target="_blank" rel="noopener" data-i18n="tk.src.tracker">tracker</a>
+              <span class="tk-check">checked 09-24</span></td>
+            <td><span class="tk-tag">Multi-node</span><span class="tk-tag">Hosted training</span></td>
+            <td><b>$2.43</b><span class="tk-sub" data-i18n="tk.rate.pi">H100 · spot $0.94 · H200 from $0.47</span></td>
+            <td data-i18n="tk.v.pi">None published — no hardware attestation</td>
+            <td data-i18n="tk.na">not published</td>
+            <td data-i18n="tk.pay.usd">USD (fiat)</td>
+            <td><span class="tk-warn" data-i18n="tk.w.pi1">No formal SLA</span><span class="tk-warn" data-i18n="tk.w.pi2">Not crypto-native — no token, fiat rails, KYC not documented</span></td>
+          </tr>
+
+          <tr data-focus="training">
+            <td><b>Gensyn</b><span class="tk-token">—</span>
+              <a class="tk-src" href="https://www.gate.com/learn/articles/a-beginners-guide-to-understanding-gensyn/54237" target="_blank" rel="noopener" data-i18n="tk.src.tracker">tracker</a>
+              <span class="tk-check">checked 09</span></td>
+            <td><span class="tk-tag">Multi-node</span><span class="tk-tag">Verifiable training</span></td>
+            <td><b data-i18n="tk.rate.claim">~$0.40 claim</b><span class="tk-sub" data-i18n="tk.rate.training">training; not a posted H100 rate</span></td>
+            <td data-i18n="tk.v.gensyn">Proof-of-compute; optimistic verification + arbitration</td>
+            <td data-i18n="tk.na">not published</td>
+            <td data-i18n="tk.pay.tokenEarly">token (early)</td>
+            <td><span class="tk-warn" data-i18n="tk.w.gensyn1">Still early — small market, nascent tooling</span><span class="tk-warn" data-i18n="tk.w.gensyn2">Uploading your own model/data is a real exposure</span></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <p class="table-legend" data-i18n="tracker.legend">Legend: "provider" = the network's own pricing page · "tracker" = an independent third-party index we read and cross-checked where possible. "not published" means the network does not disclose it, not that the value is zero.</p>
+
+    <div class="article-body tracker-body">
+      <h2 data-i18n="tracker.read.h">Reading this table honestly</h2>
+      <p><b data-i18n="tracker.read.p1h">Cheap is not the same as usable.</b> <span data-i18n="tracker.read.p1">The $0.03/hr consumer card and the $2.04 H100-hour in the same table are not competing products. One fits a 13B model on a good day; the other trains. Comparing the two columns is how a comparison site turns a real 40% saving into a fake 98% one — that is the error the "save up to 90% vs AWS" headline is built on.</span></p>
+      <p><b data-i18n="tracker.read.p2h">Verification is the only moat that survives.</b> <span data-i18n="tracker.read.p2">Price converges fast — every network reprices toward the cheapest credible supply within weeks. What does not converge is proof that the GPU you paid for ran the job you asked for. Networks with real verification (on-chain attestation, proof-of-render, proof-of-compute) can eventually charge a premium for it; the ones that run on "trust us" cannot, and their discount is permanent because it is paying for the risk you carry.</span></p>
+      <p><b data-i18n="tracker.read.p3h">Token payment is a cost paid twice.</b> <span data-i18n="tracker.read.p3">Paying in a network token is not the same as paying in dollars. Between funding a wallet and a job settling, the token can move — and the accounting, invoicing and tax trail a normal purchase produces has to be rebuilt by hand. Networks that added USDC and card rails (io.net, Akash) are pricing that pain correctly; networks that did not are passing it to the customer.</span></p>
+      <p><b data-i18n="tracker.read.p4h">The gap that is not closing is interconnect.</b> <span data-i18n="tracker.read.p4">Single-GPU and embarrassingly-parallel jobs migrate to decentralized supply easily. Synchronized multi-node training does not, because distributed nodes have no NVLink and no InfiniBand — the cluster is only as fast as its slowest residential uplink. That is why the decentralized tier is winning inference and losing pre-training, and why the "multi-node" tag above means "possible", not "comparable to a hyperscaler".</span></p>
+    </div>
+
+    <div class="callout excluded">
+      <b class="tbl-h" data-i18n="tracker.excluded.h">Excluded on purpose</b>
+      <p data-i18n="tracker.excluded.p">"Decentralized" is doing a lot of work in this sector. These are widely compared alongside the networks above, and we left them out — with reasons:</p>
+      <ul>
+        <li><b data-i18n="tracker.excluded.li1h">Vast.ai</b> <span data-i18n="tracker.excluded.li1">— the original "Airbnb for GPUs", but a company-run marketplace: no token, no permissionless supply. Useful, just not decentralized.</span></li>
+        <li><b data-i18n="tracker.excluded.li2h">RunPod, Lambda, Together, CoreWeave</b> <span data-i18n="tracker.excluded.li2">— centralized neo-clouds. They are the benchmark, not the category.</span></li>
+        <li><b data-i18n="tracker.excluded.li3h">Salad</b> <span data-i18n="tracker.excluded.li3">— consumer supply, centralized control, no token. Notable for something rare: it publishes measured per-GPU earnings.</span></li>
+        <li><b data-i18n="tracker.excluded.li4h">Bittensor (TAO)</b> <span data-i18n="tracker.excluded.li4">— an incentive network for machine learning, not a place where you rent a GPU-hour. Different product, different buyer.</span></li>
+        <li><b data-i18n="tracker.excluded.li5h">Grass</b> <span data-i18n="tracker.excluded.li5">— bandwidth, not compute. Frequently listed next to GPU networks; it does not sell a GPU-hour.</span></li>
+      </ul>
+    </div>
+
+    <div class="callout unknown">
+      <b class="tbl-h" data-i18n="tracker.unknown.h">What we don't know</b>
+      <p data-i18n="tracker.unknown.p">A tracker is only as honest as the gaps it admits. For every network above, these are still open:</p>
+      <ul>
+        <li><b data-i18n="tracker.unknown.li1h">Paid utilization.</b> <span data-i18n="tracker.unknown.li1">Networks publish registered GPUs. Almost none publish paid hours. A network with 30,000 nodes and 4% utilization is a smaller business than its supply headline suggests.</span></li>
+        <li><b data-i18n="tracker.unknown.li2h">Dropout during long runs.</b> <span data-i18n="tracker.unknown.li2">Nobody publishes node-failure rates mid-training — the number that decides whether cheap hours are actually cheap.</span></li>
+        <li><b data-i18n="tracker.unknown.li3h">Host earnings net of power.</b> <span data-i18n="tracker.unknown.li3">Reward estimates are quoted gross. Only Salad publishes measured earnings; nobody publishes them net of electricity.</span></li>
+        <li><b data-i18n="tracker.unknown.li4h">Whether "verified" tiers are audited.</b> <span data-i18n="tracker.unknown.li4">"Verified provider" is often a self-declared label. We cannot confirm third-party audits for most of the rows above.</span></li>
+        <li><b data-i18n="tracker.unknown.li5h">Enterprise reality.</b> <span data-i18n="tracker.unknown.li5">Invoicing, tax residency and liability are undocumented for most of these networks, which is why enterprise procurement stalls on them.</span></li>
+      </ul>
+    </div>
+
+    <div class="article-body tracker-body">
+      <h2 data-i18n="tracker.method2.h">Methodology and corrections</h2>
+      <p data-i18n="tracker.method2.p1">Figures were collected from each network's own pricing page or marketplace order book where one exists, and from independent third-party indexes where it does not; the source cell in each row says which. Ranges reflect that marketplace pricing is continuous — where a network publishes a single live rate, we quote it as a point and note that it moves.</p>
+      <p data-i18n="tracker.method2.p2">Rows are normalized to a single H100 80GB-class GPU-hour for comparison, except where a network does not sell one; those rows are labelled with the tier they actually sell. We do not adjust for performance, reliability or egress, because a table that quietly folds those into one number is the thing this page exists to replace.</p>
+      <p><span data-i18n="tracker.method2.p3a">Corrections are welcome and get published: if a figure here is wrong or out of date, mail</span> <a href="mailto:editor@omc.center">editor@omc.center</a> <span data-i18n="tracker.method2.p3b">with a link to the current source. Disclosed conflict: DCF is operated by the Omniverse Compute (OMC) team, which is building a competing network. We include no OMC row and quote no OMC price here, precisely so this comparison cannot be read as self-promotion.</span></p>
+
+      <h2 data-i18n="tracker.log.h">Update log</h2>
+      <ul class="log">
+        <li data-i18n="tracker.log.1">2026-10-04 — first edition: 12 networks, 5 workload filters, watch-outs and open questions added.</li>
+      </ul>
+    </div>
+
+    <div class="container">
+      <div class="omc-card">
+        <b data-i18n="tracker.omc.b">About this tracker</b>
+        <p data-i18n="tracker.omc.p">DCF is written and operated by the Omniverse Compute (OMC) team — a decentralized GPU network project on BNB Chain, currently in public testnet. That is a conflict of interest for a page like this one, so we handle it the blunt way: no OMC row, no OMC price, and every competitor figure sourced to its own page. Judge the table on whether it is checkable, not on who runs the site.</p>
+        <a href="https://omc.network/about" data-i18n="tracker.omc.a">About OMC →</a>
+      </div>
+      <div class="comments">
+        <h3 data-i18n="comments.title">Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network" data-i18n="footer.main">OMC project site</a>
+        <a href="https://top.omc.network" data-i18n="footer.top">AITop comparisons</a>
+        <a href="https://x.com/OmniVerseCompute" data-i18n="footer.x">X / Twitter</a>
+        <a href="/tracker" data-i18n="footer.tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/lang/en.js"></script>
+  <script src="assets/js/lang/zh.js"></script>
+  <script src="assets/js/tracker.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
