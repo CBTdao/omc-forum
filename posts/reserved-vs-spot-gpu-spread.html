@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reserved vs Spot GPUs: The 40% Spread Nobody Arbitrages — DCF</title>
+  <meta name="description" content="Committed capacity sells at roughly double what open markets charge for the same hour. Here is the break-even math, why teams still over-commit, and the hybrid pattern that actually saves money." />
+  <link rel="canonical" href="https://forum.omc.network/posts/reserved-vs-spot-gpu-spread" />
+  <meta property="og:title" content="Reserved vs Spot GPUs: The 40% Spread Nobody Arbitrages" />
+  <meta property="og:description" content="Same GPU, same hour, two prices. The gap is not a secret — it's a bet on your own utilization." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Reserved vs Spot GPUs: The 40% Spread Nobody Arbitrages","datePublished":"2026-10-04","dateModified":"2026-10-04","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip pricing">Pricing Watch</span>
+        <h1>Reserved vs spot GPUs: the 40% spread nobody arbitrages</h1>
+        <p class="article-dek">The same accelerator-hour sells for roughly double on a committed contract versus an open market. The gap isn't hidden, it isn't illegal, and almost nobody treats it as the financial decision it is.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 4, 2026</span><span>9 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h">TL;DR</b>
+        <p>Reserved capacity is an insurance policy with a hidden premium: you pay for availability whether or not you use it, and the effective price per useful hour depends entirely on your utilization. Below roughly 45-55% realized utilization, committing is more expensive than buying the same hours opportunistically — even at list-price spreads. Most teams over-commit because budget approval is easier than utilization discipline, and because "the job must not be interrupted" is a design constraint that can usually be architected away. The teams saving real money in 2026 do the boring hybrid: commit for the floor they can prove, buy the rest at market, and put the preemption-risk work where it can't hurt.</p>
+      </div>
+
+      <div class="article-body">
+        <p>Here's a pricing table that has not changed much all year, and that a surprising number of engineering leaders have never actually computed:</p>
+        <table>
+          <tr><th>Type</th><th>Typical rate (H-class equivalent)</th><th>Availability</th><th>Preemption</th></tr>
+          <tr><td>Hyperscaler on-demand</td><td>$3.00–4.00 / GPU-hr</td><td>Immediate</td><td>None</td></tr>
+          <tr><td>Hyperscaler reserved / committed</td><td>$1.70–2.40 / GPU-hr</td><td>Contracted</td><td>None</td></tr>
+          <tr><td>Neo-cloud reserved</td><td>$1.40–2.00 / GPU-hr</td><td>Contracted</td><td>None</td></tr>
+          <tr><td>Open / decentralized market</td><td>$0.90–1.60 / GPU-hr</td><td>Best-effort</td><td>Possible</td></tr>
+        </table>
+        <p>The spread between a committed rate and an open-market rate for comparable hardware is commonly 30–50%. That's a large, persistent number. Persistence like that usually means the market is pricing something real, and it is: <b>certainty</b>. A commit buys you the guarantee that capacity exists when you need it, at a price fixed in advance. An open market gives you the cheapest hours in the industry, but nobody promises they'll be there tomorrow.</p>
+
+        <h2>The break-even everyone gets wrong</h2>
+        <p>Teams compare the two headline rates and conclude: "committed is cheaper, sign the contract." That comparison is wrong, because a reserved hour is only cheaper <em>if you use it</em>. The right comparison is effective cost per useful hour:</p>
+        <p><b>Effective reserved price = reserved rate ÷ realized utilization</b></p>
+        <p>Commit at $2.00/hr and actually use 50% of the capacity you're paying for, and your effective price is $4.00/useful hour — worse than just buying on-demand when you need it, and dramatically worse than a market hour you buy only when the job runs. At 90% utilization the same commit delivers $2.22/useful hour, which is genuinely good. The break-even against typical open-market rates lands somewhere in the 45–55% utilization band, and it moves with hardware class, region and how much you value a hard availability guarantee.</p>
+        <p>Which means the honest question is never "is the committed rate lower?" It's "can I prove — with historical data, not optimism — that I'll keep this cluster above the break-even?" Most teams cannot, and buy anyway. That's not a scandal; it's a budget process that rewards predictable line items over correct ones.</p>
+
+        <h2>Why the spread persists</h2>
+        <p>Three reasons, none of them mysterious:</p>
+        <ul>
+          <li><b>Availability has real value.</b> A trading desk or a latency-critical product genuinely cannot tolerate preemption. For them the open market isn't cheaper, it's unusable — no arbitrage exists for work you're not allowed to run.</li>
+          <li><b>Interruption risk is priced, not hidden.</b> When a marketplace hour is reclaimed and your job dies at hour nine, the retry costs more than the discount saved. Anyone who's been burned once starts treating the discount as fake. Sometimes it is.</li>
+          <li><b>Procurement friction is real.</b> One signature on a one-year commit is tractable; a hundred small market purchases across a shifting set of suppliers requires tooling, accounting and an appetite for variable spend that most finance departments don't have.</li>
+        </ul>
+
+        <h2>The pattern that actually saves money</h2>
+        <p>The teams getting both certainty and the discount do something unglamorous: they partition workloads by interruption tolerance instead of choosing a single sourcing strategy for everything.</p>
+        <table>
+          <tr><th>Workload</th><th>Right sourcing</th><th>Why</th></tr>
+          <tr><td>Long, tightly-coupled pretraining run</td><td>Committed capacity (your own, or reserved)</td><td>Restart cost is brutal; utilization is provably high</td></tr>
+          <tr><td>Serving / inference baseline</td><td>Committed, sized to the 20th percentile of load</td><td>Steady floor, latency-critical</td></tr>
+          <tr><td>Inference peaks, batch jobs, evals</td><td>Open market, bought at run time</td><td>Interruption-tolerant, spiky, price-sensitive</td></tr>
+          <tr><td>Hyperparameter sweeps &amp; ablations</td><td>Cheapest credible market, checkpointed</td><td>Failures are cheap; runs are short</td></tr>
+        </table>
+        <p>That partition is the whole trick, and it's the same conclusion we reached from the opposite direction in <a href="/posts/renting-vs-buying-gpus-2026">renting vs buying</a> and, more recently, in <a href="/posts/insurance-actuarial-gpu-demand">the actuarial compute piece</a>: peak-shaped, latency-tolerant work belongs in markets; the provable floor belongs on committed capacity. Teams that adopt it report compute lines 25–45% below their all-committed baseline, without accepting SLA risk they can't tolerate.</p>
+
+        <h2>The part nobody says out loud</h2>
+        <p>The spread is also a scoreboard on engineering honesty. If your utilization data can't survive a CFO's questions, the committed contract isn't infrastructure — it's a hedge against admitting you don't know your own load. Fix the measurement first. Then the sourcing decision, for most teams, quietly makes itself.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h">Key takeaways</b>
+          <ul>
+            <li>Compare effective cost per <em>useful</em> hour, not headline rates: reserved price ÷ realized utilization.</li>
+            <li>Below ~50% utilization, committed capacity can be more expensive than patiently buying the same hours at market.</li>
+            <li>The 30–50% spread is the market pricing certainty — real value for some workloads, wasted premium for most.</li>
+            <li>Partition by interruption tolerance: commit the provable floor, run everything bursty and restartable on open markets.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>Brought to you by Omniverse Compute</b>
+          <p>OMC is a decentralized GPU network on BNB Chain — zk-verified nodes, L2 micropayments, compute at 50-70% below hyperscaler rates.</p>
+          <a href="https://omc.network">Explore the network →</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/the-power-wall-not-gpus"><i>Previous</i>The power wall: gigawatts, not GPUs</a>
+          <a href="/posts/h100-rates-centralized-vs-decentralized"><i>Next</i>H100 rates: centralized vs decentralized</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span>Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC mainnet site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/OmniVerseCompute">X / Twitter</a>
+      </div>
+      <span>© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
