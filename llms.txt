@@ -1,0 +1,31 @@
+# Decentralized Compute Forum
+
+> Independent data and analysis on GPU markets and decentralized compute
+
+This site is static HTML in English. Chinese is available via the language toggle (client-side).
+
+## Site pages
+
+- [https://forum.omc.network/about](https://forum.omc.network/about): About — DCF
+- [https://forum.omc.network/contact](https://forum.omc.network/contact): Contact — DCF
+- [https://forum.omc.network/](https://forum.omc.network/): The Decentralized Compute Forum — GPU markets, DePIN & the price of AI
+- [https://forum.omc.network/privacy](https://forum.omc.network/privacy): Privacy Policy — DCF
+- [https://forum.omc.network/terms](https://forum.omc.network/terms): Terms of Use — DCF
+- [https://forum.omc.network/tracker](https://forum.omc.network/tracker): Decentralized Compute Tracker — GPU networks compared, with sources — DCF
+
+## Articles & comparisons
+
+- [https://forum.omc.network/posts/ai-labs-buying-crypto-compute](https://forum.omc.network/posts/ai-labs-buying-crypto-compute): Why AI Labs Are Quietly Buying Compute From Crypto Networks — DCF
+- [https://forum.omc.network/posts/ai-npcs-gpu-bill](https://forum.omc.network/posts/ai-npcs-gpu-bill): AI NPCs Need GPUs Too: Inside Gaming's New Compute Bill — DCF
+- [https://forum.omc.network/posts/decentralized-games-actually-shipping-2026](https://forum.omc.network/posts/decentralized-games-actually-shipping-2026): Decentralized Gaming in 2026: Five Projects Actually Shipping — DCF
+- [https://forum.omc.network/posts/depin-2026-who-actually-has-users](https://forum.omc.network/posts/depin-2026-who-actually-has-users): DePIN in 2026: Which Decentralized Compute Networks Actually Have Users? — DCF
+- [https://forum.omc.network/posts/depin-tokens-are-not-business-models](https://forum.omc.network/posts/depin-tokens-are-not-business-models): The Composer Problem: DePIN Tokens Are Not Business Models — DCF
+- [https://forum.omc.network/posts/every-airbnb-for-gpu-pitch-reviewed](https://forum.omc.network/posts/every-airbnb-for-gpu-pitch-reviewed): Every "Airbnb for GPUs" Pitch, Reviewed Honestly — DCF
+- [https://forum.omc.network/posts/gpu-cloud-pricing-is-a-scam](https://forum.omc.network/posts/gpu-cloud-pricing-is-a-scam): Why GPU Cloud Pricing Is a Scam (And How Decentralization Fixes It) — DCF
+- [https://forum.omc.network/posts/h100-rates-centralized-vs-decentralized](https://forum.omc.network/posts/h100-rates-centralized-vs-decentralized): H100 Hourly Rates: Centralized Cloud vs Decentralized Markets — DCF
+- [https://forum.omc.network/posts/insurance-actuarial-gpu-demand](https://forum.omc.network/posts/insurance-actuarial-gpu-demand): Insurance Runs on Monte Carlo: The Actuarial GPU Bill Nobody Talks About — DCF
+- [https://forum.omc.network/posts/play-to-earn-is-dead](https://forum.omc.network/posts/play-to-earn-is-dead): Play-to-Earn Died Screaming. Here's What 2026 Learned. — DCF
+- [https://forum.omc.network/posts/real-cost-of-training-a-model-2026](https://forum.omc.network/posts/real-cost-of-training-a-model-2026): The Real Cost of Training a Model in 2026: A GPU Price Breakdown — DCF
+- [https://forum.omc.network/posts/renting-vs-buying-gpus-2026](https://forum.omc.network/posts/renting-vs-buying-gpus-2026): Renting vs Buying GPUs: The Math Changed in 2025 — DCF
+- [https://forum.omc.network/posts/reserved-vs-spot-gpu-spread](https://forum.omc.network/posts/reserved-vs-spot-gpu-spread): Reserved vs Spot GPUs: The 40% Spread Nobody Arbitrages — DCF
+- [https://forum.omc.network/posts/the-power-wall-not-gpus](https://forum.omc.network/posts/the-power-wall-not-gpus): The Power Wall: In 2026, Gigawatts — Not GPUs — Cap AI — DCF
