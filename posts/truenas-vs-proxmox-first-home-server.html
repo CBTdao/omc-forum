@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrueNAS vs Proxmox: Picking Your First Home Server OS — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TrueNAS vs Proxmox: Picking Your First Home Server OS — DCF">
+  <meta name="twitter:description" content="Storage-first or VM-first? The honest fork in the road for first-time home server builders — what each OS is actually for, and the classic combo that runs both.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="Storage-first or VM-first? The honest fork in the road for first-time home server builders — what TrueNAS and Proxmox are actually for, and the classic combo that runs both." />
+  <link rel="canonical" href="https://forum.omc.network/posts/truenas-vs-proxmox-first-home-server" />
+  <meta property="og:title" content="TrueNAS vs Proxmox: picking your first home server OS" />
+  <meta property="og:description" content="Storage-first or VM-first? The honest fork in the road for beginners." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"TrueNAS vs Proxmox: picking your first home server OS","datePublished":"2026-10-06","dateModified":"2026-10-06","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>TrueNAS vs Proxmox: picking your first home server OS</h1>
+        <p class="article-dek">Storage-first or VM-first? The honest fork in the road for first-time builders — what each OS is actually for, and the classic combo that runs both.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 6, 2026</span><span>7 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h">TL;DR</b>
+        <p>The question isn't "which OS is better" &mdash; it's "what is this machine for?" If the answer is <i>files, photos and backups for the household</i>, install TrueNAS: it is a storage appliance first, with ZFS snapshots that make your data nearly un-loseable, and apps (Immich, Jellyfin, Nextcloud) one click away. If the answer is <i>I want to run and break lots of services</i>, install Proxmox: it is a virtualization platform first, where every experiment is a disposable container and nothing touches the host. Both are free. Both are excellent. You are not choosing a winner; you are choosing a first language.</p>
+      </div>
+
+      <div class="article-body">
+        <p>Every home-lab journey starts with the same purchase &mdash; a used office PC or a modest build &mdash; and the same fork: TrueNAS or Proxmox? The forums treat this like a sports rivalry. It isn't. The two systems optimize for different failures: TrueNAS is paranoid about your <i>data</i>; Proxmox is paranoid about your <i>uptime and flexibility</i>. Pick the paranoia that matches what you can least afford to lose.</p>
+
+        <h2>TrueNAS: the appliance that protects the cargo</h2>
+        <p>TrueNAS (Community Edition, the successor to SCALE) is a storage appliance built on ZFS. That last phrase carries the whole pitch: ZFS gives you checksummed data that detects silent corruption, snapshots you can roll back in seconds, and RAID-style redundancy (RAID-Z) that survives a disk dying without drama. The web UI exposes the right knobs and hides the wrong ones. Its app catalog &mdash; Immich for photos, Jellyfin/Plex for media, Nextcloud for files &mdash; covers 80% of why people buy a home server in the first place. The cost of that simplicity: it wants to own the hardware. Running lots of unrelated VMs on TrueNAS is possible but swimming upstream.</p>
+
+        <h2>Proxmox: the sandbox that protects the host</h2>
+        <p>Proxmox VE is a Debian-based virtualization platform: lightweight containers (LXC) and full VMs (KVM) behind one web UI, with backups, VLANs and cluster features that scale far past a hobby box. Its superpower is psychological as much as technical: <i>every experiment is disposable</i>. Want to try a Minecraft server, a CI runner, a home assistant, that sketchy VPN panel you found? Spin a container, break it, delete it &mdash; the host never notices. The cost: storage is DIY. You can run ZFS on Proxmox, but the appliance-grade polish &mdash; shares, datasets, app store &mdash; you build yourself.</p>
+
+        <h2>The head-to-head, honestly</h2>
+        <table>
+          <tr><th></th><th>TrueNAS Community</th><th>Proxmox VE</th></tr>
+          <tr><td>First identity</td><td>Storage appliance (ZFS, shares, snapshots)</td><td>Virtualization platform (LXC/KVM, clusters)</td></tr>
+          <tr><td>Apps</td><td>Curated catalog, one-click (Immich, Jellyfin, Nextcloud&hellip;)</td><td>Whatever you deploy, yourself</td></tr>
+          <tr><td>Data safety story</td><td>Best-in-class out of the box (ZFS checksums, snapshots, RAID-Z)</td><td>Powerful (ZFS works) but you assemble it</td></tr>
+          <tr><td>Running VMs &amp; containers</td><td>Possible, not its calling</td><td>The whole point</td></tr>
+          <tr><td>Beginner day-one experience</td><td>Shares and photos running in an evening</td><td>A web UI looking at you, waiting for a plan</td></tr>
+          <tr><td>Long-term path</td><td>Bigger NAS</td><td>Homelab empire (or a job change)</td></tr>
+        </table>
+        <p>Read the table by its second row and most of the confusion evaporates: the app catalog is what makes TrueNAS feel like a product and Proxmox feel like a toolkit. Both projects are mature, free, and far better documented in 2026 than when most of the internet's advice was written &mdash; half the forum threads you'll find predate Immich's 1.x and TrueNAS SCALE's rename to Community Edition.</p>
+
+        <h2>Recommendations by persona</h2>
+        <p>Still stuck? Match the persona, not the feature list &mdash; home server regrets almost always come from copying someone else's setup instead of naming your own failure mode first.</p>
+        <ul>
+          <li><b>"I want family photos off Google and real backups."</b> TrueNAS, full stop. Add the Immich app on day one &mdash; it's the single highest-satisfaction install in the home-lab world.</li>
+          <li><b>"I want to run twelve services and understand Linux."</b> Proxmox. The container habit teaches more transferable skill per hour than any course.</li>
+          <li><b>"Both, obviously."</b> The classic combo is Proxmox as the host with TrueNAS in a VM, disks passed through to it. It works well and runs in thousands of homes &mdash; but it adds a virtualization layer between you and your data, and passthrough mistakes are how beginners lose weekends. It's your second-year move, not your day-one move.</li>
+          <li><b>"I mostly game and occasionally experiment."</b> Neither yet &mdash; start with the GPU side of the house: our <a href="/posts/cloud-gpu-vs-home-gpu-tco">cloud-vs-home GPU math</a>.</li>
+        </ul>
+
+        <p>One warning that outranks the whole comparison: the OS is not where data goes to die &mdash; hardware and backups are. Whatever you pick, keep at least one copy of the irreplaceable stuff on a different machine, and remember ZFS redundancy is not a backup. Pick your paranoia, buy a second disk, and start this weekend. The fork in the road matters far less than actually walking down one of them.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h">Key takeaways</b>
+          <ul>
+            <li>Choose by failure mode: TrueNAS protects data (ZFS-first), Proxmox protects uptime and flexibility (VM-first).</li>
+            <li>Household files/photos/backups → TrueNAS with Immich; experiments and services → Proxmox.</li>
+            <li>Proxmox host + TrueNAS VM with disk passthrough is the classic "both" combo &mdash; powerful, but a second-year move.</li>
+            <li>The OS matters less than the backup: keep one copy on different hardware; redundancy is not backup.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/used-rtx-3090-llm-server-2026"><i>Previous</i>The used RTX 3090 is still the default home LLM server</a>
+          <a href="/posts/idle-home-compute-earnings"><i>Next</i>What can idle home compute actually earn? Honest math</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span>Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span>© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

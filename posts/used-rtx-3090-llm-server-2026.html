@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Used RTX 3090 Is Still the Default Home LLM Server (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Used RTX 3090 Is Still the Default Home LLM Server (2026) — DCF">
+  <meta name="twitter:description" content="24 GB of VRAM for around $800, running quantized models that didn't exist two years ago. Why Ampere keeps winning the home-lab argument — and when it doesn't.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="24 GB of VRAM for around $800, running quantized models that didn't exist two years ago. Why the RTX 3090 keeps winning the home-lab argument in 2026 — and when to buy something else." />
+  <link rel="canonical" href="https://forum.omc.network/posts/used-rtx-3090-llm-server-2026" />
+  <meta property="og:title" content="The used RTX 3090 is still the default home LLM server (2026)" />
+  <meta property="og:description" content="24 GB of VRAM for around $800. Why Ampere keeps winning the home-lab argument." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"The used RTX 3090 is still the default home LLM server (2026)","datePublished":"2026-10-06","dateModified":"2026-10-06","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>The used RTX 3090 is still the default home LLM server (2026)</h1>
+        <p class="article-dek">24 GB of VRAM for around $800, running quantized models that barely existed two years ago. Why Ampere keeps winning the home-lab argument — and the four cases where you should buy something else.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 6, 2026</span><span>8 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h">TL;DR</b>
+        <p>For a local LLM box, the question is never FLOPS — it's VRAM per dollar, because model weights are the cargo and VRAM is the hull. The used RTX 3090 still ships 24 GB for $700&ndash;$900, which no current card matches per gigabyte. One 3090 comfortably serves 14B&ndash;32B quantized models and does image, speech and vision work on the side; two of them ($1,600-ish) run 70B-class quantized models &mdash; the "serious local AI" threshold. Buy something else only if you need maximum single-card speed, silent operation, or true datacenter reliability.</p>
+      </div>
+
+      <div class="article-body">
+        <p>Every year since 2022 someone has declared the used 3090 obsolete, and every year the used 3090 ignores them. The reason is structural, not sentimental: local model serving is gated by memory capacity, not compute. Weights have to fit in VRAM. Once they do, Ampere's tensor cores &mdash; five years old now &mdash; are plenty fast for a single user reading tokens at reading speed.</p>
+
+        <h2>Why 24 GB keeps mattering more than speed</h2>
+        <p>Quantization changed the arithmetic. Modern 4-bit quantized (GGUF/AWQ-style) builds of open-weight models cut memory footprints roughly four-fold with modest quality loss, and 2025&ndash;2026's model generation got dramatically better at small sizes. The practical map on one 24 GB card, as of late 2026:</p>
+        <ul>
+          <li><b>7B&ndash;14B models</b> run fast with lots of context headroom. Great daily drivers for drafting, summarizing and RAG over personal documents.</li>
+          <li><b>32B-class models</b> fit in 4-bit with room for a real context window. This is the sweet spot most home-lab users actually live in.</li>
+          <li><b>70B-class models</b> need ~40 GB in 4-bit &mdash; that's two 3090s at roughly $1,600 combined, still cheaper than a single current-generation 48 GB card.</li>
+        </ul>
+        <p>And the card doesn't sleep when the LLM doesn't run: Stable Diffusion-class image generation, Whisper transcription, local TTS and vision models all fit comfortably. A 3090 box is a general-purpose local-AI appliance, not a one-trick pony.</p>
+
+        <h2>The 2026 used-market reality</h2>
+        <p>Three things changed since the "don't buy ex-miner cards" era, and one thing didn't. Datacenter refresh cycles and rental fleets pushed a steady stream of 3090s onto the secondary market, bottoming used prices near $700&ndash;$900. The mining-era bogeyman is mostly priced in &mdash; these cards have already survived their sweatshop years. And quantized-model quality means a 2022 card runs a 2026 experience. What didn't change: you're buying a used GPU from a stranger. Buy from sellers who show <b>VRAM temperatures under load</b>, not just FPS screenshots. GDDR6X on the 3090 runs hot by design; a card that throttles on memory junction temp in the seller's video will throttle in yours.</p>
+
+        <h2>Power, noise and the domestic treaty</h2>
+        <p>Plan for ~350 W peak, a PC that idles around 40&ndash;60 W, and a machine that is audible under load. At the US average electricity price, 8 hours of daily use costs roughly $15/month &mdash; see <a href="/posts/cloud-gpu-vs-home-gpu-tco">our TCO spreadsheet</a> for the full line items. Undervolting and power-limit curves typically shave 15&ndash;25% of that at single-digit performance cost, and turn the fan curve from hair-dryer to acceptable roommate.</p>
+
+        <h2>When to buy something else</h2>
+        <ul>
+          <li><b>You need 70B+ in one box, quietly.</b> Two 3090s is the budget answer, but it's two loud hot cards; a single used A6000-class 48 GB card or a current 32 GB consumer part may fit your desk and your marriage better.</li>
+          <li><b>You need maximum tokens/second for many users.</b> A 3090 serves one or two humans gloriously and a team badly. That's a rental job.</li>
+          <li><b>You need reliability, not experiments.</b> A used consumer card has no ECC, no warranty and a history. If the box must be up, rent &mdash; the enterprise math lives in our renting-vs-buying piece.</li>
+          <li><b>You're training, not serving.</b> Fine-tunes beyond LoRA on a 3090 are an exercise in swap-file patience. Rent H100 hours by the job.</li>
+        </ul>
+
+        <p>The 3090 isn't exciting in 2026. That's exactly why it keeps winning: it's the last card whose price fell to its floor while its memory still clears the bar. Obsolescence for this one isn't a date &mdash; it's a model size. When 70B quantizes into 20 GB and runs on a 16 GB card at full speed, the used 3090 finally retires. Based on the current pace, don't hold your breath this quarter.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h">Key takeaways</b>
+          <ul>
+            <li>Local LLM serving is gated by VRAM per dollar &mdash; the used 3090's 24 GB at $700&ndash;$900 still leads that metric in 2026.</li>
+            <li>One card: fast 14B&ndash;32B quantized models plus image/speech/vision work. Two cards (~$1,600): the 70B threshold.</li>
+            <li>Buying used: demand VRAM temps under load, not FPS screenshots &mdash; GDDR6X memory heat is the failure mode.</li>
+            <li>Skippable cases: silent multi-user serving, guaranteed uptime, or real training runs &mdash; those are rental jobs.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/cloud-gpu-vs-home-gpu-tco"><i>Previous</i>Cloud GPU vs home GPU: the 2026 TCO spreadsheet</a>
+          <a href="/posts/truenas-vs-proxmox-first-home-server"><i>Next</i>TrueNAS vs Proxmox: picking your first home server OS</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span>Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span>© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

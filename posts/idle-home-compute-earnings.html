@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What Can Idle Home Compute Actually Earn? Honest Math — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="What Can Idle Home Compute Actually Earn? Honest Math — DCF">
+  <meta name="twitter:description" content="Residential bandwidth, dynamic IPs and electricity bills versus marketplace rates. The realistic number for most home labs is smaller than the marketing — and the real ROI is elsewhere.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="Residential bandwidth, dynamic IPs and electricity bills versus marketplace rates. What idle home compute realistically earns in 2026 — and why self-hosting is the higher-yield play." />
+  <link rel="canonical" href="https://forum.omc.network/posts/idle-home-compute-earnings" />
+  <meta property="og:title" content="What can idle home compute actually earn? Honest math" />
+  <meta property="og:description" content="The realistic number for most home labs is smaller than the marketing — and the real ROI is elsewhere." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"What can idle home compute actually earn? Honest math","datePublished":"2026-10-06","dateModified":"2026-10-06","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>What can idle home compute actually earn? Honest math</h1>
+        <p class="article-dek">Residential bandwidth, dynamic IPs and electricity bills versus marketplace rates. The realistic number for most home labs is smaller than the marketing — and the real ROI is elsewhere.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 6, 2026</span><span>8 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h">TL;DR</b>
+        <p>Every homelabber eventually asks it: "My GPU sits idle 20 hours a day — can someone pay me for those hours?" Here is the honest 2026 answer. Selling consumer-GPU hours from a residential connection realistically nets most people between $0 and $20 a month, after electricity, and carries real non-money costs: ISP terms, uptime you don't control, and thermal wear. The buyer's side of the market pays $0.30&ndash;$0.50/hour for 24 GB-class cards &mdash; but it pays that to hosts who can guarantee availability, and a gaming PC that also answers your family's group chat cannot. The highest-yield "idle compute" play in 2026 remains unglamorous: run your own services and cancel the subscriptions. That trade reliably returns $100&ndash;$400 a year, risk-free.</p>
+      </div>
+
+      <div class="article-body">
+        <p>This forum spends most of its time on the supply side of the compute market at datacenter scale &mdash; H100 rates, DePIN networks, collateralized GPU loans. But the question arrives at our door from a humbler place: the person with a used RTX 3090 (<a href="/posts/used-rtx-3090-llm-server-2026">still the default home LLM box</a>) who notices it idle all day and wonders if it should be earning. Let's run the numbers like adults, then talk about where the real return hides.</p>
+
+        <h2>What the market pays — and for what</h2>
+        <p>Open marketplaces list 24 GB-class consumer GPUs around $0.30&ndash;$0.50 per hour. That rate is real, and it is not offered to you. It is offered to hosts who can offer most of the following: static or reputation-clean IP, near-continuous uptime, fast restart automation, stable thermal conditions, and a network connection whose terms of service don't prohibit the arrangement. A residential connection fails several of those tests by default: home IPs are dynamic and shared-reputation, upload bandwidth is typically 10&ndash;40 Mbps, consumer ISP contracts commonly disallow commercial hosting, and the machine reboots whenever Windows decides it's Tuesday. The market's filter, not the technology, is what keeps your card at $0 most months.</p>
+
+        <h2>Your cost side never sleeps</h2>
+        <ul>
+          <li><b>Electricity is the floor.</b> Even a mostly idle lab PC draws 40&ndash;60 W around the clock &mdash; roughly 30&ndash;45 kWh a month before a single paid job. At US average prices that's $5&ndash;8/month of standing cost; in Germany, closer to $15&ndash;19.</li>
+          <li><b>Active hours carry thermal wear.</b> Paid jobs heat the card. Heat is the currency your hardware spends; every earned dollar spends some of your resale value too.</li>
+          <li><b>Attention is a real expense.</b> Hosting that pays anything meaningful requires babysitting: updates, failure recovery, security patching of exposed services. Price your evenings honestly.</li>
+        </ul>
+        <p>None of these costs are hidden, exactly &mdash; they're just never in the marketing. The marketplace landing page shows the hourly rate; the ISP contract, the kWh meter and your Saturday afternoon spent debugging a stuck job live in the fine print of your life. Add them up before you subtract nothing.</p>
+
+        <h2>The realistic tiers for 2026</h2>
+        <table>
+          <tr><th>Setup</th><th>Realistic net/month</th><th>What it actually is</th></tr>
+          <tr><td>Gaming PC, residential line, casual listing</td><td>$0&ndash;5</td><td>Occasional jobs, mostly rejected or throttled; electricity eats the rest.</td></tr>
+          <tr><td>Dedicated box, 24/7, tuned residential setup</td><td>$5&ndash;20</td><td>Real hosting, real babysitting; the ISP-terms question is yours to resolve.</td></tr>
+          <tr><td>Datacenter-grade card, static IP, real SLA</td><td>$50&ndash;200+</td><td>No longer a home lab &mdash; this is a small business. Different post.</td></tr>
+        </table>
+        <p>If the token-reward version of this question is what you're really asking &mdash; selling idle hours into decentralized networks for crypto payouts &mdash; that's the other half of this forum's beat, and we cover it with the same skepticism in our DePIN coverage; the project-site calculator at omc.network is the place to start. This post deliberately stays on the non-crypto side of the line.</p>
+
+        <h2>Where the real ROI lives: the substitution play</h2>
+        <p>Here's the boring arithmetic nobody markets. The same box that earns $0&ndash;$20 hosting strangers' jobs can replace paid services you already buy: Immich instead of Google Photos (~$60/yr for a family), Jellyfin instead of a streaming sub, local Whisper instead of transcription credits, a local 32B model instead of API top-ups for private drafts, Nextcloud instead of storage subscriptions. Summed honestly, a functioning home lab substitutes $100&ndash;$400 a year of subscription spend &mdash; at zero ISP risk, with better privacy, on hardware you already bought. Unlike hosting strangers' workloads, the "customer" for your idle hours is you, and you always pay on time.</p>
+
+        <p>None of this is a scam warning &mdash; the compute market is real, and making supply liquid is the entire thesis of the decentralized side we cover daily. It's a scope warning: a home lab is a wonderful appliance and a mediocre side hustle. Buy the box for what it does for you, treat any marketplace income as a pleasant surprise, and spend the evenings you would have spent on host-duties pointing the Immich app at your camera roll. That trade, unlike the other one, has never once gone underwater.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h">Key takeaways</b>
+          <ul>
+            <li>Marketplace rates ($0.30&ndash;$0.50/h for 24 GB-class) go to hosts who guarantee uptime and clean IPs &mdash; conditions residential lines rarely meet.</li>
+            <li>After electricity ($5&ndash;19/month of standing cost) and attention, most home setups net $0&ndash;$20/month from hosting.</li>
+            <li>The substitution play returns more with zero risk: Immich, Jellyfin, local models and Whisper replace $100&ndash;$400/year of subscriptions.</li>
+            <li>Curious about the token-reward path? That's the decentralized-compute side of this forum — start at omc.network's calculator. This post stays deliberately non-crypto.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/truenas-vs-proxmox-first-home-server"><i>Previous</i>TrueNAS vs Proxmox: picking your first home server OS</a>
+          <a href="/posts/renting-vs-buying-gpus-2026"><i>Related</i>Renting vs buying GPUs: the enterprise math</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span>Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span>© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

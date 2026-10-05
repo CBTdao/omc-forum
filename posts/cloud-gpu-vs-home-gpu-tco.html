@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud GPU vs Home GPU: The 2026 TCO Spreadsheet — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cloud GPU vs Home GPU: The 2026 TCO Spreadsheet — DCF">
+  <meta name="twitter:description" content="A used RTX 3090 is about $820. Whether it beats renting depends on three numbers: utilization, electricity price, and your exit. The full arithmetic, line by line.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="A used RTX 3090 is about $820. Whether it beats renting depends on three numbers: utilization, electricity price, and your exit. The full home-lab TCO arithmetic, line by line." />
+  <link rel="canonical" href="https://forum.omc.network/posts/cloud-gpu-vs-home-gpu-tco" />
+  <meta property="og:title" content="Cloud GPU vs Home GPU: The 2026 TCO Spreadsheet" />
+  <meta property="og:description" content="A used RTX 3090 is about $820. Whether it beats renting depends on three numbers." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Cloud GPU vs Home GPU: The 2026 TCO Spreadsheet","datePublished":"2026-10-06","dateModified":"2026-10-06","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>Cloud GPU vs home GPU: the 2026 TCO spreadsheet</h1>
+        <p class="article-dek">A used RTX 3090 is about $820. Whether it beats renting depends on three numbers: your utilization, your electricity price, and your exit. The full arithmetic, line by line.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 6, 2026</span><span>9 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h">TL;DR</b>
+        <p>Renting a 24&nbsp;GB-class GPU on open markets runs roughly $0.30&ndash;$0.50 an hour in 2026. A used RTX 3090 costs about $820 plus its electricity bill. Run the math and the answer is boringly conditional: under ~3 hours of use a day, keep renting; around 8 hours a day, the used 3090 pays for itself in roughly 9&ndash;14 months; at near-continuous use with cheap power, it isn't even close. Three numbers decide everything: utilization, your kWh price, and whether the card still has resale value when you're done.</p>
+      </div>
+
+      <div class="article-body">
+        <p>Our <a href="/posts/renting-vs-buying-gpus-2026">renting-vs-buying piece</a> covered the enterprise version of this question &mdash; $25K accelerators, ops staff, utilization curves. But the most common version of the argument now happens at a much smaller scale: someone with a desk, a game PC and a growing suspicion that they're about to spend real money on API bills or cloud GPU hours. This is the home version of the spreadsheet, run honestly.</p>
+
+        <h2>The three lines that matter</h2>
+        <h3>1. The box</h3>
+        <p>A used RTX 3090 with 24 GB of VRAM trades hands for roughly $700&ndash;$900 as of October 2026 (verify against your local market &mdash; prices move). You supply the rest of the machine, which you probably own. Call the incremental capex $820 to be concrete; every conclusion below scales with your real number.</p>
+        <h3>2. The electricity</h3>
+        <p>A 3090 draws ~350 W under load and a typical host PC idles around 40&ndash;60 W. At 8 hours of load a day plus idle the rest, you're looking at roughly 90&ndash;100 kWh a month. That's ~$15/month at the US average of $0.14&ndash;$0.18/kWh &mdash; and ~$40/month at Germany's ~$0.42/kWh. If you skipped the geography lesson: the same home lab is a better deal in Vancouver than in Berlin, through no fault of your own.</p>
+        <h3>3. The rental alternative</h3>
+        <p>24 GB-class consumer GPUs rent on open marketplaces for roughly $0.30&ndash;$0.50/hour, cheaper than hyperscaler consumer tiers and instantly available. That's the number your home GPU has to beat, hour by hour, including the hours the card sits idle doing nothing for you.</p>
+
+        <h2>The break-even, roughly</h2>
+        <table>
+          <tr><th>Your daily usage</th><th>Renting (24 GB class)</th><th>Owning (3090, US power)</th><td></td><th>Verdict</th></tr>
+          <tr><td>2 hours/day</td><td>~$18&ndash;30/mo</td><td>~$820 + ~$10/mo</td><td></td><td>Rent. Payback would take 2+ years and outlive your patience.</td></tr>
+          <tr><td>4 hours/day</td><td>~$36&ndash;60/mo</td><td>~$820 + ~$11/mo</td><td></td><td>Borderline. Only if you value latency, privacy or offline use.</td></tr>
+          <tr><td>8 hours/day</td><td>~$72&ndash;120/mo</td><td>~$820 + ~$15/mo</td><td></td><td>Own. Payback in roughly 9&ndash;14 months, then it's nearly free hours.</td></tr>
+          <tr><td>Near-continuous</td><td>$220&ndash;360/mo</td><td>~$820 + ~$40/mo</td><td></td><td>Own, obviously &mdash; and consider a second card before you consider the cloud.</td></tr>
+        </table>
+        <p>Two adjustments, both in the used card's favor. First, resale: 3090s have held value unusually well because 24 GB at 350 W keeps finding buyers; recovering 50&ndash;60% after two years is a reasonable planning assumption, which cuts the effective cost per owned month by a third. Second, the "machine already exists" case: if the PC would be there anyway, the true comparison is marginal electricity versus rental &mdash; and then ownership wins at much lower utilization.</p>
+
+        <h2>What the spreadsheet leaves out</h2>
+        <ul>
+          <li><b>Failure risk is yours now.</b> A used card has no warranty and a past. Budget a small probability that your $820 becomes a $820 lesson, and buy from sellers who test under load.</li>
+          <li><b>Noise and heat are real costs.</b> 350 W under load is a space heater with fans. Apartment dwellers in August already know this; everyone else discovers it the first summer.</li>
+          <li><b>Your hours count too.</b> Cloud is someone else's 2 a.m. hardware failure. Home is yours. If your time is worth anything, add a fudge factor.</li>
+          <li><b>Latency, privacy and offline are worth something.</b> Not every benefit shows up in the cost column. A local model that answers about your private documents has value no rental receipt captures.</li>
+        </ul>
+
+        <h2>What we'd actually do</h2>
+        <p>If you're under ~3 hours a day, rent and stay liquid. Between 4 and 8 hours, buy the used 3090 if the machine exists and you'll keep it two years or more &mdash; the payback is real but not dramatic. Above 8 hours, stop reading comparison posts and buy the card. And whatever you choose, re-run the numbers when your workload changes: utilization is the whole game, and utilization is the thing most likely to move. The spreadsheet didn't get simpler in 2026 &mdash; it just finally fits on a fridge magnet.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h">Key takeaways</b>
+          <ul>
+            <li>Under ~3 hours/day, rent; at ~8 hours/day a used 3090 pays back in ~9&ndash;14 months; beyond that, ownership wins outright.</li>
+            <li>Electricity is the swing variable: the same rig costs ~$15/month in the US and ~$40 in Germany at load.</li>
+            <li>Resale recovery of 50&ndash;60% on used 3090s is a fair planning assumption and shortens true payback by a third.</li>
+            <li>Failure risk, noise, heat and your own hours are real costs &mdash; but latency, privacy and offline use are real benefits the spreadsheet can't price.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/renting-vs-buying-gpus-2026"><i>Related</i>Renting vs buying GPUs: the enterprise math</a>
+          <a href="/posts/used-rtx-3090-llm-server-2026"><i>Next</i>The used RTX 3090 is still the default home LLM server</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span>Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span>© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

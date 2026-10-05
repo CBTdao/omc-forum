@@ -21,6 +21,9 @@ window.I18N.zh = {
   "nav.gaming": "链游",
   "sec.gaming": "链上游戏",
   "sec.gaming.note": "游戏、经济系统——以及它们的算力账单",
+  "nav.homelab": "Homelab",
+  "sec.homelab": "Homelab 自建机房",
+  "sec.homelab.note": "把你自己的机器，当机房用",
 
   "about.h": "关于本论坛",
   "about.p1": "去中心化算力论坛（DCF）是一个聚焦 GPU 市场、DePIN 网络与 AI 算力经济学的编辑出版物。我们自己写、自己吵、公开数据来源——数据变了，我们也会公开改口。本论坛由 Omniverse Compute（OMC）团队运营，这一关系如实披露而非隐藏。",
