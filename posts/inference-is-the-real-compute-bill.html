@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inference is the real compute bill now (and it changed shape) — DCF</title>
+  <meta name="description" content="In 2026 inference passed training as the dominant AI compute load. Why thinking models broke the old cost model, and what it means for where compute gets bought." />
+  <link rel="canonical" href="https://forum.omc.network/posts/inference-is-the-real-compute-bill" />
+  <meta property="og:title" content="Inference is the real compute bill now (and it changed shape)" />
+  <meta property="og:description" content="In 2026 inference passed training as the dominant AI compute load. Why thinking models broke the old cost model, and what it means for where compute gets bought." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Inference is the real compute bill now (and it changed shape) — DCF">
+  <meta name="twitter:description" content="In 2026 inference passed training as the dominant AI compute load. Why thinking models broke the old cost model, and what it means for where compute gets bought.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Inference is the real compute bill now (and it changed shape)","datePublished":"2026-10-05","dateModified":"2026-10-05","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>Inference is the real compute bill now (and it changed shape)</h1>
+        <p class="article-dek">For three years every chart was about training runs. In 2026 the money moved — and the new dominant workload looks nothing like the old one.</p>
+        <div class="article-meta"><span data-i18n="meta.by">DCF Editorial</span><span>Oct 5, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>In 2026, inference overtook training as the majority of AI compute — roughly two-thirds of the load by most estimates, and for the first time in dollars as well. But the interesting part isn't the ratio. It's that "thinking" models and agentic workflows turned inference from a bursty, predictable cost into a continuous, elastic one. That change in <em>shape</em>, not size, is what breaks the old procurement playbook — and it's why decentralized capacity, which is good at absorbing elastic load, has a real seat at the table for inference even where it can't touch frontier training.</p>
+      </div>
+
+      <div class="article-body">
+        <p>For most of the AI buildout, "compute" meant training. A lab raises money, rents ten thousand GPUs for a few weeks, burns a nine-figure sum, ships a model. The GPU market optimised around that: long contracts, dense interconnect, guaranteed capacity. Every pricing conversation started from the assumption that the buyer was a well-capitalised lab doing a discrete, finite, enormous job.</p>
+        <p>2026 is the year that assumption flipped.</p>
+
+        <h2>The crossover, in numbers</h2>
+        <p>Multiple independent trackers now agree on the direction, even if the exact figure wobbles:</p>
+        <ul>
+          <li><b>Deloitte's 2026 TMT Predictions</b> put inference at roughly two-thirds of all AI compute this year — the first time it has exceeded training.</li>
+          <li><b>Gartner</b> forecasts 2026 global inference spending at about $23.3 billion, overtaking training spend of roughly $19 billion, or 55% of total AI IaaS spend. It projects that share rising to 59% in 2027.</li>
+          <li><b>IDC</b> tracks the same curve from the workload side: inference was about 65% of AI server workloads in 2024, heading to roughly 70% in 2026 and 73% by 2028.</li>
+        </ul>
+        <p>Three different methodologies, three different numbers, one conclusion. The careful version: <em>inference is now the majority of the load, and it's growing faster than training.</em> Anyone telling you the precise ratio to a decimal point is over-claiming, because nobody measures the same thing — but nobody credible disputes the crossover happened.</p>
+
+        <h2>Why the shape matters more than the size</h2>
+        <p>A training run is a spike. It's huge, it's predictable, it has a beginning and an end, and you can plan capacity around it months in advance. An inference fleet is a horizon. It runs every hour of every day, it scales with users, and its worst enemy is idle capacity — because a serving cluster that isn't serving is burning power and depreciation for nothing.</p>
+        <p>That distinction was always true for classic "chatbot" inference. What changed in 2026 is that inference stopped being a single cheap call and became a chain.</p>
+        <p>Here's the mechanism, and it's the most under-discussed shift in the industry. A traditional inference request is one forward pass: user asks, model answers, done. A <em>reasoning</em> model, or an agentic workflow, does something structurally different — it plans, calls tools, checks its own work, revises, and iterates before it produces an answer. That is not one forward pass. It's dozens, sometimes hundreds, chained together, each one consuming context.</p>
+        <p>Nvidia's own framing at GTC 2026 was blunt: with "thinking" AI, "the thinking happens before the answer." The company's Jensen Huang argued the result is inference demand that can scale by orders of magnitude, because the same request now costs far more compute than it did a year ago. That's a vendor talking its book — but the unit economics back it up. Agent-driven applications have shown token processing volumes rising as much as tenfold in the same period, precisely because when the cost per call drops, developers build agents that make far more calls.</p>
+
+        <h2>The paradox: prices collapse while the bill grows</h2>
+        <p>Here's the part that confuses people watching from the outside. If inference is exploding, why is the price of a token falling off a cliff?</p>
+        <p>Both things are true, and the explanation is the whole story of 2026. Enterprise inference pricing fell to roughly $1.16–$1.18 per million tokens by August 2026, down 43% in ten weeks and about 88% from a 2023 baseline. Open-weight models — many from Chinese labs — now carry ~61% of top-model token traffic on router platforms, at roughly $0.83 per million tokens against $6.03 for proprietary alternatives. The floor has collapsed.</p>
+        <p>At the same time, the ceiling went <em>up</em>. Frontier labs launched their most capable agentic models at around $10 per million input tokens and $50 per million output — effectively doubling the cost of the previous generation. The market bifurcated: cheap commodity intelligence at the bottom, expensive autonomous capability at the top, and a wide, widening gap between them.</p>
+        <p>So the total bill grows for two reasons at once. Volume explodes because the commodity tier is nearly free. And the premium tier gets more expensive per unit because it's doing qualitatively more work. Falling prices didn't shrink the compute market. They grew it, the way cheap bandwidth grew the internet.</p>
+
+        <h2>What this does to where compute gets bought</h2>
+        <p>This is where the story stops being about economics and starts being about infrastructure strategy. Three consequences follow directly:</p>
+        <p><b>1. Elasticity becomes the most valuable property of a cluster.</b> Training wants dense, tightly-coupled, guaranteed capacity. Inference wants the opposite: capacity that can expand on a Tuesday and contract on a Wednesday, without a three-year commit. Historically you paid a luxury premium for that flexibility from hyperscalers. As inference becomes the dominant load, the premium stops being a luxury and starts being a tax on your core business.</p>
+        <p><b>2. The value migrates from the chip to the scheduling.</b> If the bottleneck is keeping thousands of heterogeneous nodes busy against spiky, latency-sensitive demand, then the moat isn't the GPU — it's the orchestrator that can place work, checkpoint it, and recover it when a node disappears. That's an engineering problem, not a capex problem, which is exactly why smaller players have a shot here.</p>
+        <p><b>3. The reliability objection narrows but doesn't vanish.</b> The honest case against decentralised compute has always been: nodes vanish mid-job, verification is hard, and you can't trust a garage rack with a production workload. That's still true for a frontier training run. But for inference it matters far less — an inference request is short, stateless, and retryable. If a node dies, you resend the request. The failure mode that makes decentralised capacity unsuitable for training is almost irrelevant for serving. This is the single most important structural fact in the sector: <em>the workload that's growing fastest is the one decentralised networks are best suited to serve.</em></p>
+
+        <h2>The catch nobody should skip</h2>
+        <p>None of this means decentralised compute wins inference by default. Two hard problems remain unglamorous and unsolved at scale.</p>
+        <p><b>Verification.</b> If you can't confirm that a node actually ran your job on the hardware it claimed — and ran it correctly — then cheap capacity is worthless for anything you'd be embarrassed to get wrong. The networks making real progress here are the ones investing in attestation and cryptographic verification rather than marketing. This is the fight that decides the middle of the market.</p>
+        <p><b>Latency and locality.</b> Inference for interactive products is latency-bound. A node on the other side of the world is cheap and useless if your users feel the round trip. Decentralised networks have to solve placement, not just price, to serve real-time workloads.</p>
+        <p>Both problems are engineering problems with known shapes. Neither is a law of nature.</p>
+
+        <h2>What to actually watch</h2>
+        <p>Ignore the headline ratio — it's already decided. Watch four things instead:</p>
+        <ul>
+          <li><b>The commodity-to-frontier price gap.</b> If it keeps widening, routing becomes the whole game and the "average token price" becomes meaningless.</li>
+          <li><b>Verified inference benchmarks.</b> The first network to publish credible, third-party-auditable proof that a job ran on claimed hardware at claimed quality will set the bar everyone else has to clear.</li>
+          <li><b>Serving latency from decentralised pools.</b> If it converges on centralised latency for common models, the price difference stops being a trade-off and starts being free money.</li>
+          <li><b>Power, again.</b> Inference runs continuously, so it competes for baseload power, not peak capacity. The grid, not the GPU, may be the binding constraint by 2028.</li>
+        </ul>
+        <p>The training era asked "who can afford the biggest spike?" The inference era asks a different question: "who can keep the most machines busy, cheaply, for years?" Those reward different infrastructure — and the industry is only starting to price that in.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li>Inference is now the majority of AI compute — roughly two-thirds of load, and past training in spend — per Deloitte, Gartner and IDC.</li>
+            <li>The bigger change is shape, not size: reasoning models and agents turned inference from a bursty call into a continuous, elastic, multi-step workload.</li>
+            <li>Token prices collapsed (down ~88% from 2023) while the total bill grew — cheap volume plus an expensive premium tier, both expanding.</li>
+            <li>Elasticity and scheduling, not raw GPU supply, are the new valuable properties. Decentralised capacity is structurally suited to inference even where it can't serve frontier training.</li>
+            <li>Verification and latency remain the real blockers — and they're engineering problems, not laws of nature.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3 data-i18n="comments.title">Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/reserved-vs-spot-gpu-spread"><i data-i18n="pager.next">Next</i>Reserved vs spot GPUs: the 40% spread nobody arbitrages →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/OmniVerseCompute">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

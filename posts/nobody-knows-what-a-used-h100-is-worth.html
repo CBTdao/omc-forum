@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nobody knows what a used H100 is worth (and that's a problem) — DCF</title>
+  <meta name="description" content="Used H100 prices range from $14,000 to $25,000 depending who you ask. Ask prices, executed prices and self-reported residuals disagree — here's how to read the GPU depreciation numbers honestly." />
+  <link rel="canonical" href="https://forum.omc.network/posts/nobody-knows-what-a-used-h100-is-worth" />
+  <meta property="og:title" content="Nobody knows what a used H100 is worth (and that's a problem)" />
+  <meta property="og:description" content="Used H100 prices range from $14,000 to $25,000 depending who you ask. Ask prices, executed prices and self-reported residuals disagree — here's how to read the GPU depreciation numbers honestly." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nobody knows what a used H100 is worth (and that's a problem) — DCF">
+  <meta name="twitter:description" content="Used H100 prices range from $14,000 to $25,000 depending who you ask. Ask prices, executed prices and self-reported residuals disagree — here's how to read the GPU depreciation numbers honestly.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Nobody knows what a used H100 is worth (and that's a problem)","datePublished":"2026-10-05","dateModified":"2026-10-05","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip pricing">Pricing Watch</span>
+        <h1>Nobody knows what a used H100 is worth (and that's a problem)</h1>
+        <p class="article-dek">Depending who you ask, a used H100 costs $14,000, $18,000, $22,000 or $25,750. Every number is defensible. That's the scandal.</p>
+        <div class="article-meta"><span data-i18n="meta.by">DCF Editorial</span><span>Oct 5, 2026</span><span>9 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>Every "rent vs buy" model and every GPU-backed loan rests on one number that nobody can agree on: what a used accelerator is worth. In 2026 the honest answer is a range, not a figure — ask prices, executed prices and self-reported residuals diverge wildly, and vendors quote whichever one flatters their pitch. Here's what the numbers actually say, why they disagree, and the two questions that cut through every vendor claim.</p>
+      </div>
+
+      <div class="article-body">
+        <p>There's a number that quietly underpins a huge share of the AI buildout, and almost nobody can tell you what it is. It's the resale value of a used GPU. It decides whether buying hardware beats renting it. It decides whether lenders will keep financing accelerators as collateral — an estimated $20 billion-plus of secured loans, by one count, that only work if the collateral holds value. And in 2026, it's the number every party to the market has an incentive to shade.</p>
+
+        <h2>The numbers don't match, and they're not close</h2>
+        <p>Ask five sources what a used H100 sells for and you'll get five answers. Recent data points, all in USD, all for the same broad class of card:</p>
+        <ul>
+          <li><b>Trailing 90-day executed median</b> (CCIR, H100 NVL 94GB): <b>~$25,750</b></li>
+          <li><b>Resale-index range</b> (ServerBuyback, H100 PCIe 80GB): <b>$14,000–$25,000</b></li>
+          <li><b>Used listing page</b> (Compute Exchange, H100 PCIe): <b>$16,000–$20,000</b></li>
+          <li><b>Secondary-market report</b> (GPU Resource, H100 80GB): <b>$18,000–$22,000</b></li>
+          <li><b>Resale venue quote</b> (used H100 units, July 2026 venue): <b>$6,000–$22,000</b> vs $25,000–$40,000 new</li>
+        </ul>
+        <p>Read those together and notice something: the <em>low end</em> of one source overlaps the <em>high end</em> of another. The spread between the cheapest and most expensive figure is more than 4x. If these were stock quotes for the same ticker on the same day, it would be a market-structure emergency. For used GPUs in 2026, it's Tuesday.</p>
+
+        <h2>Three kinds of number, routinely confused</h2>
+        <p>Most of the apparent conflict dissolves once you separate three things that look alike and aren't:</p>
+        <p><b>1. Ask prices</b> — what sellers are listing at. This is what most "used H100 costs $X" headlines actually report. It's a wish, not a fact. In a down market, asks lag reality badly because nobody wants to be the seller who blinks.</p>
+        <p><b>2. Executed prices</b> — what transactions actually cleared at. This is the only one that matters, and it's the hardest to get. Notably, the same source that cites a $25,750 executed median also notes that realised sale prices run <em>below</em> asks — meaning the true depreciation is steeper than the headline retention figure suggests.</p>
+        <p><b>3. Self-reported retention</b> — "H100s retain 76.6% of launch value" or "three-year server residual is 50–60%." These are usually computed on ask-basis data or from the seller's own book, and they're the numbers that end up in pitch decks and loan documents. A retention figure built on asks is a retention figure built on fiction.</p>
+        <p>When you see a bullish residual claim, the first question is never "is it right?" It's "is this an ask, an execution, or a mark?" Most of the time it's an ask or a mark, presented as if it were an execution.</p>
+
+        <h2>The bear case is real and under-priced</h2>
+        <p>There's a genuine structural reason to expect used values to fall, and it isn't pessimism — it's the product cycle.</p>
+        <p>Accelerators bought at scale in 2023 and 2024 are hitting end-of-premium-service-life at roughly the same time, which floods the secondary market with supply all at once. Meanwhile each new generation reprices the fleet beneath it. Blackwell ramped through 2026, and the generation after it is already signposted; every step pushes the H-series down a tier. Analysts describing the risk put three-year retention anywhere from 30% (accelerated-depreciation case) to 60% (scarcity-holds case) — a 2x spread <em>on the same asset in the same scenario set</em>. When a model's output range is that wide, the model isn't a forecast; it's an admission of ignorance.</p>
+        <p>The bullish case isn't crazy either: rental markets stayed tight enough that at least one major operator reportedly renewed expiring H100 contracts near original pricing, and secondary-market demand concentrates on exactly the cards that deliver good cost-per-token for inference. Demand for the <em>use</em> of old GPUs is real. The question is whether that demand shows up as resale value or gets captured by whoever rents them out.</p>
+
+        <h2>Why this is worse than it looks for buyers</h2>
+        <p>Here's the uncomfortable implication. If resale value is genuinely uncertain within a 2x band, then every "buying is cheaper than renting" calculation inherits that uncertainty — and those calculations almost never show it.</p>
+        <p>A typical rent-vs-buy model assumes a residual, subtracts it from the purchase price to get an effective ownership cost, and declares a winner. Change the residual assumption from 60% to 30% and the winner often flips. Most published models quietly pick the favourable number, because the person publishing them usually has something to sell: hardware, financing, or a cloud contract. That's not fraud. It's incentive, and it's everywhere.</p>
+        <p>The same dynamic runs through GPU-backed lending. If $20 billion-plus in loans are secured against accelerators, then the lenders' marks are only as good as the least-inflated comparable they can find — and in a market where asks run hot and executions are private, that comparable is hard to establish. This is exactly the kind of opacity that turns a normal downturn into a cascade.</p>
+
+        <h2>Two questions that cut through any claim</h2>
+        <p>You don't need to solve the market to defend yourself against bad numbers. You need two questions:</p>
+        <p><b>"Is that an ask, an execution, or a mark?"</b> If the answer isn't "an execution from a dated, named venue," treat the figure as marketing until proven otherwise. Ask for the sample size and the date range too — a 90-day median across dozens of deals is a fact; a single broker's range is an anecdote.</p>
+        <p><b>"What does the model look like at half that residual?"</b> Re-run any buy thesis at 30% retention. If it still beats renting, you have a robust decision. If it collapses, you weren't buying compute — you were buying an assumption.</p>
+        <p>Markets get healthier when prices become visible and comparable. Used GPU pricing is moving in that direction — venues are opening, indices are being published, the number is becoming checkable for the first time. But "becoming checkable" and "checked" are different things, and right now the people quoting residual values have far more incentive than the people consuming them.</p>
+        <p>The honest version of the used-GPU story in 2026 isn't "values are holding" or "values are collapsing." It's "values are genuinely uncertain, and most of the people telling you otherwise are marking their own book." Which, for anyone deciding whether to buy a rack of H100s, is the single most useful thing to know.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li>Used H100 prices span $6,000 to $25,750 across sources — a 4x spread for the same class of card, because ask prices, executed prices and marks get reported interchangeably.</li>
+            <li>Retention claims ("76.6%" or "50–60%") are usually computed on asks or self-reported books, not executed sales — the real depreciation is steeper than headlines suggest.</li>
+            <li>Structural supply (2023–24 fleets aging out together) plus generational repricing means three-year retention could plausibly land anywhere from 30% to 60%.</li>
+            <li>Every rent-vs-buy model and GPU-backed loan inherits this uncertainty — and most published models hide it by picking the favourable number.</li>
+            <li>Two questions defuse bad numbers: "is it an ask, an execution, or a mark?" and "does the thesis survive at half the residual?"</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3 data-i18n="comments.title">Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/inference-is-the-real-compute-bill"><i data-i18n="pager.next">Next</i>Inference is the real compute bill now (and it changed shape) →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/OmniVerseCompute">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
