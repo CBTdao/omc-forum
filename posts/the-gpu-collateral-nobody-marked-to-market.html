@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The $20B GPU-backed loan problem nobody marked to market — DCF</title>
+  <meta name="description" content="More than $20B of loans are collateralized by Nvidia GPUs that depreciate on a 6-year book schedule but lose competitive edge in 2-3. The collateral value has never been publicly priced — until now." />
+  <link rel="canonical" href="https://forum.omc.network/posts/the-gpu-collateral-nobody-marked-to-market" />
+  <meta property="og:title" content="The $20B GPU-backed loan problem nobody marked to market" />
+  <meta property="og:description" content="More than $20B of loans are collateralized by Nvidia GPUs that depreciate on a 6-year book schedule but lose competitive edge in 2-3. The collateral value has never been publicly priced — until now." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The $20B GPU-backed loan problem nobody marked to market — DCF">
+  <meta name="twitter:description" content="More than $20B of loans are collateralized by Nvidia GPUs that depreciate on a 6-year book schedule but lose competitive edge in 2-3. The collateral value has never been publicly priced — until now.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"The $20B GPU-backed loan problem nobody marked to market","datePublished":"2026-10-05","dateModified":"2026-10-05","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip pricing">Pricing Watch</span>
+        <h1>The $20B GPU-backed loan problem nobody marked to market</h1>
+        <p class="article-dek">The AI buildout was financed, not funded. Underneath the debt sits a collateral value — the residual worth of an accelerator — that has never had a public price. That is about to change, and the whole structure depends on the answer.</p>
+        <div class="article-meta"><span data-i18n="meta.by">DCF Editorial</span><span>Oct 5, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>AI infrastructure was financed rather than paid for out of operating cash. CoreWeave alone carried roughly <strong>$35B of debt</strong> against a few billion in cash at mid-2026, with <strong>$640M of quarterly interest expense</strong>. More than <strong>$20B of sector loans are collateralized by Nvidia GPUs</strong> — collateral whose residual value is assumed, not published. The accounting bet is a <strong>6-year useful life</strong>; the technology bet is more like 2–3. Loan-to-value runs 60–70%, so a 30–40% drop in chip values puts collateral under principal. The market is now trying to build a forward curve on the one number the whole edifice rests on.</p>
+      </div>
+
+      <div class="article-body">
+
+        <h2>The structure, in one paragraph</h2>
+        <p>A neocloud sets up a special purpose vehicle (SPV), drops the GPUs and the customer contracts into it, and the SPV borrows against that package. Loans are typically drawn on a delayed-draw term loan schedule aligned to when the GPUs are bought and installed. Even if the parent goes bankrupt, the collateral stays inside the SPV. That is the theory. The practice depends entirely on what the GPUs are worth when the loan needs servicing — and nobody has ever published that number.</p>
+
+        <h2>The depreciation dispute, stated fairly</h2>
+        <p>Between 2020 and 2023, Amazon, Microsoft, Google and eventually Meta each extended the depreciation schedule on servers and networking gear from a historical three-to-four years out to five or six. Microsoft disclosed the mechanics directly: extending useful life from four to six years added roughly <strong>$3.7 billion</strong> to fiscal 2023 operating income, by spreading the same hardware cost over more quarters. It estimated the change alone reduced big-tech depreciation expense by about <strong>$18 billion</strong> in 2024.</p>
+        <p>This is a legitimate change in accounting <em>estimate</em> under US GAAP — not a restatement, not an error. But an estimate can still be wrong in a direction that flatters earnings. Michael Burry, who shorted mortgage bonds before 2008, argued publicly on 11 November 2025 that hyperscalers were collectively understating depreciation by roughly <strong>$176 billion</strong> across 2026–2028, with Oracle's and Meta's reported earnings overstated by around <strong>27% and 21%</strong> respectively by 2028. Independent analysis using a slightly different counterfactual landed near $200 billion.</p>
+        <p>The counterargument has real technical substance. A GPU's economic life does not have to match its frontier-training life. Nvidia ships a new architecture every 18–24 months, but a chip no longer competitive for the largest training runs can spend years afterward on inference — far less sensitive to raw performance, far more sensitive to cost per token. That tiered reuse (frontier training → high-value inference → batch) is exactly the logic Amazon used in 2020, and it is not obviously wrong.</p>
+        <p>What is harder to defend is the timing: four competitors reaching the same conclusion within roughly eighteen months, a pattern one analysis diplomatically called "safety in numbers" rather than four independent engineering studies landing separately on six years. Amazon partially reversed course in 2025, shortening the useful life on a subset of servers — the first sign the consensus might be cracking.</p>
+
+        <h2>Where the accounting meets the collateral</h2>
+        <p>For a hyperscaler, an aggressive depreciation schedule is an earnings question. For a neocloud, it is a solvency question, because the GPUs <em>are</em> the collateral. Loan-to-value on GPU-backed facilities runs roughly <strong>60–70%</strong>. If chip values fall more than 30–40%, the collateral drops below the loan principal — and the safety net becomes the customer contract, not the hardware.</p>
+        <p>The interest rates make the hierarchy explicit. CoreWeave's initial GPU-backed loan priced near <strong>15%</strong>. An $8.5 billion facility in March, based on a contract with Meta, earned an investment-grade rating and cut the fixed rate to about <strong>5.9%</strong>. Facilities secured by non-investment-grade clients priced at SOFR plus 4.50 and 5.50 points in May and August. Read that as the market's actual view: the collateral is not what is being underwritten. The customer credit is.</p>
+
+        <h2>The one number that has never been published</h2>
+        <p>Here is the crux. A depreciation schedule is an estimate. The rental rate is the mark. H100-class capacity that cleared at roughly <strong>$7–10 per hour</strong> in early 2024 was clearing at <strong>$2–4</strong> by late 2025. That is the closest thing to a public price the market has had. Financial researchers put the H100's three-year residual at 50–70%; critics argue it could fall more than 70%.</p>
+        <p>So the two sides of the same trade are being estimated by different methods. Accountants spread cost over six years; the rental market marks it down in roughly two. Exchange-traded GPU compute futures now in development would, for the first time, publish a forward curve on the question everyone is quietly guessing at.</p>
+
+        <h2>The counter-evidence worth taking seriously</h2>
+        <p>Before concluding the whole thing is a house of cards, note the strongest fact on the other side. In CoreWeave's Q2 2026 earnings call, it disclosed that <strong>H100 GPUs whose contracts ended in 2022 were being re-signed at 95% of their original price</strong>. Assets that should, on the bear case, be worth well under half are clearing near par.</p>
+        <p>That is either proof that inference demand has grown enough to keep older silicon productive far longer than the frontier-training clock suggests — or an artifact of a market where the supplier is also a shareholder and a financier, making it hard from outside to tell real demand from circular transactions. Nvidia is simultaneously chip supplier, CoreWeave shareholder, and a funder of its customers. SemiAnalysis called it plainly: "Nvidia is acting as a central bank."</p>
+
+        <h2>Why this matters to anyone buying compute</h2>
+        <p>You are not a spectator here. Loan maturities across the larger operators cluster between <strong>2026 and 2028</strong>, among a small, correlated group of lenders — so the sector refinances into the same conditions at the same time. And the loans run about five years while the customer contracts pledged against them average closer to three. That gap is refilled by future demand at future prices, which is a forecast, not a commitment.</p>
+        <p>Which means: when you sign a multi-year reservation with an operator, you are not just buying capacity. You are extending credit to its balance sheet. If the collateral mark moves against them at the wrong moment, you find out whether the capacity you prepaid for survives the refinancing.</p>
+
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li>Over $20B of sector loans are collateralized by Nvidia GPUs assumed to hold value for 5-6 years, while architecturally they're superseded every 18-24 months.</li>
+            <li>Loan-to-value runs 60-70%: a 30-40% fall in chip values puts collateral below principal, shifting the real safety net to the customer contract, not the hardware.</li>
+            <li>Interest rates say the quiet part: ~15% on pure GPU collateral vs ~5.9% when a Meta contract backs the loan.</li>
+            <li>Refinancing windows cluster in 2026-2028 across correlated lenders — buyers signing multi-year reservations are effectively extending credit to the operator.</li>
+          </ul>
+        </div>
+
+        <h2>The bottom line</h2>
+        <p>The AI buildout rests on a residual-value assumption that has never had a public price. Accountants say six years; the rental market says two; and one earnings call says an old H100 still fetches 95% of par. All three cannot be right, and the futures market now being designed will decide which. Until it does, treat any long GPU contract as a credit instrument — because that is what it is.</p>
+
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3 data-i18n="comments.title">Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/nobody-knows-what-a-used-h100-is-worth"><i data-i18n="pager.prev">Previous</i>Nobody knows what a used H100 is worth (and that's a problem) →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

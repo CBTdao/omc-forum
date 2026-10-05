@@ -18,6 +18,9 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://forum.omc.network/posts/inference-is-the-real-compute-bill](https://forum.omc.network/posts/inference-is-the-real-compute-bill): Inference is the real compute bill now (and it changed shape) — DCF
 - [https://forum.omc.network/posts/nobody-knows-what-a-used-h100-is-worth](https://forum.omc.network/posts/nobody-knows-what-a-used-h100-is-worth): Nobody knows what a used H100 is worth (and that's a problem) — DCF
 - [https://forum.omc.network/posts/you-cant-police-a-gpu-you-cant-see](https://forum.omc.network/posts/you-cant-police-a-gpu-you-cant-see): You can't police a GPU you can't see — DCF
+- [https://forum.omc.network/posts/nuclear-contracts-vs-bytes](https://forum.omc.network/posts/nuclear-contracts-vs-bytes): Nearly 10 GW of nuclear is now under contract to power AI — DCF
+- [https://forum.omc.network/posts/sovereign-ai-is-a-procurement-strategy](https://forum.omc.network/posts/sovereign-ai-is-a-procurement-strategy): Sovereign AI is a procurement strategy, not independence — DCF
+- [https://forum.omc.network/posts/the-gpu-collateral-nobody-marked-to-market](https://forum.omc.network/posts/the-gpu-collateral-nobody-marked-to-market): The $20B GPU-backed loan problem nobody marked to market — DCF
 - [https://forum.omc.network/posts/gpu-cloud-pricing-is-a-scam](https://forum.omc.network/posts/gpu-cloud-pricing-is-a-scam): Why GPU Cloud Pricing Is a Scam (And How Decentralization Fixes It) — DCF
 - [https://forum.omc.network/posts/real-cost-of-training-a-model-2026](https://forum.omc.network/posts/real-cost-of-training-a-model-2026): The Real Cost of Training a Model in 2026: A GPU Price Breakdown — DCF
 - [https://forum.omc.network/posts/h100-rates-centralized-vs-decentralized](https://forum.omc.network/posts/h100-rates-centralized-vs-decentralized): H100 Hourly Rates: Centralized Cloud vs Decentralized Markets — DCF
