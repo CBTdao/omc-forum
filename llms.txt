@@ -35,6 +35,7 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://forum.omc.network/posts/play-to-earn-is-dead](https://forum.omc.network/posts/play-to-earn-is-dead): Play-to-Earn Died Screaming. Here's What 2026 Learned. — DCF
 - [https://forum.omc.network/posts/decentralized-games-actually-shipping-2026](https://forum.omc.network/posts/decentralized-games-actually-shipping-2026): Decentralized Gaming in 2026: Five Projects Actually Shipping — DCF
 - [https://forum.omc.network/posts/ai-npcs-gpu-bill](https://forum.omc.network/posts/ai-npcs-gpu-bill): AI NPCs Need GPUs Too: Inside Gaming's New Compute Bill — DCF
+- [https://forum.omc.network/posts/depreciation-vs-obsolescence-gpu-bubble](https://forum.omc.network/posts/depreciation-vs-obsolescence-gpu-bubble): The Bubble Question Is the Wrong Question: Depreciation vs Obsolescence — DCF
 
 ## Homelab (your own machine as the datacenter)
 
@@ -42,3 +43,4 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://forum.omc.network/posts/used-rtx-3090-llm-server-2026](https://forum.omc.network/posts/used-rtx-3090-llm-server-2026): The Used RTX 3090 Is Still the Default Home LLM Server (2026) — DCF
 - [https://forum.omc.network/posts/truenas-vs-proxmox-first-home-server](https://forum.omc.network/posts/truenas-vs-proxmox-first-home-server): TrueNAS vs Proxmox: Picking Your First Home Server OS — DCF
 - [https://forum.omc.network/posts/idle-home-compute-earnings](https://forum.omc.network/posts/idle-home-compute-earnings): What Can Idle Home Compute Actually Earn? Honest Math — DCF
+- [https://forum.omc.network/posts/quantizing-local-llm-vram-math-2026](https://forum.omc.network/posts/quantizing-local-llm-vram-math-2026): Quantization Is a VRAM Problem, Not a Disk Problem (2026 Math) — DCF

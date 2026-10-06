@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="applicable-device" content="pc,mobile">
+  <meta name="mobile-agent" content="format=html5; url=">
+  <title>Quantization Is a VM Problem, Not a Disk Problem (2026 VRAM Math) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Quantization Is a VM Problem, Not a Disk Problem (2026 VRAM Math) — DCF">
+  <meta name="twitter:description" content="The file on your disk is two-thirds of what actually runs. Why KV cache, not weights, decides which model fits your home GPU — with the arithmetic for 14B, 32B and 70B.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="The GGUF file on your disk is roughly two-thirds of what actually runs. Why the KV cache — not the weights — decides which model fits your home GPU, with the arithmetic for 14B, 32B and 70B in 2026." />
+  <link rel="canonical" href="https://forum.omc.network/posts/quantizing-local-llm-vram-math-2026" />
+  <meta property="og:title" content="Quantization is a VRAM problem, not a disk problem (2026 math)" />
+  <meta property="og:description" content="The file is two-thirds of what runs. Why the KV cache decides which model fits your home GPU." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Quantization is a VRAM problem, not a disk problem (2026 math)","datePublished":"2026-10-06","dateModified":"2026-10-06","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>Quantization is a VRAM problem, not a disk problem (2026 math)</h1>
+        <p class="article-dek">A downloaded GGUF file is roughly two-thirds of what actually runs. The other third — the KV cache — grows with your context window and is the number that decides whether a model fits. Here is the arithmetic, for 14B, 32B and 70B.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 6, 2026</span><span>9 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h">TL;DR</b>
+        <p>Everyone budgets for weights and forgets the KV cache. Weight memory is roughly <b>file size plus 10&ndash;15%</b> for runtime overhead — that part is fixed. KV cache memory scales with <b>layers &times; KV heads &times; head dimension &times; context length &times; bytes per entry</b>, and 4-bit quantization does not shrink it the way it shrinks weights. Practical result on a 24 GB card: a 32B 4-bit model uses ~19&ndash;20 GB of weights and leaves you roughly 8K&ndash;16K tokens of shared context before you spill into system RAM; a 14B model leaves room for 60K+. And 8-bit KV cache quantization is the highest-leverage toggle most people have never touched.</p>
+      </div>
+
+      <div class="article-body">
+        <p>The most common home-lab disappointment is not a slow GPU or a bad model. It is a model that loaded fine, answered the first three questions fine, and then at message twelve slowed to a crawl while the system monitor showed VRAM pinned at 100%. Nothing was broken. The user had budgeted for the file on disk and the machine was being charged for work that happens after loading.</p>
+
+        <h2>Two numbers, not one</h2>
+        <p>Memory during inference splits into two pools that behave nothing alike. The first is <b>weights</b>: the model itself, laid out in VRAM when it loads. The second is the <b>KV cache</b>: the key/value tensors scraped off every token the model has already processed, kept so it doesn't have to re-read the conversation each turn. Weights are a fixed cost. The KV cache is a variable cost that starts near zero and grows with every token of context — including the ones you generated yourself.</p>
+        <p>This is why a setup can be perfectly stable for a short chat and unusable at document-length context. The weights never changed. The cache did.</p>
+
+        <h2>Sizing the weights honestly</h2>
+        <p>The usual back-of-envelope is "quarter of the 16-bit size" for 4-bit quantization. That is close enough for a shopping decision and wrong for a memory plan, for three reasons. Quantization almost never covers the whole model — embedding layers, some normalization weights and the output head commonly stay at higher precision. The runtime holds activations, the compute graph and framework buffers on top of that. And a context window you allocate but don't use is usually still reserved.</p>
+        <p>A rule that has held up well in practice: <b>budget file size plus 10&ndash;15%</b>, then add your context allocation on top. So the map on a single 24 GB card looks like this:</p>
+        <ul>
+          <li><b>7B&ndash;14B at 4-bit:</b> roughly 5&ndash;9 GB of weights. Enormous headroom — this is where long-context work, RAG over a document pile, and multi-agent experiments live.</li>
+          <li><b>32B at 4-bit:</b> roughly 19&ndash;20 GB with runtime overhead. This is the configuration people actually mean when they say "the card fits" — and it is also the one where context is tight.</li>
+          <li><b>70B at 4-bit:</b> roughly 40 GB, meaning two 24 GB cards at minimum, with the caveat that multi-GPU splits introduce their own overhead.</li>
+        </ul>
+        <p>Note what the 32B row implies: on 24 GB, the weights have already eaten the card. Everything the model needs for context has to come out of the remaining slice or out of system RAM. See <a href="/posts/used-rtx-3090-llm-server-2026">our 3090 piece</a> for why that specific card shows up in this conversation at all.</p>
+
+        <h2>The KV cache is where the plan dies</h2>
+        <p>The KV cache size, per token, is <b>2 &times; layers &times; KV heads &times; head dimension &times; bytes per element</b> — the 2 because every token stores both a key and a value, and each element is typically 2 bytes at fp16. Head dimension is usually 128, and layers run into the dozens for modern mid-size models, so a single token can easily cost well over 100 KB before you multiply by context length.</p>
+        <p>Multiply by context length and the shape becomes clear. A model with a sizable per-token cache and an 8K window can consume several gigabytes; the same model at 32K can consume more than the weights do. Two details trip people up:</p>
+        <ul>
+          <li><b>Grouped-query attention changes everything.</b> Modern models share KV heads across many query heads precisely to reduce this cost. Two models with similar layer counts can differ by 4&times; in cache size purely because one uses 8 KV heads and the other 32. If you only compare parameter counts, you will mispredict which one runs.</li>
+          <li><b>Quantizing weights does not quantize the cache.</b> These are separate settings. Weight quantization shrinks the fixed cost; KV cache quantization shrinks the growing one.</li>
+        </ul>
+
+        <h2>Practical settings that actually help</h2>
+        <h3>Quantize the KV cache</h3>
+        <p>Running the cache at 8-bit instead of 16-bit roughly halves its footprint, and at typical quality thresholds the difference is hard to detect in general chat. This is the single highest-leverage toggle in the whole stack, and it costs you one flag. Quality-sensitive work — long code refactors, precise arithmetic, anything where you'll notice a subtle drift — is where you pay the 16-bit price back deliberately.</p>
+
+        <h3>Set your context to what you need</h3>
+        <p>Allocating 128K "just in case" on a card that can't serve it is not a plan; it is a slow-motion out-of-memory event. Pick a context you actually use, and treat long-document work as a separate configuration rather than the default.</p>
+
+        <h3>Watch VRAM, not GPU utilization</h3>
+        <p>The tell for cache spill is not a crash. It is a sudden collapse in tokens per second while the GPU sits near 100% VRAM, because the overflow is being shuffled over PCIe every token. In monitoring tools, prefer memory-residency numbers over percentage-utilization numbers; utilization will look happily busy while you're actually measuring the bus.</p>
+
+        <h3>Spilling to system RAM is a valid fallback, at a price</h3>
+        <p>Offloading layers to system memory will run a model that otherwise wouldn't fit, and on a machine with fast DDR5 and a wide memory bus it can be usable for single-user use. Expect a large, not marginal, throughput penalty — the difference between conversational and "come back in a minute." If your workload is occasional, that trade can be correct. If it's interactive, it usually isn't, and the honest answer is a smaller model rather than a bigger one that creeps.</p>
+
+        <h2>Where this leaves the buying decision</h2>
+        <p>The upshot of the arithmetic is that VRAM capacity, not raw compute, is the binding constraint on a home box — and it's binding a specific way: the ceiling is set by weights, while usability within that ceiling is set by the cache at your working context length. A machine that can "technically load" a 32B model is a different machine from one that can hold it plus a real conversation. Before upgrade season, run the numbers for the context length you actually use, with the cache set to 8-bit, and you'll usually find the honest answer is not a bigger card. It's a better-configured one.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h">Key takeaways</b>
+          <ul>
+            <li>Budget weights as <b>file size + 10&ndash;15%</b> runtime overhead, then add context on top — the file alone understates what loads.</li>
+            <li>The KV cache grows with context length and is often the difference between "it fits" and "it pages"; grouped-query attention can change its size 4&times; between otherwise similar models.</li>
+            <li>4-bit weight quantization does not shrink the cache. 8-bit KV cache quantization does, and it is the highest-leverage setting most people ignore.</li>
+            <li>Cache spill shows up as collapsing tokens/second at high VRAM usage — monitor memory residency, not GPU utilization percentage.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/used-rtx-3090-llm-server-2026"><i>Previous</i>The used RTX 3090 is still the default home LLM server (2026)</a>
+          <a href="/posts/idle-home-compute-earnings"><i>Next</i>What can idle home compute actually earn? Honest math</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span>Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span>© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/baidu-push.js"></script>
+</body>
+</html>

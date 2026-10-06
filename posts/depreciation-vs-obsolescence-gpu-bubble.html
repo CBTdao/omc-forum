@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="applicable-device" content="pc,mobile">
+  <meta name="mobile-agent" content="format=html5; url=">
+  <title>The Bubble Question Is the Wrong Question: Depreciation vs Obsolescence — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Bubble Question Is the Wrong Question: Depreciation vs Obsolescence — DCF">
+  <meta name="twitter:description" content="Bear case and bull case both assume the same thing: that today's GPUs stop being useful. Those are two different clocks. Only one of them is a bubble.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="Bulls and bears on the AI buildout both assume today's GPUs stop being useful. Depreciation and obsolescence are two different clocks — and only one of them is a bubble. A framework for reading 2026's compute market." />
+  <link rel="canonical" href="https://forum.omc.network/posts/depreciation-vs-obsolescence-gpu-bubble" />
+  <meta property="og:title" content="The bubble question is the wrong question" />
+  <meta property="og:description" content="Depreciation and obsolescence are two different clocks. Only one of them is a bubble." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"The bubble question is the wrong question: depreciation vs obsolescence","datePublished":"2026-10-06","dateModified":"2026-10-06","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>The bubble question is the wrong question</h1>
+        <p class="article-dek">Both sides of the AI-compute argument assume the same thing — that today's accelerators eventually stop being useful. Depreciation and obsolescence are two separate clocks running at wildly different speeds, and only one of them can be a bubble.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 6, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h">TL;DR</b>
+        <p>Almost every bubble argument is really a dispute about <b>residual value</b> — what an accelerator is worth after its first owner is done with it. That number depends on two clocks that get conflated constantly. <b>Depreciation</b> is an accounting and capital-cost question: how fast the asset's value is written down. <b>Obsolescence</b> is a physics and software question: how fast the asset stops being able to do useful work. A GPU can be fully depreciated and still enormously useful, or barely depreciated and already obsolete. The bear case assumes obsolescence arrives with depreciation; the bull case assumes it never arrives at all. The evidence in 2026 points to them being badly out of phase — which is why the interesting market is not in new capacity, but in the second and third owners of old capacity.</p>
+      </div>
+
+      <div class="article-body">
+        <p>Ask ten people whether AI compute is a bubble and you'll get ten confident answers and no agreement, because the question is doing two jobs at once. It sounds like a question about demand. In practice it is almost always a question about asset value — specifically, whether the fleets being built today will be worth anything when the depreciation schedule catches up to them. That is a narrower and much more tractable question, and the industry keeps answering it with a single word when it needs two.</p>
+
+        <h2>Two clocks, not one</h2>
+        <p>The first clock is financial and contractual: a hyperscaler buys an accelerator, assigns it a useful life — commonly in the range of a handful of years — and expenses it across that window. That schedule is a policy choice, informed by tax treatment and investor expectation as much as by engineering. It says nothing at all about what the card can do on the day the schedule ends.</p>
+        <p>The second clock is technical. An accelerator becomes less useful when the workloads it can serve stop mattering, or when newer silicon makes it uneconomic to run for those workloads. That clock is set by memory capacity, interconnect, power efficiency, and — most of all — by whether the software stack still targets it well. It is not a fixed schedule. It is a moving target that different workloads cross at wildly different times.</p>
+        <p>Once you separate them, the shape of the market changes. A card sitting at the end of its accounting life is not a worthless card. It is a card whose owner has a capital-cost reason to stop holding it, sitting next to buyers who have a capability reason to want exactly that card — if the workloads it serves are still alive.</p>
+
+        <h2>Why the two clocks drift apart</h2>
+        <p>Three forces are pulling them apart in 2026.</p>
+        <ul>
+          <li><b>Workloads are heterogeneous, and that is the whole story.</b> Frontier training is the most obsolescence-sensitive workload in the world: it wants the newest interconnect, the largest memory pools, and the lowest power per FLOP, and its economics collapse on older silicon. Inference at the long tail is nearly the opposite: it is memory-capacity-bound, latency-tolerant of queueing, and frequently doesn't care about interconnect at all. A card that's a liability for one is often fine for the other, and the second market is far larger in unit terms.</li>
+          <li><b>Memory capacity ages slower than compute does.</b> The generational step function in most accelerators is FLOPS and bandwidth; VRAM per card has advanced more sedately. A card with enough VRAM to hold a realistically-quantized model keeps serving that model long after its raw speed has been overtaken — see <a href="/posts/quantizing-local-llm-vram-math-2026">our VRAM arithmetic piece</a> for why capacity, not compute, is the gate.</li>
+          <li><b>Utilization is the real driver, not age.</b> A card at 20% utilization was mispriced on day one regardless of silicon generation; a card at 85% utilization is doing its job whether it's new or three generations old. Obsolescence shows up as an inability to reach utilization at a viable price, which is a market fact, not a hardware fact.</li>
+        </ul>
+
+        <h2>The residual-value problem nobody wants to price</h2>
+        <p>This is where the bubble debate gets genuinely interesting, and where the industry's accounting habits become a problem. Because there is no transparent market for used accelerators at scale, residual value — the single most important input into whether the buildout pencils out — is not priced anywhere public. Ask prices in scattered listings, self-reported figures in earnings calls, and analyst estimates built on both are routinely used as if they were the same number, and they are not remotely the same number.</p>
+        <p>The financial consequence is subtle. If residual values are systematically overstated, then the effective cost of owning capacity is understated, which means the returns being reported across the industry are flattered by a quantity nobody has ever observed trade. If they are understated, the opposite. Either way, the market is not disagreeing about residual value — it is largely failing to observe it, which is a very different and more fixable state of affairs. <a href="/posts/the-gpu-collateral-nobody-marked-to-market">We wrote about the collateral side of this problem separately</a>; the point here is that the bubble question cannot be answered before the price question is.</p>
+
+        <h2>What a real observability layer would change</h2>
+        <p>Suppose for a moment that executed used-hardware prices were visible at reasonable granularity — by class, by age band, updated continuously, with volumes attached. What would actually change?</p>
+        <ul>
+          <li><b>Depreciation schedules would stop being opinions.</b> Boards would have an empirically grounded useful-life assumption rather than a defensible-sounding one, and the gap between the two would become visible and scandalous in the cases where it exists.</li>
+          <li><b>Price asymmetry would shrink.</b> Today's gap between asking and paying is a tax on every transaction, borne mostly by the party with less information — typically the seller of surplus capacity, which in this cycle means the smaller operator.</li>
+          <li><b>A genuine second-life market could price itself.</b> Right now the assumption is that old fleets get bought by sketchy intermediaries at whatever they'll pay. With prices visible, that becomes a normal, financeable secondary market — which is exactly the thing that keeps utilization high and total system cost low.</li>
+        </ul>
+        <p>This is the part of the decentralized-compute thesis that stands up best under scrutiny, and it's worth being precise about why. It is not that decentralization makes GPUs faster or cheaper to build. It's that a network of independent operators, each pricing capacity against their own marginal cost, produces a continuous stream of executed prices where today there is only a vacuum of estimates. That is a modest claim, and it happens to be the input the entire buildout is missing.</p>
+
+        <h2>Reading it wrong in both directions</h2>
+        <p>The bears get one thing right and one thing wrong. They're right that infinite demand is not the same as profitable demand, and that capacity built for a forecast rather than a contract is a genuine risk. They're wrong when they treat the depreciation schedule as evidence about capability — as if an asset crossing an accounting boundary were the same event as it crossing a technical one.</p>
+        <p>The bulls make the mirror-image error. They're right that the underlying demand for compute has proven durable across several years and showed no sign of reversing. They're wrong when they treat durable demand as a guarantee of durable asset value — as if demand existing somewhere in the system meant every unit of capacity built to serve it would remain economic to run.</p>
+        <p>The truth is more boring and more useful: the demand is real, the assets are heterogeneous, the two clocks are badly out of phase, and the market that should reconcile them barely exists. That's not a bubble diagnosis or a bubble rebuttal. It's an infrastructure gap, and it's the kind of gap that gets filled by whoever shows up with real prices first — which is a much better thing to argue about than whether the AI trade is over.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h">Key takeaways</b>
+          <ul>
+            <li>Most bubble arguments are really about residual value — what an accelerator is worth after its first owner — and they conflate two separate clocks to get there.</li>
+            <li><b>Depreciation</b> is an accounting schedule (a choice); <b>obsolescence</b> is a technical threshold set by memory capacity, software support and achievable utilization. They can be years apart.</li>
+            <li>Heterogeneous workloads are why: frontier training obsoletes fast, long-tail inference is memory-bound and ages slowly — and the second market is far bigger in units.</li>
+            <li>Residual value is unobservable at scale, so the buildout is priced on estimates dressed as facts. Visible executed prices would fix depreciation assumptions and create a real second-life market.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/the-gpu-collateral-nobody-marked-to-market"><i>Previous</i>The $20B GPU-backed loan problem nobody marked to market</a>
+          <a href="/posts/quantizing-local-llm-vram-math-2026"><i>Next</i>Quantization is a VRAM problem, not a disk problem (2026 math)</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span>Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span>© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/baidu-push.js"></script>
+</body>
+</html>
