@@ -44,3 +44,4 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://forum.omc.network/posts/truenas-vs-proxmox-first-home-server](https://forum.omc.network/posts/truenas-vs-proxmox-first-home-server): TrueNAS vs Proxmox: Picking Your First Home Server OS — DCF
 - [https://forum.omc.network/posts/idle-home-compute-earnings](https://forum.omc.network/posts/idle-home-compute-earnings): What Can Idle Home Compute Actually Earn? Honest Math — DCF
 - [https://forum.omc.network/posts/quantizing-local-llm-vram-math-2026](https://forum.omc.network/posts/quantizing-local-llm-vram-math-2026): Quantization Is a VRAM Problem, Not a Disk Problem (2026 Math) — DCF
+- [https://forum.omc.network/posts/home-lab-network-2-5gbe-10gbe-2026](https://forum.omc.network/posts/home-lab-network-2-5gbe-10gbe-2026): 2.5GbE vs 10GbE in a Home Lab: What the Standards Actually Say (2026) — DCF
