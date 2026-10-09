@@ -24,6 +24,8 @@ window.I18N.en = {
   "nav.homelab": "Homelab",
   "sec.homelab": "Homelab",
   "sec.homelab.note": "Your own machine as the datacenter",
+  "sec.guides": "Guides",
+  "sec.guides.note": "Hands-on: get set up, step by step",
 
   "about.h": "About this forum",
   "about.p1": "The Decentralized Compute Forum (DCF) is an editorial publication about GPU markets, DePIN networks and the economics of AI compute. We write it, we argue in it, we publish our sources — and we change our minds in public when the data does. The forum is operated by the Omniverse Compute (OMC) team, and that relationship is disclosed rather than hidden.",

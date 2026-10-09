@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Run a GPU node on the OMC testnet in 4 steps — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Run a GPU node on the OMC testnet in 4 steps — DCF">
+  <meta name="twitter:description" content="Any CUDA or ROCm GPU works. Get test tokens, install the client, stake and register, start taking jobs — plus what gets slashed and what you should realistically expect.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="How to plug a GPU into the OMC testnet: hardware requirements, the 4-step onboarding flow, how job verification and slashing work, and honest expectations before you spend electricity." />
+  <link rel="canonical" href="https://forum.omc.network/guides/run-a-gpu-node-on-the-testnet" />
+  <meta property="og:title" content="Run a GPU node on the OMC testnet in 4 steps" />
+  <meta property="og:description" content="Any CUDA or ROCm GPU works. Four steps, plus what gets slashed." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Run a GPU node on the OMC testnet in 4 steps","datePublished":"2026-10-09","dateModified":"2026-10-09","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+        <a href="/#guides">Guides</a>
+        <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip guide">Guide</span>
+        <h1>Run a GPU node on the OMC testnet in 4 steps</h1>
+        <p class="article-dek">Any CUDA or ROCm GPU is enough to start. What follows is the real onboarding flow, the hardware that scores well, the verification rules that can cost you your deposit — and what "earning" means on a testnet.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 9, 2026</span><span>7 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h">TL;DR</b>
+        <p>Four steps: <b>get tBNB + tOMC → install the client (<code>docker compose up</code>) → stake by hardware tier and register a heartbeat → execute matched jobs in a sandbox and collect tOMC</b>. RTX 3090/4090-class cards land in the top tiers and NVLink rigs get priority for multi-GPU work. Redundant execution means cheating gets slashed. And be clear-eyed: <b>tOMC is worthless</b> — the testnet buys you reputation and a working setup, not income.</p>
+      </div>
+
+      <div class="article-body">
+        <p>The OMC testnet exists to prove one thing at scale: that idle consumer GPUs can be matched to real jobs, execute them in isolation, and have their output checked well enough that a cheater loses money. If you have a GPU sitting in a desktop, joining is the cheapest way to see how that machinery behaves — because everything that would be expensive on mainnet costs nothing here.</p>
+
+        <h2>What hardware actually matters</h2>
+        <p>Any CUDA or ROCm GPU works on the testnet. That is the floor, not the optimization. The matching engine scores nodes on several axes (TFLOPS, VRAM, bandwidth, latency and reputation), so the practical guidance is:</p>
+        <ul>
+          <li><b>RTX 3090 / 4090-class cards</b> land in the top hardware tiers — enough VRAM for real inference and rendering jobs, not just toy workloads.</li>
+          <li><b>NVLink-connected rigs</b> get priority for multi-GPU jobs, because some tasks are sharded across cards and the interconnect is the bottleneck.</li>
+          <li><b>Anything older or smaller</b> still runs and still earns reputation — expect to be matched to lighter jobs.</li>
+          <li><b>Your network matters more than you'd think.</b> Jobs move data in and out; a slow uplink shows up as latency in your score, especially for training-adjacent work.</li>
+        </ul>
+
+        <h2>Step 1 — Get test tokens</h2>
+        <p>Two different faucets, two different jobs. tBNB pays gas on BNB Smart Chain Testnet; tOMC covers the staking deposit each node has to lock before it can receive work.</p>
+        <ul>
+          <li>tBNB: the public <a href="https://testnet.bnbchain.org/faucet-smart">BNB Chain faucet</a>.</li>
+          <li>tOMC: the testnet faucet linked on <a href="https://omc.network/testnet">omc.network/testnet</a>.</li>
+          <li>Wallet not set up yet? Start with <a href="/guides/add-omc-testnet-to-your-wallet">the network guide</a> — four fields, chain ID 97.</li>
+        </ul>
+
+        <h2>Step 2 — Install the client</h2>
+        <p>The node client is open source and containerized. On any machine with a working CUDA or ROCm stack:</p>
+        <pre>git clone &lt;node-client-repo&gt;
+cd &lt;node-client-repo&gt;
+docker compose up</pre>
+        <p>Two notes from people who have done this before. First, GPU access inside containers is the usual failure point — if <code>docker compose up</code> starts but the node reports zero devices, it's the container runtime's GPU passthrough, not the client. Second, Docker/Kubernetes is the supported path; the protocol runs jobs in hardened sandboxes by design, so don't plan on bypassing the container layer. Exact commands and the current repo location are on <a href="https://omc.network/testnet">omc.network/testnet</a> — use that page as the source of truth rather than any snapshot of it, including this one.</p>
+
+        <h2>Step 3 — Stake and register</h2>
+        <p>Before the network will route work to you, two things have to happen: you <b>stake tOMC proportional to your hardware tier</b> (the published rule is <code>Staking_Min = Deposit × Tier</code>, so a 4090-class node locks more than an entry-level card), and you <b>register a node heartbeat</b> so the scheduling layer knows you're alive.</p>
+        <p>The heartbeat is not a formality. It's how the network distinguishes an idle node from an offline one, and missing heartbeats is one of the behaviours that triggers slashing. If you're going to run a node on a machine you also game on, decide now how you'll keep it up — sporadic uptime is the most common way people lose test deposits for reasons that had nothing to do with cheating.</p>
+
+        <h2>Step 4 — Execute and earn</h2>
+        <p>Once registered, the matching engine routes jobs to you by score. Jobs arrive, execute inside an isolated container, and their output goes through verification. Pass, and the job is paid in tOMC. The lifecycle has one more property worth internalizing: <b>requesters lock the fee tokens in escrow before dispatch</b>, so payment isn't a promise — it's collateral already sitting in a contract when your job arrives.</p>
+
+        <h2>How your work is checked (and what gets slashed)</h2>
+        <p>Verification is per-job, and it's not all-or-nothing across the network. The protocol picks a policy based on the job: <b>spot-check re-execution</b> for most work, <b>optional full redundancy across 2–3 independent nodes</b> with output hashes compared where the stakes justify the cost, and <b>hardware TEE</b> for confidential workloads — that last tier is described as being in progress rather than generally available.</p>
+        <p>Failing that check is expensive for a reason. Fraudulent outputs, timeouts and fake heartbeats are slashed, and the split is deliberately unattractive to a cheater: <b>50% to the requesters who were harmed, 30% to the DAO treasury, 20% permanently burned</b>. Note that two of those three destinations are not you, and the third doesn't come back.</p>
+        <p>The practical implication for an honest operator is simple: don't overclock into instability, don't accept jobs your card can't finish inside the deadline, and don't run the node on a machine you're about to reboot mid-job. Almost all slashing on a testnet is self-inflicted.</p>
+
+        <div class="warn-box">
+          <b>Before you plug in — the honest expectations.</b> tOMC has no monetary value; you cannot sell it, and nobody legitimate will offer to buy it. Electricity, however, is real money, and a 3090-class node pulls roughly 350 W under load. Run the testnet to learn the flow and to build reputation — <b>not</b> as an income plan. Also: there is no official "node setup service". Nobody from OMC will ask for remote access to your machine, your keys, or a payment to onboard you. If someone offers to run your node for a cut, they're offering to hold your deposit.
+        </div>
+
+        <h2>What the testnet is actually buying you</h2>
+        <p>Two things, and neither is cash. First, a working mental model: how staking tiers, heartbeats and verification behave under real conditions, learned before any of it costs money. Second, a recorded history — OMC's FAQ states that <b>testnet compute contributions and reputation scores are tracked for the Compute Mining &amp; Node Rewards pool, which is 50% of total supply at mainnet launch</b>. That pool exists; what share of it any individual node ends up with is unknowable today, and anyone quoting you a number is guessing.</p>
+        <p>If you want the realistic financial picture before committing hardware, read <a href="/posts/idle-home-compute-earnings">what idle home compute actually earns</a> and the <a href="/posts/cloud-gpu-vs-home-gpu-tco">cloud-vs-home TCO breakdown</a>. Both are written to talk you out of bad assumptions, which is the most useful thing a guide can do.</p>
+
+        <p>Set it up, watch a job run end to end, and see how the verification layer behaves. That experience is the point — the testnet is a rehearsal, and rehearsals aren't supposed to pay.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h">Key takeaways</b>
+          <ul>
+            <li>Any CUDA or ROCm GPU can join; RTX 3090/4090-class cards land in the top tiers and NVLink rigs get multi-GPU priority.</li>
+            <li>The flow is: test tokens → <code>docker compose up</code> → stake by hardware tier + register heartbeat → execute verified jobs.</li>
+            <li>Fees are escrowed before dispatch; verification is spot-check, 2–3 node redundancy, or TEE depending on the job.</li>
+            <li>Slashing: 50% to requesters, 30% to the DAO treasury, 20% burned — most slashing on a testnet is self-inflicted (instability, missed heartbeats, timeouts).</li>
+            <li>tOMC is worth nothing; you're building reputation and a working setup. Testnet contributions are tracked for the 50%-of-supply rewards pool at mainnet, but no payout figure is knowable today.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/guides/testnet-tokens-and-the-airdrop"><i>Previous</i>tOMC, tBNB and the real OMC airdrop</a>
+          <a href="/guides/add-omc-testnet-to-your-wallet"><i>Also</i>Add the OMC testnet to your wallet</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span>Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span>© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

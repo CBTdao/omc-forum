@@ -13,6 +13,12 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://forum.omc.network/privacy](https://forum.omc.network/privacy): Privacy Policy — DCF
 - [https://forum.omc.network/terms](https://forum.omc.network/terms): Terms of Use — DCF
 
+## Guides (hands-on onboarding)
+
+- [https://forum.omc.network/guides/add-omc-testnet-to-your-wallet](https://forum.omc.network/guides/add-omc-testnet-to-your-wallet): How to add the OMC testnet to your wallet — BNB Smart Chain Testnet, chain ID 97, tOMC import — DCF
+- [https://forum.omc.network/guides/testnet-tokens-and-the-airdrop](https://forum.omc.network/guides/testnet-tokens-and-the-airdrop): tOMC, tBNB and the real OMC airdrop: what's worth what — DCF
+- [https://forum.omc.network/guides/run-a-gpu-node-on-the-testnet](https://forum.omc.network/guides/run-a-gpu-node-on-the-testnet): Run a GPU node on the OMC testnet in 4 steps — DCF
+
 ## Articles & analysis
 
 - [https://forum.omc.network/posts/inference-is-the-real-compute-bill](https://forum.omc.network/posts/inference-is-the-real-compute-bill): Inference is the real compute bill now (and it changed shape) — DCF

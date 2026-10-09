@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tOMC, tBNB and the real OMC airdrop: what's worth what — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="tOMC, tBNB and the real OMC airdrop: what's worth what — DCF">
+  <meta name="twitter:description" content="Three tokens, three different things. Test gas and test tokens are worth nothing by design; the community airdrop is 2% of a fixed 1B supply. The plain numbers.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="tBNB is test gas, tOMC is a valueless test token, and the OMC airdrop is 20,000,000 OMC (2% of a fixed 1B supply). What each token is, how to get test tokens, and the airdrop rules in plain numbers." />
+  <link rel="canonical" href="https://forum.omc.network/guides/testnet-tokens-and-the-airdrop" />
+  <meta property="og:title" content="tOMC, tBNB and the real OMC airdrop: what's worth what" />
+  <meta property="og:description" content="Test gas, a valueless test token, and 2% of a fixed 1B supply — the plain numbers." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"tOMC, tBNB and the real OMC airdrop: what's worth what","datePublished":"2026-10-09","dateModified":"2026-10-09","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+        <a href="/#guides">Guides</a>
+        <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip guide">Guide</span>
+        <h1>tOMC, tBNB and the real OMC airdrop: what's worth what</h1>
+        <p class="article-dek">Three tokens get talked about in the same breath, and two of them are worth exactly nothing by design. Here's the split, plus the airdrop rules in numbers instead of vibes.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 9, 2026</span><span>6 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h">TL;DR</b>
+        <p><b>tBNB</b> is test gas. <b>tOMC</b> is a testnet staking/fee token with no market and no value. <b>OMC</b> is the actual token: BEP-20 on BNB Chain, fixed supply 1,000,000,000, of which <b>2% (20,000,000 OMC)</b> is reserved for the community airdrop — 1,000,000 slots × 20 OMC, three social tasks, up to 10 entries per wallet, 100% unlocked at TGE. Testnet practice is how you're ready for it; it is not itself a payout.</p>
+      </div>
+
+      <div class="article-body">
+        <p>The most common misunderstanding we see about the OMC testnet is a single sentence: <i>"I've been running a node — how much have I earned?"</i> The honest answer depends entirely on which of three tokens you mean, and confusing them is how people get talked into scams. So let's separate them once.</p>
+
+        <h2>Three tokens, three different things</h2>
+        <table>
+          <tr><th>Token</th><th>What it is</th><th>Can you sell it?</th></tr>
+          <tr><td><b>tBNB</b></td><td>Free testnet gas on BNB Smart Chain Testnet (chain ID 97). Exists so test transactions cost you nothing real.</td><td>No. It is faucet money for a test chain.</td></tr>
+          <tr><td><b>tOMC</b></td><td>The OMC test token: used on the testnet for staking a node deposit and paying test fees. Contract <code>0x3C7E…c5</code>, 18 decimals, chain 97.</td><td>No. It has no market, no liquidity, no listing — and that is the design, not a delay.</td></tr>
+          <tr><td><b>OMC</b></td><td>The protocol token: BEP-20 on BNB Chain, fixed maximum supply of 1,000,000,000, used to pay for training, inference and rendering jobs.</td><td>— It is a utility token for buying compute, not a claim on revenue.</td></tr>
+        </table>
+        <p>If a wallet, a Telegram admin or a "support agent" offers to swap tOMC for anything of value, the correct conclusion is that they are lying. There is no venue where test tokens trade, because test tokens are minted freely by a faucet.</p>
+
+        <h2>How to get test gas and test tokens</h2>
+        <ul>
+          <li><b>tBNB (gas):</b> the public <a href="https://testnet.bnbchain.org/faucet-smart">BNB Chain faucet</a>. Paste your address, get test gas. This is the same faucet everyone building on BNB Chain uses.</li>
+          <li><b>tOMC (staking deposit):</b> the testnet faucet linked on <a href="https://omc.network/testnet">omc.network/testnet</a>. Note what it's for — the testnet's step 1 covers "gas and your testnet staking deposit", because a node has to lock a deposit proportional to its hardware tier before it can receive jobs.</li>
+          <li><b>Wallet setup for either:</b> see <a href="/guides/add-omc-testnet-to-your-wallet">the network guide</a> — four fields, chain ID 97, no money involved.</li>
+        </ul>
+
+        <h2>The community airdrop, in numbers</h2>
+        <p>This is the one part of the testnet story that is denominated in the real token. Everything below is from OMC's published airdrop page, restated without the marketing:</p>
+        <table>
+          <tr><td><b>Pool</b></td><td>20,000,000 OMC — 2% of the fixed 1B supply</td></tr>
+          <tr><td><b>Slot structure</b></td><td>1,000,000 claim slots × 20 OMC each, first come, first served</td></tr>
+          <tr><td><b>Per wallet</b></td><td>Up to 10 entries; 2 entries per day maximum</td></tr>
+          <tr><td><b>Qualifying tasks</b></td><td>Three social actions: follow the official X account, retweet &amp; comment on the pinned post, join the Telegram community</td></tr>
+          <tr><td><b>Opens</b></td><td>Nov 1, 2026 · 00:00 UTC+8</td></tr>
+          <tr><td><b>Unlock</b></td><td>100% at TGE — no vesting, no cliff on the community allocation</td></tr>
+          <tr><td><b>Cost to you</b></td><td>A small gas fee per entry. If a site asks for anything else, it isn't the airdrop</td></tr>
+        </table>
+        <p>Two details matter more than the headline number. First, <b>entries accumulate</b> during the campaign and are withdrawn in a single claim after it ends — you're not collecting coins as you click, you're building a claim. Second, the allocation is explicitly <b>sybil-resistant</b>: the tasks and wallet checks exist to keep farming bots out of a pool sized for a million human participants. Multi-wallet farming is both against the rules and the fastest way to lose a legitimate allocation.</p>
+
+        <div class="warn-box">
+          <b>What the airdrop is not.</b> It is a distribution of a utility token to early community members — not an investment, not a yield product, and not a promise of value. OMC has no obligation to be worth anything, and nothing here should be read as financial advice. Also worth saying plainly: <b>no legitimate airdrop requires your seed phrase, your private key, or an upfront payment beyond gas.</b> The campaign lives on omc.network; every "claim portal" you find elsewhere is a copycat.
+        </div>
+
+        <h2>Where testnet time actually goes</h2>
+        <p>Since tOMC has no value, why run anything on the testnet? Because of what the testnet records: <b>compute contributions and reputation scores</b>. OMC's FAQ is explicit that these are tracked for the <b>Compute Mining &amp; Node Rewards pool — 50% of total supply at mainnet launch</b>. The testnet is also the only place to learn the node flow without burning real electricity on mainnet jobs.</p>
+        <p>That is a participation signal, not a payout promise: it means the pool exists and testnet activity feeds it. What any individual node will earn is unknowable today — anyone quoting you a figure is guessing. For the honest version of that math, read <a href="/posts/idle-home-compute-earnings">what idle home compute actually earns</a>, and for the hardware-cost side, <a href="/posts/cloud-gpu-vs-home-gpu-tco">the 2026 TCO breakdown</a>.</p>
+
+        <p>So: get the network added, take the faucet money, run a node if you have a GPU, complete the airdrop tasks when the campaign opens on November 1 — and treat every claim of value attached to a <i>test</i> token as a scam until proven otherwise.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h">Key takeaways</b>
+          <ul>
+            <li>tBNB = test gas, tOMC = valueless test token, OMC = the real BEP-20 with a fixed 1B supply. Don't mix them up.</li>
+            <li>Nothing on the testnet can be sold. Any offer to buy tOMC is a scam by definition.</li>
+            <li>Airdrop: 20,000,000 OMC (2%), 1,000,000 slots × 20 OMC, 3 tasks, up to 10 entries per wallet (2/day), opening Nov 1, 2026 00:00 UTC+8, 100% unlocked at TGE.</li>
+            <li>Testnet compute contributions and reputation are tracked for the 50%-of-supply Compute Mining &amp; Node Rewards pool at mainnet launch — a signal, not a quoted payout.</li>
+            <li>No airdrop ever needs your seed phrase or an upfront payment beyond gas.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/guides/add-omc-testnet-to-your-wallet"><i>Previous</i>How to add the OMC testnet to your wallet</a>
+          <a href="/guides/run-a-gpu-node-on-the-testnet"><i>Next</i>Run a GPU node on the OMC testnet in 4 steps</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span>Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span>© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

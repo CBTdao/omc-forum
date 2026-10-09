@@ -6,6 +6,9 @@
   <url><loc>https://forum.omc.network/contact</loc><lastmod>2026-10-05</lastmod><priority>0.4</priority></url>
   <url><loc>https://forum.omc.network/privacy</loc><lastmod>2026-10-05</lastmod><priority>0.4</priority></url>
   <url><loc>https://forum.omc.network/terms</loc><lastmod>2026-10-05</lastmod><priority>0.4</priority></url>
+  <url><loc>https://forum.omc.network/guides/add-omc-testnet-to-your-wallet</loc><lastmod>2026-10-09</lastmod><priority>0.8</priority></url>
+  <url><loc>https://forum.omc.network/guides/testnet-tokens-and-the-airdrop</loc><lastmod>2026-10-09</lastmod><priority>0.8</priority></url>
+  <url><loc>https://forum.omc.network/guides/run-a-gpu-node-on-the-testnet</loc><lastmod>2026-10-09</lastmod><priority>0.8</priority></url>
   <url><loc>https://forum.omc.network/posts/inference-is-the-real-compute-bill</loc><lastmod>2026-10-05</lastmod><priority>0.9</priority></url>
   <url><loc>https://forum.omc.network/posts/nobody-knows-what-a-used-h100-is-worth</loc><lastmod>2026-10-05</lastmod><priority>0.9</priority></url>
   <url><loc>https://forum.omc.network/posts/you-cant-police-a-gpu-you-cant-see</loc><lastmod>2026-10-05</lastmod><priority>0.9</priority></url>

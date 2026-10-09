@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to add the OMC testnet to your wallet (MetaMask, 4 fields) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="How to add the OMC testnet to your wallet (MetaMask, 4 fields) — DCF">
+  <meta name="twitter:description" content="BNB Smart Chain Testnet, chain ID 97, four fields, one token import. Every value verified against the chain, not copied from a tweet.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="Step-by-step: add BNB Smart Chain Testnet (chain ID 97) to MetaMask for the OMC testnet, get test gas, and import the tOMC test token. All values verified on-chain." />
+  <link rel="canonical" href="https://forum.omc.network/guides/add-omc-testnet-to-your-wallet" />
+  <meta property="og:title" content="How to add the OMC testnet to your wallet (MetaMask, 4 fields)" />
+  <meta property="og:description" content="Chain ID 97, four fields, one token import. Every value verified against the chain." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"How to add the OMC testnet to your wallet (MetaMask, 4 fields)","datePublished":"2026-10-09","dateModified":"2026-10-09","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+        <a href="/#guides">Guides</a>
+        <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip guide">Guide</span>
+        <h1>How to add the OMC testnet to your wallet (MetaMask, 4 fields)</h1>
+        <p class="article-dek">The OMC testnet runs on BNB Smart Chain Testnet. Adding it takes four fields and about ninety seconds — and every value below was read directly from the chain, not copied from a screenshot.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 9, 2026</span><span>5 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h">TL;DR</b>
+        <p>Add a custom network with <b>RPC https://data-seed-prebsc-1-s1.binance.org:8545/</b>, <b>chain ID 97</b>, symbol <b>tBNB</b>. Then grab free test gas from the BNB Chain faucet, and if you want to see balances, import the test token <b>0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5</b> (symbol <code>tOMC</code>, 18 decimals). Nothing here costs money and nothing here holds value — it is a testnet.</p>
+      </div>
+
+      <div class="article-body">
+        <p>OMC settles its compute jobs on <b>BNB Chain</b>. While the network is in public testnet, the place to practise is <b>BNB Smart Chain Testnet</b> — the same EVM tooling as mainnet BNB Chain, with free gas and a disposable token called tOMC that exists purely so you can stake it, pay fees with it and watch it move.</p>
+
+        <p>You need two separate things, and it's worth keeping them apart: adding the <b>network</b> (so your wallet can talk to the chain) and importing the <b>token</b> (so the tOMC balance shows up in your wallet UI). The network is mandatory for anything to work; the token import is cosmetic but makes the whole thing much less confusing.</p>
+
+        <h2>The four fields you need</h2>
+        <p>This is the table OMC publishes on <a href="https://omc.network/testnet#endpoints">omc.network/testnet</a>. We re-checked it on 2026-10-09 by calling <code>eth_chainId</code> on the RPC endpoint and reading the token contract — the values below are what the chain actually returns.</p>
+        <table class="params-table">
+          <tr><td>Network name</td><td>BNB Smart Chain Testnet (OMC)</td></tr>
+          <tr><td>RPC URL</td><td><code>https://data-seed-prebsc-1-s1.binance.org:8545/</code></td></tr>
+          <tr><td>Chain ID</td><td><code>97</code> &nbsp;<span style="color:var(--muted-2)">(RPC returns <code>0x61</code>)</span></td></tr>
+          <tr><td>Symbol</td><td><code>tBNB</code></td></tr>
+          <tr><td>Block explorer</td><td><code>https://testnet.bscscan.com</code></td></tr>
+        </table>
+
+        <h2>Add it in MetaMask</h2>
+        <ol>
+          <li>Open MetaMask and click the <b>network selector</b> at the top left (it shows your current network name).</li>
+          <li>Choose <b>Add a custom network</b> (older builds: Settings → Networks → Add a network → Add a network manually).</li>
+          <li>Paste the values from the table above. Network name and symbol are free text — chain ID and RPC URL are what actually matter.</li>
+          <li>Save and switch to it. Your tBNB balance will show as 0 until you get test gas — that is expected, not an error.</li>
+          <li>Get free test gas: open the <a href="https://testnet.bnbchain.org/faucet-smart">BNB Chain faucet</a>, paste your address, request tBNB. This covers gas for every testnet transaction.</li>
+          <li>If you also need tOMC (for staking on the testnet, or to see the token in your wallet), use the testnet faucet linked on <a href="https://omc.network/testnet">omc.network/testnet</a>, then import the token — next section.</li>
+        </ol>
+
+        <h2>Importing tOMC</h2>
+        <p>In MetaMask: <b>Import tokens</b> → paste the contract address below → the symbol and decimals should fill in automatically. If they don't, type them manually. Both should match the table — we read them straight from the contract, so a mismatch means you're on the wrong chain or pasted the wrong address.</p>
+        <table class="params-table">
+          <tr><td>Token contract</td><td><code>0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5</code></td></tr>
+          <tr><td>Symbol</td><td><code>tOMC</code></td></tr>
+          <tr><td>Name</td><td>Omniverse Compute Test Token</td></tr>
+          <tr><td>Decimals</td><td><code>18</code></td></tr>
+          <tr><td>Chain</td><td>BNB Smart Chain Testnet (ID 97)</td></tr>
+        </table>
+        <p>To confirm independently, paste the address into <a href="https://testnet.bscscan.com/token/0x3c7edae9da38b72db7ae98921ef0759d19de7cc5">testnet.bscscan.com</a>. If the contract page doesn't exist, you're on mainnet BscScan rather than the testnet explorer.</p>
+
+        <h2>The five things that actually go wrong</h2>
+        <ul>
+          <li><b>"Could not fetch chain ID" / RPC timeouts.</b> Public testnet RPCs rate-limit. Wait thirty seconds and retry; if it persists, use a different public BNB testnet RPC — any node synced to chain 97 works.</li>
+          <li><b>The token shows 0 after importing.</b> Importing a token doesn't mint anything. The balance stays 0 until the faucet sends you some, or until you receive a testnet transfer.</li>
+          <li><b>Balance shows 0 after switching networks.</b> Correct behaviour — the same address holds different balances on mainnet and testnet. Check the network selector before you panic.</li>
+          <li><b>Anything asking you to "swap" or "bridge" tOMC.</b> There is nothing to swap. tOMC is a test token with no market, no liquidity and no value. A swap prompt for it is either a bug or a scam.</li>
+          <li><b>"Add token" requests you didn't initiate.</b> Tokens appearing in your wallet unprompted are a standard dusting trick. Nothing about adding a custom network requires you to interact with an unknown contract.</li>
+        </ul>
+
+        <div class="warn-box">
+          <b>Safety rules that never change.</b> Nobody from OMC, DCF or AITop will ever DM you first, ask for your seed phrase, or ask you to "validate" a wallet. Your recovery phrase is never needed to add a network, get test gas or stake on a testnet. Take contract addresses and RPC URLs only from <a href="https://omc.network/testnet">omc.network/testnet</a>. And keep the mental model straight: <b>tOMC has no monetary value and cannot be sold</b> — if someone offers to buy test tokens from you, that is the whole scam.
+        </div>
+
+        <p>Once the network is added and you have test gas, the rest of the testnet opens up: staking a deposit and registering a node heartbeat if you have a GPU, or simply watching jobs and balances move. The two follow-up guides cover both paths — the wallet is the boring prerequisite for either.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h">Key takeaways</b>
+          <ul>
+            <li>OMC testnet = <b>BNB Smart Chain Testnet</b>: RPC <code>https://data-seed-prebsc-1-s1.binance.org:8545/</code>, chain ID <b>97</b>, symbol <b>tBNB</b>.</li>
+            <li>Test gas comes from the public BNB Chain faucet; test tokens come from the faucet linked on omc.network/testnet.</li>
+            <li>The tOMC token is <code>0x3C7EDae9da38b72Db7AE98921eF0759d19dE7Cc5</code> — name "Omniverse Compute Test Token", symbol tOMC, 18 decimals (read from the contract on 2026-10-09).</li>
+            <li>A 0 balance after adding the network or importing the token is normal, not a bug.</li>
+            <li>No legitimate flow ever asks for your seed phrase, and tOMC cannot be sold — anything offering to buy it is a scam.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/guides/run-a-gpu-node-on-the-testnet"><i>Next</i>Run a GPU node on the OMC testnet in 4 steps</a>
+          <a href="/guides/testnet-tokens-and-the-airdrop"><i>Also</i>tOMC, tBNB and the real OMC airdrop</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span>Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span>© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
