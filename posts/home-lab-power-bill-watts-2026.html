@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What a Home Lab Actually Costs to Run: Watts, Meters and the Idle-Draw Trap — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="What a Home Lab Actually Costs to Run: Watts, Meters and the Idle-Draw Trap — DCF">
+  <meta name="twitter:description" content="1 W held for a year is 8.76 kWh. 80 Plus only certifies efficiency at 20%, 50% and 100% of rated output — so the badge describes a region a 24/7 server rarely occupies.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="Your power supply is least efficient exactly where a home lab spends its life. The 80 Plus thresholds, the EU standby limits, and how to measure your own rack's real draw instead of guessing from a spec sheet." />
+  <link rel="canonical" href="https://forum.omc.network/posts/home-lab-power-bill-watts-2026" />
+  <meta property="og:title" content="What a home lab actually costs to run: watts, meters and the idle-draw trap (2026)" />
+  <meta property="og:description" content="1 W held for a year is 8.76 kWh. The badge on your PSU describes 20%, 50% and 100% load — a 24/7 server lives below that." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"What a home lab actually costs to run: watts, meters and the idle-draw trap (2026)","datePublished":"2026-10-14","dateModified":"2026-10-14","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>What a home lab actually costs to run: watts, meters and the idle-draw trap (2026)</h1>
+        <p class="article-dek">The arithmetic is one line long: one watt held for a year is 8.76 kilowatt-hours. The hard part is that your power supply is least efficient exactly where a home lab spends its life — far below the load point its 80 Plus badge was measured at. Here is what the standards actually specify, where standby power is regulated, and how to measure your own rack in an afternoon instead of trusting a spec sheet.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 14, 2026</span><span>9 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>Your power bill is not set by the wattage printed on the PSU box. It is set by the watts the machine <b>actually draws</b>, multiplied by 8,760 hours, multiplied by your tariff — which makes <b>1 W worth 8.76 kWh a year</b>, or about $1.58 at the 2026 US residential average and about &pound;2.31 at the current UK price cap. Two consequences follow. First, the PSU is least efficient at light load: 80 Plus certifies efficiency at <b>20%, 50% and 100%</b> of rated output only, so the badge says nothing about the 5&ndash;15% region a 24/7 server usually occupies — which is why a 1600 W Titanium unit idling at 60 W can be worse than a 650 W Gold one. Second, the money is in the <b>idle hours, not the busy ones</b>. Measure at the wall, over a full day, in both states; a spot reading taken under load is the most common way to get this wrong.</p>
+      </div>
+
+      <div class="article-body">
+        <p>Ask five home-lab owners what their rack costs to run and you will get five numbers, most of them wrong in the same direction. The mistake is almost never the arithmetic — it is that the number was inferred from a power supply rating, a vendor's idle claim, or a one-minute reading taken while the machine was doing something unrepresentative. All three describe a machine you do not own. The measurement is neither expensive nor difficult; it is just tedious enough that people skip it, and then build three-year equipment plans on top of a guess.</p>
+
+        <h2>The only arithmetic you need</h2>
+        <p>Everything below scales from a single conversion. A load of one watt, held continuously for a year, is 1 &times; 8,760 = <b>8.76 kWh</b>. Multiply by your tariff and you have the annual cost of that watt. That is the entire model, and it is worth memorising because it turns every decision into one comparison: does this change reduce my average draw by more than it costs?</p>
+        <p>Prices move, so anchor them to a dated source and redo the sum when yours changes. The US residential average was around 18 cents per kWh in mid-2026 according to the EIA's monthly series. In Great Britain, the Ofgem price cap for 1 October to 31 December 2026 sets electricity at 26.32 pence per kWh for a direct-debit customer on a default tariff — and that period is unusually favourable to electricity, since VAT was removed from domestic electricity from 1 October 2026 to 31 March 2027, though not from gas. With those two anchors, an average draw of 150 W works out to about 1,314 kWh a year: roughly $237 in the US, roughly &pound;346 in the UK. A 200 W average is about 1,752 kWh and roughly $315 or &pound;461.</p>
+        <p>Notice what those numbers are not. They are not peak draw, which is what a GPU or a boot sequence produces and which lasts minutes. They are not the PSU's rating, which is a ceiling rather than a habit. A bill is built out of the hours where nothing is happening, and there are 8,760 of those a year whether you use them or not.</p>
+
+        <h2>Your PSU is least efficient exactly where a home lab lives</h2>
+        <p>This is the part that surprises people who have bought carefully. Efficiency in a switch-mode supply is not a constant; it is a curve that rises steeply from near-zero load, peaks somewhere around half of rated output, and sags slightly at full load. The 80 Plus programme measures that curve at fixed points — <b>20%, 50% and 100% of rated output</b> — with the top Titanium tier adding a 10% point. Nothing is specified below 10%, and for Bronze, Gold and Platinum nothing is specified below 20% at all.</p>
+        <p>Now look at where a home server sits. An 800 W supply carrying a board, four drives and an idle CPU might be delivering 60&ndash;90 W — between 7% and 11% of its rating. That is not a certified point on any tier. It is also, for most designs, on the steep part of the curve, where the fixed overheads of the supply matter most relative to the power delivered. The practical consequence is uncomfortable and worth stating plainly: <b>a large, expensive, high-tier supply can be less efficient at your real load than a smaller, cheaper, lower-tier one</b>, because the smaller unit is operating nearer the middle of its own curve than the big one ever will.</p>
+
+        <h2>What the badge promises, and what it does not</h2>
+        <p>The thresholds themselves are worth knowing, because they are the one part of this that is genuinely standardised. In the 115 V internal non-redundant desktop category, 80 Plus Bronze requires 82% at 20% load, 85% at 50% and 82% at 100%; Gold requires 87%, 90% and 87%; Platinum requires 90%, 92% and 89%; and Titanium requires 90%, 92%, 94% at those points, plus 90% at 10%. In the 230 V EU category the same tiers sit roughly two points higher, because efficiency improves with input voltage — Bronze becomes 85/88/85, Gold 90/92/89, Platinum 92/94/90 and Titanium 90/93/95 at 10/20/50/100%.</p>
+        <p>Two cautions about reading that table as a purchase guide. First, these are <b>minimums at test points</b>, not a description of your unit's behaviour between them, and they are measured at a fixed input voltage. A rating is a floor, not a curve, and it says nothing at all about the light-load region we just discussed. Second, the gaps between tiers look small on paper and still add up in a 24/7 machine. Take the case where the difference is actually meaningful — a workload at 50% load, which is where the tiers are furthest apart. Delivering 400 W of DC from a supply at 85% efficiency pulls about 471 W from the wall; at 90% it pulls about 444 W. That is a difference of roughly 26 W, which over a year is about 229 kWh — around $41 at the US average, and more in a high-tariff market. Real, but not a reason to overspend: the same 26 W is nothing next to a machine that runs 15 hours a day it does not need to.</p>
+
+        <h2>Standby is regulated, and it is where a 24/7 box hides money</h2>
+        <p>One part of this is not a matter of judgement, because it is law in the EU and has been for more than a decade. Commission Regulation (EU) No 617/2013 sets hard limits on computers and servers: power demand in the <b>lowest power state must not exceed 0.50 W</b>, and from 1 July 2014 demand in <b>off mode must not exceed 1.00 W</b>, with an extra 0.70 W allowance where wake-on-LAN is enabled in off mode and tested both enabled and disabled. The associated ErP Lot 6 rules tightened the standby ceiling from 1 W under the 2010 version to 0.5 W in the 2013 revision. The same regulation also specifies internal power supply efficiency for desktops and small-scale servers from 1 July 2014: at least 85% at 50% of rated output, at least 82% at 20% and 100%, and a power factor of at least 0.9 at full output.</p>
+        <p>The numbers look trivial and they are not, because "off" is a state a home lab leaves several machines in permanently. Half a watt is 4.38 kWh a year; a watt is 8.76. If a rack holds four boxes that each hold 3 W of standby while nominally switched off — an older supply, an always-on USB charging rail, a network card left with wake-on-LAN plus the antenna lit — that is 105 kWh a year, or about $19 in the US and about &pound;28 in the UK, spent on machines doing nothing at all. The fix is mundane: buy supplies that state ErP/Lot 6 readiness rather than supplies whose badge only covers the 20&ndash;100% range, enable the board's ErP setting in firmware, and where nothing needs to wake remotely, put the whole rack on a switched strip. Note the trade-off honestly — switching a strip kills wake-on-LAN, scheduled backups and remote access, so decide which you want before you save &pound;30.</p>
+
+        <h2>How to measure it without fooling yourself</h2>
+        <p>The instrument is a plug-in power meter of the kind sold for a few tens of dollars, and the method matters more than the model. Three rules carry almost all of the accuracy.</p>
+        <p><b>Measure at the wall, for at least 24 hours.</b> A single spot reading is a sample, and your rack has a daily rhythm: backups, scrubs, indexing, media jobs and the moment a family member opens a 4K stream. A day captures that shape and gives you a kWh figure you can multiply by 365. Several meters accumulate and hold a total for exactly this reason — use that feature rather than reading the instantaneous display.</p>
+        <p><b>Measure both states separately, then weight them.</b> Record the idle draw and the heaviest realistic workload, then estimate how many hours each occupies in an average week. The average is what you pay for, and in most home labs it sits far closer to idle than to the peak — which is precisely why a machine chosen on peak performance so often loses on running cost. Be honest about the weighting; the common bias is to assume your server is working much harder than it is.</p>
+        <p><b>Distrust the extremes.</b> Cold-boot spikes and spin-up currents are real but momentary, and a cheap meter may clip or miss them — irrelevant to a yearly bill, so do not model them. At the other end, meter accuracy degrades at very low current, so a 0.5 W standby claim is inside the noise floor of a budget plug meter. If standby matters enough to optimise, measure a strip of boxes together rather than each one alone: the summed figure is well within the meter's useful range, which is the same reason your electricity meter reads the house, not the device.</p>
+
+        <h2>The decisions that actually move the number</h2>
+        <p>Once you have a real kWh figure, most of the optimisation list collapses, because the items that feel important rarely are. <b>Consolidation dominates</b>: two machines at 60 W cost more than one at 100 W, once you count the second supply's overhead, the second set of drives and the second fan wall. <b>PSU sizing matters more than PSU tier</b> for the reason above — pick a unit whose 50% point lands near your typical draw rather than one with headroom you will never use. <b>Spinning down idle drives changes the answer only if you have many of them</b>: the saving is real but it is measured in a few watts per drive, and it trades away instant access. And the GPU, which dominates the peak figure and therefore the conversation, is usually absent from the bill for the simple reason that it is idle most of the time; if yours is not, that is the one line worth attacking directly.</p>
+        <p>None of this requires a new machine, a new rack or an upgrade cycle. It requires an afternoon with a meter, a note of two numbers, and the discipline to multiply by 8,760 instead of guessing. The honest answer to "what does my home lab cost to run?" has never been a specification. It is a measurement, and it is yours.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>1 W held for a year is 8.76 kWh</b> — about $1.58 at the 2026 US residential average and about &pound;2.31 at the current UK price cap. Every other number on this page is that one multiplied out.</li>
+            <li><b>Your PSU is least efficient at idle.</b> 80 Plus certifies 20%, 50% and 100% of rated output only (plus 10% for Titanium), so the 5&ndash;15% region a 24/7 server lives in is unmeasured — a big high-tier supply can lose to a smaller low-tier one at your real load.</li>
+            <li><b>The efficiency table is a floor, not a curve.</b> Bronze is 82/85/82 and Gold 87/90/87 in the 115 V category, with 230 V EU tiers about two points higher. At a genuine 50% load that gap is worth roughly 26 W, or about 229 kWh a year.</li>
+            <li><b>Standby is regulated in the EU, and it adds up.</b> Under Regulation 617/2013 the lowest power state must not exceed 0.50 W and off mode 1.00 W. Four boxes idling at 3 W each is about 105 kWh a year for machines doing nothing.</li>
+            <li><b>Measure at the wall for a full day, in both states.</b> Meter accuracy degrades at very low current, so group standby loads together and use the meter's accumulated total rather than a single instantaneous reading.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/home-lab-network-2-5gbe-10gbe-2026"><i data-i18n="pager.prev">Previous</i>2.5GbE vs 10GbE in a home lab: what the standards actually say →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
