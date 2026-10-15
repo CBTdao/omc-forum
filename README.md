@@ -4,13 +4,13 @@ Editorial forum on GPU markets, DePIN networks and the economics of AI compute.
 
 **Live: https://forum.omc.network** · Part of the omc.network ecosystem (main site · [AITop comparisons](https://top.omc.network))
 
-## What's inside (36 URLs)
+## What's inside (37 URLs)
 
 ```
 omc-forum/
 ├── index.html              # Home — 6 sections: Hot Takes / Deep Dives / Pricing Watch /
 │                           #   Landscape / On-Chain Gaming / Homelab, plus a Guides strip
-├── posts/                  # 27 editorial articles, one HTML file each
+├── posts/                  # 28 editorial articles, one HTML file each
 ├── guides/                 # 3 hands-on onboarding guides (testnet / wallet / node)
 ├── tracker.html            # 12 decentralized networks compared, with sources + watch-outs
 ├── about.html contact.html privacy.html terms.html
