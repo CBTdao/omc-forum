@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HBM, Not FLOPS: The Memory Wall Behind Inference Prices — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HBM, Not FLOPS: The Memory Wall Behind Inference Prices — DCF">
+  <meta name="twitter:description" content="Decode runs at about 1 FLOP per byte against a hardware balance point near 200. That single ratio explains why your $/hr GPU and your $/token bill disagree.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="Token generation is memory-bandwidth-bound, and HBM eats three times the wafer area of ordinary DRAM. The hardware arithmetic behind inference pricing." />
+  <link rel="canonical" href="https://forum.omc.network/posts/hbm-memory-wall-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/hbm-memory-wall-2026" />
+  <meta property="og:title" content="HBM, not FLOPS: the memory wall that sets the price of inference (2026)" />
+  <meta property="og:description" content="Decode runs at roughly 1 FLOP per byte against a balance point near 200 FLOP/byte. That ratio, not the TFLOPS number, sets tokens per second — and the HBM behind it consumes about three times the wafer area per bit of ordinary DRAM." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"HBM, not FLOPS: the memory wall that sets the price of inference (2026)","datePublished":"2026-10-21","dateModified":"2026-10-21","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>HBM, not FLOPS: the memory wall that sets the price of inference (2026)</h1>
+        <p class="article-dek">Every GPU rental quote is a price per hour, and every API invoice is a price per token. The bridge between them is a single ratio: how many bytes the machine must move to produce one token. On a 70B model that ratio is set almost entirely by HBM capacity and bandwidth — which is why two cards at the same hourly rate can differ by a factor of two in cost per token, and why the memory supply, not the compute supply, is the constraint that lasts.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 21, 2026</span><span>9 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>Token generation is <b>memory-bandwidth-bound</b>: to emit one token the model reads every weight, so arithmetic intensity sits near <b>1 FLOP per byte</b> while an H200's balance point is around <b>206 FLOP/byte</b>. The ceiling is therefore bandwidth divided by bytes read — a 70B model in FP8 (70 GB) tops out near <b>48 tokens/second</b> on an H100's 3.35 TB/s, <b>69</b> on an H200's 4.8 TB/s and <b>114</b> on a B200's 8 TB/s, at batch size one. Underneath that sits a supply fact: <b>HBM consumes roughly three times the wafer area per bit of ordinary DRAM</b>, only three companies make it, and 2026 capacity is sold out. Compute you can rent around. Memory per accelerator you cannot.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>HBM 而不是 FLOPS：决定推理价格的内存墙（2026）。<b>摘要：</b>逐 token 生成是带宽瓶颈——每生成一个 token 都要把全部权重读一遍，算术强度约 1 FLOP/字节，而 H200 的平衡点约 206 FLOP/字节；于是单卡吞吐上限 ≈ 带宽 ÷ 每 token 读取字节数，70B 模型 FP8（70 GB）在 H100 上约 48 token/秒、H200 约 69、B200 约 114。底层还有一层供给事实：HBM 每 bit 消耗的晶圆面积约为普通 DRAM 的三倍，全球只有三家能做，2026 年产能已售罄。算力可以绕开，每张卡的显存绕不开。</p>
+      </div>
+
+      <div class="article-body">
+        <p>Ask a GPU broker what a card costs and you get dollars per hour. Ask an API vendor what a token costs and you get dollars per million. Both numbers are honest and neither one converts into the other without knowing something about the workload — specifically, how many bytes the machine has to move between memory and compute for every token it produces. On transformer inference that number is brutal and undramatic: one token requires reading the entire set of weights. Everything else in this article follows from that sentence.</p>
+
+        <h2>The one ratio that decides throughput</h2>
+        <p>Inference has two phases with opposite bottlenecks. <b>Prefill</b> ingests the prompt, and because all the prompt tokens are available at once it runs as large matrix multiplications with high arithmetic intensity — hundreds of FLOPs per byte, comfortably compute-bound. <b>Decode</b> produces the answer one token at a time, each token depending on the previous one, so the only parallelism left is across users. Decode has an arithmetic intensity of about <b>1 FLOP per byte</b> in 16-bit precision: two operations per parameter, two bytes per parameter. Hardware, meanwhile, is built for the opposite regime. An H200 delivers roughly 989 TFLOPS of BF16 dense compute against 4.8 TB/s of memory bandwidth, which puts its balance point — the ridge of the roofline — near <b>206 FLOP/byte</b>. Decode sits two orders of magnitude below it, so the compute units spend most of their time waiting for data.</p>
+        <p>The practical consequence is a formula short enough to memorise: <b>tokens per second ≈ memory bandwidth ÷ bytes read per token</b>. For a 70B model stored in FP8 that is 70 GB of weights per token, so a 3.35 TB/s H100 ceilings near <b>48 tokens/second</b>, a 4.8 TB/s H200 near <b>69</b>, and an 8 TB/s B200 near <b>114</b> — at batch size one, with no KV-cache pressure and no overhead. Those are ceilings, not forecasts; real serving stacks land well below them. But the ordering is what matters, and it is not the ordering the marketing materials suggest: the H200 has identical compute to the H100 and roughly 43% more tokens per second on this workload, purely because it moves bytes faster.</p>
+
+        <h2>What the spec sheet is actually selling you</h2>
+        <p>Read the current NVIDIA data-centre line as a memory story and it becomes coherent. The <b>H100 SXM</b> carries <b>80 GB of HBM3 at 3.35 TB/s</b>. The <b>H200</b> keeps the same compute and moves to <b>141 GB of HBM3E at 4.8 TB/s</b>. The <b>B200</b> jumps to <b>192 GB of HBM3E at 8 TB/s</b> with a 1,000 W envelope, and <b>B300</b> pushes capacity to <b>288 GB</b>. The generational gain that actually shows up in serving economics is bandwidth per dollar, and the capacity number is what decides whether a model fits on one card, four, or eight — a distinction that changes your interconnect bill as much as your compute bill.</p>
+        <p>HBM4, now shipping, is a good illustration of how to read these transitions. JEDEC's <b>JESD270-4</b>, published in April 2025, doubles the interface from 1,024 to <b>2,048 bits</b> and doubles independent channels per stack from 16 to 32, with a baseline pin rate of 8 Gb/s — which works out to <b>2.048 TB/s per stack</b> at the standard's floor. Suppliers then overclock well past it: Micron rates its HBM4 above <b>2.8 TB/s per stack</b>, Samsung quotes 11.7 Gb/s steady with headroom to 13, and NVIDIA's Rubin specifies <b>288 GB of HBM4 at 22 TB/s</b> per GPU. The detail worth noticing is capacity: the first 12-high HBM4 parts ship at <b>36 GB per stack, the same as 12-high HBM3E</b>. The generation's first gift is bandwidth, not capacity. Stacks get taller later — 16-high parts reach the standard's 64 GB ceiling — and HBM4E is already being previewed at 4 TB/s per stack.</p>
+
+        <h2>Why memory is the part that stays expensive</h2>
+        <p>Compute capacity can be added by anyone with a fab slot and eighteen months. HBM is harder for a physical reason that fits in one sentence: <b>a stacked HBM die consumes roughly three times the wafer area of a commodity DDR5 die for the same number of bits</b>, according to disclosures from SK hynix and Micron, with third-party estimates running from three to four times depending on generation. Stacking, through-silicon vias and yield loss all take a bite. So every wafer that goes to HBM removes three wafers' worth of ordinary DRAM from the market — and since AI accelerators are absorbing a growing share of leading-edge DRAM output, the squeeze shows up in server DIMM prices as well as accelerator lead times.</p>
+        <p>The supply side is also unusually concentrated. Three firms make commercial HBM — SK hynix, Samsung and Micron — and TrendForce's 2026 estimates put the split at roughly <b>50% / 28% / 22%</b>, with SK hynix's share narrowing as Samsung's HBM4 qualification lands. All three were reported to have sold out their 2026 HBM capacity, and HBM3E allocations were described as effectively sold out into 2027 before HBM4 ramped. That is not a market where a new entrant can relieve pressure next quarter; the fabs that would do it arrive in 2027 and 2028.</p>
+        <p>This is the asymmetry that matters for anyone buying compute. If GPUs are scarce, you can substitute — older silicon, smaller cards, a different region, a spot market. If <b>memory per accelerator</b> is the constraint, substitution stops working: a model that does not fit needs more cards, and more cards means more interconnect, more failure surface and a worse tokens-per-dollar curve. Memory scarcity does not raise your hourly rate so much as it changes the shape of the deployment you are allowed to build.</p>
+
+        <h2>What this means if you are the one paying</h2>
+        <p><b>Stop comparing dollars per hour; compare dollars per million output tokens at your concurrency.</b> Take the hourly rate, divide by the tokens per second the configuration actually sustains, and the ranking often reverses. A card at $2.50/hour producing 48 tokens/second is about <b>$14.50 per million output tokens</b>. The same card under continuous batching, sustaining 2,000 tokens/second across many users, is about <b>$0.35</b>. Nothing about the hardware changed. The difference is that batching reuses each weight fetch across many sequences, which raises arithmetic intensity and drags decode back toward the compute-bound regime it was never designed to be in.</p>
+        <p>Which is the honest way to read the price gap between a hyperscaler API and a cheap single-tenant GPU rental. The rental is not overcharging for the card; it is selling you batch-size-one throughput, because you are the only tenant. A provider running a busy multi-tenant endpoint can charge less per token and still make more per GPU-hour. Fragmented capacity has a structural penalty here, and it is worth stating plainly rather than pretending the arbitrage is free: a pool of individually rented GPUs pays the memory-bound tax on every token, and that tax is set by HBM bandwidth, not by anyone's business model.</p>
+        <p><b>Quantization is a bandwidth optimisation wearing a capacity costume.</b> The usual framing is that FP8 or FP4 lets a bigger model fit. True, but the larger effect on a memory-bound workload is that halving the bytes per weight roughly doubles tokens per second, because throughput is bandwidth divided by bytes moved. That is why every serving stack now ships quantized checkpoints and why pre-quantized weights beat on-the-fly conversion in published benchmarks — the arithmetic is unchanged, the traffic is not. It is also why a 4-bit model can feel faster on a laptop than a 16-bit one on a server with an older memory bus.</p>
+        <p><b>Ask what happens at longer context.</b> The KV cache competes with weights for the same HBM. At short sequences the weights dominate and the formula above holds; at long sequences the cache becomes the denominator, and concurrency collapses because there is no room left to hold another user's context. A configuration that serves 200 concurrent short chats may serve a dozen long ones, and the cost per token moves accordingly. Any capacity plan that quotes a single tokens-per-second figure without a sequence length attached is quoting an incomplete number.</p>
+
+        <h2>The 2026 reality check</h2>
+        <p>Two things are true at once. HBM4 is a real step — double the interface width, meaningfully better power efficiency per bit, and a 22 TB/s memory subsystem on Rubin that will make today's bandwidth ceilings look quaint. And none of it relieves the shortage on the timeline buyers care about: 2026 output is committed, 12-high HBM4 ships at HBM3E capacities, and the wafer trade-off that starves commodity DRAM is a property of the technology, not of this year's allocation. If your plan assumes memory gets cheap in 2027, you are assuming a fab comes online and yields well on schedule.</p>
+        <p>One deliberate omission. We are not publishing HBM stack prices here. They are negotiated contract prices, they differ by customer and volume, and the public figures we could find disagreed with each other by wide margins. Quoting one would look precise and be wrong. The ratios above — wafer area per bit, bandwidth per stack, capacity per part — are what the purchasing decision actually turns on, and they are stable enough to plan against.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>Decode runs at about 1 FLOP per byte.</b> An H200's balance point is roughly 206 FLOP/byte, so token generation is memory-bandwidth-bound by two orders of magnitude — TFLOPS is close to irrelevant for it.</li>
+            <li><b>Throughput ≈ bandwidth ÷ bytes per token.</b> A 70B FP8 model ceilings near 48 tok/s on H100 (3.35 TB/s), 69 on H200 (4.8 TB/s) and 114 on B200 (8 TB/s) at batch size one. Capacities: 80 GB, 141 GB, 192 GB, 288 GB on B300.</li>
+            <li><b>HBM costs about three times the wafer area per bit of DDR5</b> (SK hynix and Micron disclosures; estimates run 3–4×), only three firms make it, and 2026 capacity is sold out. Compute is substitutable; memory per accelerator is not.</li>
+            <li><b>HBM4's first gift is bandwidth, not capacity.</b> JESD270-4 doubles the interface to 2,048 bits and the standard floor is 2.048 TB/s per stack, but 12-high parts still ship at 36 GB — same as HBM3E. Rubin specifies 288 GB at 22 TB/s.</li>
+            <li><b>Batching is the whole ballgame on price.</b> The same $2.50/hour card costs about $14.50 per million output tokens at 48 tok/s and about $0.35 at 2,000 tok/s. Single-tenant rentals pay the memory-bound tax on every token.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/inference-is-the-real-compute-bill"><i data-i18n="pager.next">Next</i>Inference is the real compute bill →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

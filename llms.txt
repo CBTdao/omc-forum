@@ -52,3 +52,5 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://forum.omc.network/posts/quantizing-local-llm-vram-math-2026](https://forum.omc.network/posts/quantizing-local-llm-vram-math-2026): Quantization Is a VRAM Problem, Not a Disk Problem (2026 Math) — DCF
 - [https://forum.omc.network/posts/home-lab-network-2-5gbe-10gbe-2026](https://forum.omc.network/posts/home-lab-network-2-5gbe-10gbe-2026): 2.5GbE vs 10GbE in a Home Lab: What the Standards Actually Say (2026) — DCF
 - [https://forum.omc.network/posts/home-lab-power-bill-watts-2026](https://forum.omc.network/posts/home-lab-power-bill-watts-2026): What a Home Lab Actually Costs to Run: Watts, Meters and the Idle-Draw Trap (2026) — DCF
+- [https://forum.omc.network/posts/hbm-memory-wall-2026](https://forum.omc.network/posts/hbm-memory-wall-2026): HBM, Not FLOPS: The Memory Wall That Sets the Price of Inference (2026) — DCF
+- [https://forum.omc.network/posts/interconnection-queue-time-to-power-2026](https://forum.omc.network/posts/interconnection-queue-time-to-power-2026): The 2,061 GW Queue Is a Generator Queue: Time-to-Power, Measured Properly (2026) — DCF

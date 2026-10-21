@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The 2,061 GW Queue Is a Generator Queue — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The 2,061 GW Queue Is a Generator Queue — DCF">
+  <meta name="twitter:description" content="LBNL's 2,061 GW counts power plants asking to sell, not data centres asking to buy. The load queue is separate, larger, and in Texas alone it is 438 GW.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="The interconnection number everyone quotes measures generators, not data centres. What the queues actually say about time-to-power." />
+  <link rel="canonical" href="https://forum.omc.network/posts/interconnection-queue-time-to-power-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/interconnection-queue-time-to-power-2026" />
+  <meta property="og:title" content="The 2,061 GW queue is a generator queue: time-to-power, measured properly (2026)" />
+  <meta property="og:description" content="Only 13% of capacity that requested interconnection between 2000 and 2020 had reached commercial operation by the end of 2025, and the median 2025 project took about five years from request to first power. Meanwhile ERCOT alone is tracking 438 GW of large-load requests, 89% of them data centres." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"The 2,061 GW queue is a generator queue: time-to-power, measured properly (2026)","datePublished":"2026-10-21","dateModified":"2026-10-21","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip land">Landscape</span>
+        <h1>The 2,061 GW queue is a generator queue: time-to-power, measured properly (2026)</h1>
+        <p class="article-dek">Every article about the AI power crunch opens with the same figure: 2,061 gigawatts stuck in America's interconnection queues. It is a real number from a real dataset, and it is the wrong instrument for the question being asked. Lawrence Berkeley Lab counts power plants asking to <i>sell</i> electricity. Data centres are buyers, and their queue is separate, larger, and in Texas alone now exceeds 438 GW — nearly 89% of it data centres. Here is what each queue actually measures, and why the gap between them is the most useful number in the whole story.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 21, 2026</span><span>8 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>LBNL's <b>2,061 GW</b> is a <b>generator</b> queue — 1,312 GW of generation plus 749 GW of storage — and it excludes large-load interconnection, distribution-connected projects and behind-the-meter plants. It also shrank 10% in 2025, because <b>756 GW withdrew against 603 GW of new requests</b>, while only <b>53 GW</b> reached commercial operation: a throughput rate of about <b>2%</b> a year. Only <b>13%</b> of capacity that requested interconnection between 2000 and 2020 had reached operation by the end of 2025, and the median project completed in 2025 took about <b>five years</b> from request to first power. The demand side lives elsewhere: ERCOT reported <b>438 GW</b> of large-load requests in June 2026, <b>89%</b> of them data centres, and PJM's <b>2027/28</b> capacity auction cleared at its price cap of <b>$333.44/MW-day</b> while still falling short of its reliability requirement — the first shortfall since the auction began in 2007.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>2,061 GW 是发电侧排队，不是数据中心的排队：把"通电时间"算对（2026）。<b>摘要：</b>LBNL 的 2,061 GW 统计的是"想卖电"的发电与储能项目，不含大负荷（数据中心）并网、配网项目和自备电厂。2025 年它反而缩小了 10%——退出 756 GW、新申请 603 GW，真正投运只有 53 GW，年通过率约 2%；2000–2020 年申请容量中仅 13% 在 2025 年底前投运，2025 年投运项目从申请到商运中位数约五年。需求侧在另一本账上：ERCOT 2026 年 6 月自报 438 GW 大负荷申请、其中 89% 是数据中心；PJM 2027/28 容量拍卖打到价格上限 333.44 美元/兆瓦·日，却仍未满足可靠性要求——2007 年该机制建立以来首次。</p>
+      </div>
+
+      <div class="article-body">
+        <p>There is a version of the AI power story that can be told with one number and no footnotes: two terawatts of projects are waiting to connect to the American grid, therefore the grid is the bottleneck, therefore compute is capped. Each clause is individually defensible and the chain is wrong, because the number measures something other than what the chain needs it to measure. Getting this straight matters beyond pedantry: it changes whether you think the constraint on AI capacity is generation, transmission, equipment, or the willingness of a grid operator to energise a load it cannot yet study.</p>
+
+        <h2>What 2,061 GW actually counts</h2>
+        <p>Lawrence Berkeley National Laboratory has published <i>Queued Up</i> annually since 2014, and the 2026 edition — data through the end of 2025 — is the industry's reference. It reports roughly <b>8,200 active projects</b> representing <b>1,312 GW of generation and about 749 GW of storage</b>, for a total a shade over <b>2,060 GW</b>. The dataset covers all seven ISOs and RTOs plus fifty non-ISO utilities, roughly 98% of installed US capacity.</p>
+        <p>That is a census of <b>generators</b>: solar farms, batteries, gas plants, wind projects that want to connect and sell. Large electricity <i>consumers</i> are not in it. Data centres, industrial facilities and other big loads go through their own interconnection processes, run by the same ISOs but tracked separately, and in many regions they are subject to different rules and different deposit structures. LBNL's own framing makes this explicit: it measures "generation and storage capacity" seeking connection. So when an article states that 2,061 GW of AI demand is queued, the figure has been silently reassigned from supply to demand. It happens constantly, and it is a category error rather than a rounding error.</p>
+        <p>The second thing the number does not show is direction. The active queue <b>fell 10%</b> in 2025. Opening the year there were 2,290 GW active; during the year about <b>603 GW</b> of new requests arrived, <b>756 GW</b> withdrew, and <b>53 GW</b> reached commercial operation — leaving 2,061 GW active. In other words, more capacity left the queue by dying than by being built, by a factor of fourteen. A shrinking queue is not evidence of a weakening problem; it is evidence that most of what enters never gets built. The queue is a demand signal contaminated by optionality, not a supply forecast.</p>
+
+        <h2>The queue's own arithmetic: five years and a 13% survival rate</h2>
+        <p>The mortality is the headline. Of all capacity that submitted interconnection requests between <b>2000 and 2020</b>, only <b>13%</b> had reached commercial operation by the end of 2025; <b>75%</b> had withdrawn and 10% was still active. The median project that did complete and reach commercial operation in 2025 spent just over <b>five years</b> from request to first power — against roughly three years in 2015 and under two in the early 2000s. The delay is now split across two phases that are both getting worse: the study process itself, and construction after the interconnection agreement is signed.</p>
+        <p>There is also a large stock of projects that have <i>won</i> and still are not running: <b>549 GW</b> holds a draft or executed interconnection agreement but has not reached commercial operation, including 256 GW of solar, 161 GW of storage, 76 GW of wind and 45 GW of gas. That is the part of the pipeline closest to being real — agreements signed, studies done — and it is still not electrons. For anyone modelling future supply, the honest reading is that the queue tells you what developers wanted, the agreement count tells you what survived diligence, and only the commercial-operation number tells you what exists.</p>
+
+        <h2>Where the data-centre demand actually appears</h2>
+        <p>Not in LBNL's total. In Texas, which publishes more than anyone else. In June 2026 ERCOT — the grid operator for about 90% of Texas load — stated that it was tracking <b>more than 438,000 MW of large-load requests, nearly 89% of them from data centres</b>, and the state's Public Utility Commission approved a "Batch Zero" framework that studies projects of <b>75 MW and above</b> together rather than one at a time. ERCOT is the first ISO in the country to batch large-load requests this way. It had little choice: the large-load queue reportedly grew from about 63 GW at the end of 2024 to roughly 226 GW by November 2025 and past 438 GW by mid-2026, and by midsummer other trackers were quoting figures near <b>475 GW</b>, of which about 90% was data centres.</p>
+        <p>Texas also demonstrates what happens when a queue gets big enough to become a political object. In August 2026 the governor directed the PUC and ERCOT to verify and audit data-centre projects advancing through interconnection, and in September ERCOT began issuing <b>Batch Zero verification requests for information</b>, requiring notarised attestations from the load, the transmission provider and the distribution provider, with ten business days to respond and a five-day extension available on request. Projects that do not complete verification are excluded from the batch. Whatever you think of the policy, it is a clean admission of the underlying problem: a queue built on non-binding intent cannot be used to plan transmission, and the only way to find out which gigawatts are real is to ask, under oath, with a deadline.</p>
+        <p>PJM shows the same pressure arriving through prices instead of paperwork. Its <b>2027/28</b> capacity auction cleared at the FERC-approved cap of <b>$333.44/MW-day</b>, up 1.3% from the <b>$329.17</b> cap-clearing auction a year earlier, and the cleared supply plus fixed-resource-requirement capacity fell <b>6,623 MW</b> short of the reliability requirement — the first time an auction has missed it since the mechanism was created in 2007. PJM's own explanation names the cause: forecast peak load for 2027/28 is about <b>5,250 MW</b> higher than the forecast used for the previous auction, and <b>nearly 5,100 MW of that increase is attributable to data-centre demand</b>. Two consecutive auctions pinned at the cap is not a market signal that new supply is coming fast enough.</p>
+
+        <h2>The arithmetic that should drive the site decision</h2>
+        <p>Put the two clocks side by side. A large data-centre campus can be built in roughly <b>18 to 36 months</b> — analyst build-cycle estimates cluster at 18 to 24 months for a phased build, and industry transmission studies put large-load projects at one to three years. The median generator that connected in 2025 took about <b>60 months</b> from request to power, and that is the <i>survivor</i>; three quarters of the capacity that entered alongside it never connected at all. A load cannot be served by a generator that is still in a cluster study, and a study cannot start until the request is filed. Time-to-power, not price per megawatt-hour, is the binding constraint on new AI capacity in constrained interconnects — and it is the number that almost never appears in a site-selection deck.</p>
+        <p>Capacity cost alone is now material enough to model explicitly. At PJM's capped <b>$333.44 per MW-day</b>, a 100 MW load pays about <b>$12.2 million a year</b> for capacity before a single megawatt-hour of energy is priced: 100 MW × 365 days × $333.44. That is the reservation fee for being allowed to draw at peak, and it is <b>more than ten times</b> the same reservation two years earlier, when the 2024/25 auction cleared at <b>$28.92</b>. Add energy — 100 MW running flat is <b>876 GWh a year</b>, and nothing about that arithmetic is speculative — and the power line in a five-year model starts to rival the GPU line.</p>
+
+        <h2>What this means if you are buying compute</h2>
+        <p><b>Treat energised capacity as inventory, not as an assumption.</b> The providers with structurally cheap tokens over the next three years will disproportionately be the ones sitting on interconnections that already exist. That is a less glamorous competitive advantage than a new GPU generation, and it is harder to replicate: you cannot buy a 2029 energisation date at any price if the queue in that region is closed to new load, and you cannot compress a cluster study by spending more on silicon.</p>
+        <p><b>Size is a feature.</b> ERCOT's batch threshold is 75 MW, and the study procedures that apply above roughly 20 MW are the slow ones across most of the country. Below those lines the process is measured in months rather than years. Anyone planning incremental capacity has a real option that the hyperscalers do not: stay small, or distribute across many small sites with existing service, and trade economies of scale for speed. Distributed capacity is not only a philosophical position about decentralisation — in a five-year queue environment it is a schedule strategy.</p>
+        <p><b>Distrust any pipeline number without a mortality adjustment.</b> A 475 GW queue with a historical 13% completion rate implies something in the tens of gigawatts, over a decade, and only if the survivors behave like the historical cohort. Reported pipelines in this sector routinely count non-binding reservations as demand. When you see a gigawatt figure in a press release, the two questions worth asking are: is this a request or an agreement, and what deposit is behind it?</p>
+
+        <h2>The 2026 reality check</h2>
+        <p>Three caveats belong on this page, because the numbers above are better than most and still imperfect. LBNL's timing statistics only cover projects with valid dates — interconnection-agreement dates are unknown for a large share of records, and withdrawal years for a meaningful fraction of withdrawals — so medians are indicative rather than exact. Completion rates for recent cohorts are understated by construction, since projects filed after 2020 have not had five years to finish. And the data-centre queue figures are self-reported by developers to grid operators, which is precisely why Texas is auditing them: they are statements of intent made under light penalty, and the penalty is only now being tightened.</p>
+        <p>None of that reverses the conclusion. The generator queue is slow, leaky and smaller than the headlines imply; the load queue is enormous, concentrated in a handful of states, and increasingly subject to verification before it can influence anything. Compute is not capped by a shortage of projects. It is capped by the number of megawatts that can be energised on a schedule, and that number is set by process, equipment and paperwork long before it is set by ambition.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>2,061 GW is supply, not demand.</b> LBNL's queue is 1,312 GW of generation plus 749 GW of storage seeking to connect and sell; large-load (data-centre) interconnection is a separate queue and is not in the figure.</li>
+            <li><b>The queue is shrinking because projects die, not because they get built.</b> In 2025: +603 GW of requests, −756 GW withdrawn, −53 GW reaching commercial operation — roughly 2% annual throughput against a 2,061 GW stock.</li>
+            <li><b>Five years and a 13% survival rate.</b> Median request-to-power for 2025 completions was just over 60 months; only 13% of 2000–2020 capacity had reached operation by end-2025, and 549 GW holds an agreement without yet running.</li>
+            <li><b>ERCOT is the load-side number that matters.</b> 438 GW of large-load requests in June 2026, ~89% data centres, batched above 75 MW — and now subject to a state-directed verification audit with notarised attestations.</li>
+            <li><b>PJM priced the same pressure.</b> Two consecutive auctions at the cap ($329.17 then $333.44/MW-day), the 2027/28 auction short of its reliability requirement by 6,623 MW, with ~5,100 MW of the peak-load increase attributed to data centres.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/hbm-memory-wall-2026"><i data-i18n="pager.prev">Previous</i>HBM, not FLOPS: the memory wall that sets the price of inference →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
