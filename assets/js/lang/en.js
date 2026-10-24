@@ -22,6 +22,8 @@ window.I18N.en = {
   "sec.gaming": "On-Chain Gaming",
   "sec.gaming.note": "Games, economies — and their compute bills",
   "nav.homelab": "Homelab",
+
+  "nav.game": "Real or AI",
   "sec.homelab": "Homelab",
   "sec.homelab.note": "Your own machine as the datacenter",
   "sec.guides": "Guides",
@@ -46,6 +48,8 @@ window.I18N.en = {
   "footer.tag": "Honest numbers, strong opinions.",
   "footer.main": "OMC project site",
   "footer.top": "AITop comparisons",
+
+  "footer.game": "Real or AI — daily game",
   "footer.x": "X / Twitter",
   "footer.rights": "© 2026 DCF · Decentralized Compute Forum",
   "footer.disclaimer": "Nothing here is financial advice. We write about markets, not your portfolio.",

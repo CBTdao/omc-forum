@@ -22,6 +22,8 @@ window.I18N.zh = {
   "sec.gaming": "链上游戏",
   "sec.gaming.note": "游戏、经济系统——以及它们的算力账单",
   "nav.homelab": "Homelab",
+
+  "nav.game": "真图还是 AI",
   "sec.homelab": "Homelab 自建机房",
   "sec.homelab.note": "把你自己的机器，当机房用",
   "sec.guides": "上手教程",
@@ -46,6 +48,8 @@ window.I18N.zh = {
   "footer.tag": "真实数据，鲜明观点。",
   "footer.main": "OMC 项目官网",
   "footer.top": "AITop 对比站",
+
+  "footer.game": "真图还是 AI — 每日小游戏",
   "footer.x": "X / 推特",
   "footer.rights": "© 2026 DCF · 去中心化算力论坛",
   "footer.disclaimer": "本站内容不构成投资建议。我们写的是市场，不是你的仓位。",
