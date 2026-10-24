@@ -50,6 +50,10 @@ window.I18N.zh = {
   "footer.top": "AITop 对比站",
 
   "footer.game": "真图还是 AI — 每日小游戏",
+  "pbar.network": "官网",
+  "pbar.forum": "算力论坛",
+  "pbar.top": "AI 工具站",
+  "pbar.game": "游戏",
   "footer.x": "X / 推特",
   "footer.rights": "© 2026 DCF · 去中心化算力论坛",
   "footer.disclaimer": "本站内容不构成投资建议。我们写的是市场，不是你的仓位。",
