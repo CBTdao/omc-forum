@@ -50,10 +50,6 @@ window.I18N.en = {
   "footer.top": "AITop comparisons",
 
   "footer.game": "Real or AI — daily game",
-  "pbar.network": "Network",
-  "pbar.forum": "Forum",
-  "pbar.top": "AI Top",
-  "pbar.game": "Game",
   "footer.x": "X / Twitter",
   "footer.rights": "© 2026 DCF · Decentralized Compute Forum",
   "footer.disclaimer": "Nothing here is financial advice. We write about markets, not your portfolio.",
