@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The utilization tax: most AI compute you rent runs at 30–50%, and that's the bottleneck nobody counts (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The utilization tax: most AI compute you rent runs at 30–50%, and that's the bottleneck nobody counts (2026) — DCF">
+  <meta name="twitter:description" content="We found the bottleneck in GPUs, HBM, power, the building, the package and the water. The one inside all of them is quieter: accelerators are billed at 100% and used at a fraction of it. That gap is the real bookable supply.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="A data-center GPU is billed as if it is always working. Public training disclosures put hardware utilization (model FLOPs utilization) in the 30–50% band, and fleet telemetry has measured datacenter-wide GPU utilization in the 30–40% range. That gap — the utilization tax — is where the real, bookable AI supply is hiding." />
+  <link rel="canonical" href="https://forum.omc.network/posts/the-utilization-tax-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/the-utilization-tax-2026" />
+  <meta property="og:title" content="The utilization tax: most AI compute you rent runs at 30–50%, and that's the bottleneck nobody counts (2026)" />
+  <meta property="og:description" content="A data-center GPU is billed as if it is always working. Public training disclosures put hardware utilization in the 30–50% band, and fleet telemetry has measured datacenter-wide GPU utilization in the 30–40% range. That gap is the utilization tax — and the cheapest supply to unlock." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"The utilization tax: most AI compute you rent runs at 30–50%, and that's the bottleneck nobody counts (2026)","datePublished":"2026-10-26","dateModified":"2026-10-26","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>The utilization tax: most AI compute you rent runs at 30–50%, and that's the bottleneck nobody counts (2026)</h1>
+        <p class="article-dek">This forum has spent a year locating the AI bottleneck — GPUs, then HBM, then power, then the building, then the package, then the water. The one that sits inside every one of those is quieter and more lucrative: most accelerators are <b>paid for at 100%</b> and <b>used at a fraction of it</b>. That gap is the utilization tax, and it is where the real, bookable supply is hiding.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 26, 2026</span><span>11 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>A data-center GPU is billed as if it were working every second. It rarely is. Public large-training disclosures put <b>hardware utilization — model FLOPs utilization, MFU — in the 30–50% band</b>: Google's PaLM reported roughly <b>46–47% MFU</b> on TPUs, and GPU clusters commonly land lower, in the mid-30s to low-40s; <b>datacenter-wide average GPU utilization measured by fleet telemetry has been reported in the 30–40% range across 2023–2025</b>. That is not "broken chips" — the tax is collected in three structural places: (1) <b>bursty, reservation-based workloads</b> leave capacity idle between jobs; (2) the math is <b>memory-bound</b>, so ALUs wait on HBM — decode runs near <b>1 FLOP per byte</b> against a balance point near <b>200</b>; (3) <b>scale-up overhead</b> (all-reduce, checkpointing, pipeline bubbles) grows with cluster size, so bigger runs lose more to coordination. The arithmetic is brutal: a fleet billed at 100% but running at 40% MFU delivers <b>40% of its theoretical tokens</b>. So when people say "there aren't enough GPUs," the precise claim is "there isn't enough <i>used</i> GPU-time" — and unlike a fab, that is fixable this quarter. It is also the Decentralized Compute thesis in one line: the world is short of <i>utilized</i> accelerators far more than it is short of accelerators, and the inventory that already exists — idle GPUs in offices, gaming rigs, workstations, small miners — is supply nobody has booked yet. (Disclosure: OMC runs a decentralized GPU network; the utilization point holds on the numbers regardless.)</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>利用率税：你租的 AI 算力大多只跑到 30–50%，而这是没人计入的瓶颈（2026）。<b>摘要：</b>数据中心 GPU 的计费方式仿佛它每分每秒都在干活——其实很少。公开的大型训练披露显示，<b>硬件利用率（模型 FLOPs 利用率，MFU）落在 30–50% 区间</b>：谷歌 PaLM 在 TPU 上报出约 <b>46–47% MFU</b>，GPU 集群通常更低，约三成多到四成初；<b>按车队遥测测得的全局平均 GPU 利用率，2023–2025 年多个报告落在 30–40%</b>。这不是"芯片坏了"——税是在三个结构性环节收走的：(1) <b>突发、按预留计费的负载</b>让算力在任务间隙空转；(2) 计算是<b>访存受限</b>的，ALU 在等 HBM——解码接近<b>每字节 1 FLOP</b>，而平衡点在<b>200</b>附近；(3) <b>横向扩展开销</b>（all-reduce、checkpoint、流水线气泡）随集群规模放大，越大规模的训练在协调上丢得越多。账很简单：一支按 100% 计费、实际 MFU 只有 40% 的机队，只交付<b>理论 token 的 40%</b>。所以人们说"GPU 不够"时，更准确的说法是"被<b>用上</b>的 GPU 时间不够"——而这和建晶圆厂不同，本季度就能改。这也是去中心化算力的核心论点：世界缺的是<b>被用起来的</b>加速器，远甚于缺加速器本身；已经存在的库存——办公室、游戏主机、工作站、小矿场里闲置的 GPU——是没人预订的供给。（披露：OMC 运营一个去中心化 GPU 网络；但利用率这一点不依赖该项目也成立。）</p>
+      </div>
+
+      <div class="article-body">
+        <p>This forum has a habit of finding the AI bottleneck one layer at a time. First GPUs, then HBM, then substations, then the building, then the package, then the water at the power plant. Every one of those is real. But they share a quiet common denominator that none of them names: a chip that exists, is powered, and is paid for is still not the same thing as a chip that is <i>doing work</i>. The gap between the two is the cheapest, largest, most ignored supply of AI compute there is.</p>
+        <p>This piece does the same thing the others did: separate two numbers that get quoted as one, find where the difference actually comes from, and work out what it does to the price you pay.</p>
+
+        <h2>What "utilization" actually measures — and why two numbers get confused</h2>
+        <p>The word gets used for at least three different things, and mixing them is how a 2× error enters a capacity plan. <b>GPU utilization</b> (often the SM-occupancy or DCGM metric) is the share of the chip's execution units that are busy at a sampled instant — commonly reported in the 50–70% range for actively running jobs. <b>Model FLOPs utilization (MFU)</b> is the harder number: actual floating-point ops delivered divided by the chip's theoretical peak, over a whole training run. Because of memory-bound phases and overhead, MFU is always far below the SM-occupancy number, and it is the one that decides your token throughput. Then there is <b>slot occupancy</b> — what fraction of reserved capacity is even running a job at all, before you ask how hard the chip inside is working.</p>
+        <p>A cluster can show 65% SM occupancy, 40% MFU, and 55% slot occupancy at the same time, and all three are true. Quoting the 65% as "how utilized we are" is the single most common way utilization gets oversold. The number that matters for supply is the product of all three, and it lands well under half.</p>
+
+        <h2>Three places the tax is collected</h2>
+        <p>The first is <b>burstiness</b>. Training and inference are not smooth rivers; they are waves. A reserved cluster sits idle between experiments, between checkpoints, between a batch finishing and the next one being staged. Reservation-based billing means you pay for the wave even during the trough. This is the largest, most struct&shy;ural leak, and it is pure scheduling — not physics.</p>
+        <p>The second is <b>memory-bound math</b>. A modern accelerator does on the order of 10<sup>14</sup> FLOP/s but moves bytes at a fraction of that. Decode — generating one token at a time — touches memory roughly once per FLOP, so it runs near <b>~1 FLOP per byte</b> against a hardware balance point near <b>~200</b>. The arithmetic units are literally waiting on HBM for most of every millisecond. This is the same wall the HBM deep-dive described, now expressed as idle ALUs rather than as a line item.</p>
+        <p>The third is <b>scale-up overhead</b>. The moment you train across hundreds or thousands of chips, you pay a coordination tax: all-reduce synchronizations, pipeline bubbles from imperfect micro-batching, and checkpoint stalls. Multiple published scaling studies show per-device efficiency <i>falling</i> as cluster size grows, because the communication and bubble cost grows faster than the extra compute helps. Bigger is not proportionally better, and the gap is paid in utilization.</p>
+
+        <h2>Why the headline "shortage" is mislabeled</h2>
+        <p>When an executive says "we cannot get enough GPUs," translate it carefully. A fleet billed at 100% but delivering 40% MFU is, for the purpose of tokens produced, a fleet that is 60% absent. Saying "we need more GPUs" when 60% of the existing ones are not producing is like saying "we need a bigger warehouse" when half the floor is empty. The constraint is <b>used GPU-time</b>, and used GPU-time is a function of software and scheduling, not of silicon.</p>
+        <p>This is why the same model that "needs" 25,000 H100s on one accounting can often be served with fewer, better-utilized devices on another. The difference is not the model. It is the tax.</p>
+
+        <h2>What this means for the price you pay</h2>
+        <p>Rent is quoted in <b>$/GPU-hour</b>, but value is delivered in <b>$/token</b> or <b>$/finished run</b>. The two diverge exactly by the utilization tax. A 40% MFU cluster charges you for 100% of the silicon and gives you 40% of the math; your effective $/token is 2.5× the theoretical floor. Two providers quoting the same $/hour can be 2× apart in $/token depending on how they schedule, and almost none of them print the MFU on the invoice.</p>
+        <p>For buyers, the practical move is unglamorous: ask for the utilization, not the rate. A lower $/hour on a 30%-MFU reservation can be a worse deal than a higher $/hour on a 50%-MFU one. The discount is in the utilization, and the utilization is the number nobody volunteers.</p>
+
+        <h2>The distributed inventory nobody has booked</h2>
+        <p>Here is where the editorial position of this site becomes relevant, and we state it plainly as a disclosure rather than sneaking it in. A decentralized GPU network's entire premise is that the shortage is one of <i>coordination</i>, not of hardware: there are millions of capable GPUs sitting in workstations, offices, gaming rigs and small mining rigs, used a few hours a day and idle the rest. Booking that idle time — already powered, already amortized, already cooled — is supply that requires no new fab, no new substation, no new packaging line. It does not replace frontier training clusters; it is the obvious place for the bursty, latency-tolerant, throughput-hungry middle of the market that is currently paying the full utilization tax on reserved hyperscale capacity.</p>
+        <p>The catch is real and worth naming: distributed supply is heterogeneous, harder to schedule, and higher-latency than a co-resident cluster. Pretending otherwise would be the kind of claim this forum exists to puncture. The point is narrower and stronger — the utilization tax proves there is far more usable compute than the "GPU shortage" headline implies, and the cheapest megawatts of AI capacity to unlock are the ones already humming in someone's office.</p>
+
+        <h2>The 2026 reality check</h2>
+        <p>State the soft spots. The single most important one: <b>MFU and "GPU utilization" are different metrics and are routinely quoted as if they were the same</b>, so any utilization claim needs the exact definition attached. Fleet-telemetry samples vary by who is measuring, what workloads are in the mix, and whether idle-but-reserved time counts as "used"; the 30–40% datacenter-wide figures trace to a small number of telemetry vendors and should be read as estimates, not measurements. The PaLM ~46–47% MFU is a real disclosure but it is TPUs and one model family, so it anchors the top of the band rather than defining it. What survives all the caveating is the structure, and it is robust: utilization is structurally far below 100%, the gap is large (often more than half), it is collected in predictable places, and it is the cheapest supply to unlock because it needs scheduling and software, not concrete. Re-check the current figures before you price anything, and when a provider quotes utilization, ask which of the three definitions they mean.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>Three different "utilizations."</b> SM occupancy (50–70% on live jobs), model FLOPs utilization / MFU (the one that sets token throughput, 30–50% on big runs), and slot occupancy (is the reserved capacity even running a job). Quoting the first as "how utilized we are" is the most common oversell.</li>
+            <li><b>The tax is collected in three places.</b> Bursty reservation-based scheduling leaves capacity idle between jobs; memory-bound math (decode ~1 FLOP/byte vs a ~200 balance point) leaves ALUs waiting on HBM; and scale-up overhead (all-reduce, checkpoint, pipeline bubbles) grows with cluster size, so bigger runs lose more.</li>
+            <li><b>100% billed ≠ 100% delivered.</b> A fleet at 40% MFU produces 40% of its theoretical tokens. "Not enough GPUs" is more precisely "not enough <i>used</i> GPU-time" — fixable with software and scheduling, not a new fab.</li>
+            <li><b>$/hour hides $/token.</b> Rent is quoted per GPU-hour but value is delivered per token; the two diverge by exactly the utilization tax. A 40%-MFU cluster's effective $/token is ~2.5× the theoretical floor, and the MFU rarely appears on the invoice.</li>
+            <li><b>The cheapest supply to unlock is already humming.</b> Idle GPUs in offices, workstations, gaming rigs and small miners are already powered, amortized and cooled — bookable without a fab, substation or packaging line. The hard parts are heterogeneity, scheduling and latency, not hardware.</li>
+            <li><b>Caveat the numbers.</b> MFU vs GPU-utilization gets conflated; fleet telemetry varies by vendor and workload mix; the ~46–47% PaLM figure is TPUs/one family and anchors the top of the band. The robust claim: utilization is structurally well below 100%, often by more than half.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/water-footprint-power-plant-2026"><i data-i18n="pager.prev">Previous</i>The 12x water multiplier: 92% of a data center's water footprint sits at the power plant →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
