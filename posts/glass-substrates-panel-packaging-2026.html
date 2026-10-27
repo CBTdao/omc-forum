@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>From wafers to panels: the glass substrate pivot, and who ships first (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="From wafers to panels: the glass substrate pivot, and who ships first (2026) — DCF">
+  <meta name="twitter:description" content="TSMC's June 2026 supply-chain plan tests 0.8mm glass cores at 5x reticle; Intel has had a working glass test chip since 2023; Absolics has a NIST-backed plant in Georgia. The next packaging wall may be made of glass — here is who is at what stage.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="TSMC released a Glass Substrate Development for CoWoS plan to its supply chain in June 2026, testing 0.8mm glass cores in 85x110mm 5x-reticle packages. Intel demonstrated a working glass test chip in 2023 and claims a 10x interconnect density path. Absolics runs the first dedicated plant under a NIST-backed $75M award. A stage-by-stage read of the next packaging wall." />
+  <link rel="canonical" href="https://forum.omc.network/posts/glass-substrates-panel-packaging-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/glass-substrates-panel-packaging-2026" />
+  <meta property="og:title" content="From wafers to panels: the glass substrate pivot, and who ships first (2026)" />
+  <meta property="og:description" content="Advanced packaging has been round because wafers are round. The 2026 glass substrate pivot — Intel's 2023 test chip, TSMC's June 2026 supply-chain plan, Absolics' Georgia plant — is the industry deciding that rectangles beat circles. Stage-by-stage, with the numbers each player has actually published." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"From wafers to panels: the glass substrate pivot, and who ships first (2026)","datePublished":"2026-10-27","dateModified":"2026-10-27","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>From wafers to panels: the glass substrate pivot, and who ships first (2026)</h1>
+        <p class="article-dek">Advanced packaging has been round for fifty years because wafers are round. The quiet pivot of 2026 is that the industry's largest players have all decided rectangles — large glass panels — are where the next doubling of package size lives. Intel demonstrated a working glass test chip in 2023 and claims a 10× interconnect density path. TSMC released a <b>Glass Substrate Development for CoWoS</b> plan to its supply chain in June 2026, testing 0.8mm glass cores in <b>85×110mm</b> five-reticle packages. Absolics runs the first dedicated plant, built on a NIST-administered <b>$75M</b> federal award. This is a stage-by-stage read of who has actually published what — and what a buyer should and should not conclude from it.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 27, 2026</span><span>11 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>The substrate is the last layer of the packaging stack, and organic (ABF) substrates are the layer that limits how big an AI package can get — warpage and flatness degrade as packages grow, which is the problem our <a href="/posts/cowos-packaging-wall-2026">CoWoS piece</a> ended on. <b>Glass</b> is the proposed replacement for the substrate core: Intel's September 2023 demonstration claims <b>10× interconnect density</b>, <b>50% less pattern distortion</b>, and support for packages up to <b>24×24 cm</b>, targeting a trillion transistors on a package by 2030. In <b>June 2026</b> TSMC issued its first public glass plan to the supply chain — partnering with Ibiden and Innolux, testing a <b>0.8mm glass core at 5× reticle (85×110mm)</b> with no severe warpage or delamination, and reporting versus organic: package warpage <b>improved 16%</b>, effective CTE <b>down 19%</b>, stiffness <b>up 31%</b>, power resistance <b>down 27%</b>, inductance <b>down 42%</b>. The TrendForce-sourced roadmap — <b>2026</b> equipment/material validation, <b>2027</b> pilot, <b>2H 2028</b> mass production for panel-level packaging (CoPoS), pure glass-core substrates <b>2030+</b> — is an analyst estimate, not a TSMC commitment. Absolics (SKC) is furthest on the merchant side: a Covington, Georgia plant under a <b>CHIPS award of up to $75M</b>, with first customer deliveries expected 2025 and capacity from 2027. Honest summary: the physics case is real and now has three independent industrial bets behind it; the volume timeline is 2027–2030 and everything before that is samples, pilots, and validation.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>从晶圆到面板：玻璃基板的转向，以及谁最先量产（2026）。<b>摘要：</b>封装栈的最后一层是基板，而有机（ABF）基板正是限制 AI 封装继续变大的那一层——封装越大、翘曲与平整度越难控制（上一篇 CoWoS 文章的结尾正是这个问题）。玻璃是提议中的替代芯层：英特尔 2023 年 9 月的演示声称互连密度可提升 <b>10 倍</b>、图案变形减少 <b>50%</b>、可支持最大 <b>24×24 厘米</b>的封装，目标 2030 年单封装 1 万亿晶体管。<b>2026 年 6 月</b>台积电首次向供应链公开《CoWoS 玻璃基板开发计划》——携手 Ibiden 与群创，测试 <b>0.8mm 玻璃芯、5 倍光罩（85×110mm）</b>封装，测试中未出现严重翘曲与分层；对比有机基板：封装翘曲改善 <b>16%</b>、有效热膨胀系数降低 <b>19%</b>、刚性提升 <b>31%</b>、供电电阻降低 <b>27%</b>、电感降低 <b>42%</b>。TrendForce 口径的路线图——<b>2026</b> 设备材料验证、<b>2027</b> 试产、<b>2028 下半年</b>面板级封装（CoPoS）量产、纯玻璃芯基板 <b>2030 年后</b>——是分析师估计，不是台积电官方承诺。商用侧走得最远的是 Absolics（SKC）：美国佐治亚州科文顿工厂，获 NIST 管理的 <b>7500 万美元</b> CHIPS 拨款支持，2025 年首批客户交付、2027 年起形成产能。诚实的结论：物理逻辑成立、且已有三家互相独立的产业押注；量产时间在 2027–2030，之前的一切都是样品、试产与验证。</p>
+      </div>
+
+      <div class="article-body">
+        <p>Three posts ago this series established that the binding constraint on AI compute had moved from chips to packages: reticle limits, then the ABF film under them. This post picks up exactly where that one ended, because the industry did too. When the packaging wall binds, the response is not to optimize the wall — it is to change the material the wall is made of. In 2026, all at once and after a decade of silence, three independent players put glass on the record.</p>
+        <p>The reason glass keeps coming up is a short list of physics properties, and every serious writeup agrees on it. Glass is dimensionally stable where organic laminate shrinks and warps; it is flat at a level organic packages cannot hold, which matters because lithography focus depth is set by flatness; it tolerates higher temperatures; and its stiffness lets a package carry far more silicon before it bends. Intel's announcement is the most quantified version of the claim, and it has held up as the reference numbers ever since.</p>
+
+        <h2>What Intel actually claimed in 2023 — and what it means</h2>
+        <p>Intel's September 2023 demonstration — a fully functional glass-substrate test chip, built on roughly a decade of internal research and more than a billion dollars of R&D line in Arizona — put four numbers on the table that trade press and an academic review have repeated consistently since: <b>up to 10× higher interconnect density</b> than today's organic substrates, <b>50% less pattern distortion</b> (which is what preserves lithography fidelity on a big, fine-pitch package), ultra-low flatness for better focus depth, and thermal/mechanical stability that permits much larger assemblies. Intel sized the opportunity in package terms: <b>50% more silicon per package</b>, with so-called "system-in-packages" as large as <b>24×24 cm</b>, and a roadmap framing of <b>one trillion transistors on a package by 2030</b>. Shipping was framed as "later this decade," with data-center and AI parts first.</p>
+        <p>Read those claims as what they are: a materials and dimensional argument, not a speed claim. Glass does not make transistors faster; it lets the <i>package</i> — the thing our CoWoS post showed is the actual rationing layer — keep growing when organic laminate gives up. That is why the numbers that matter downstream are dimensional: package area, interposer area, packages per wafer or per panel.</p>
+
+        <h2>The 2026 status board: who has published what</h2>
+        <p><b>TSMC</b> is the most consequential entry, because it already owns the packaging bottleneck. On <b>June 16, 2026</b> it released a "Glass Substrate Development for CoWoS" plan to its supply chain — its first public technical disclosure on glass — working with <b>Ibiden</b> (the ABF substrate incumbent) and <b>Innolux</b> (a panel-level display manufacturer). The published test data: a <b>0.8mm glass core</b> in a <b>5× reticle CoW configuration</b> measuring <b>85×110mm</b> — large-AI-GPU class — with no severe warpage or delamination observed. Against organic substrates, the disclosed test comparisons were package warpage improved <b>16%</b>, effective coefficient of thermal expansion <b>down 19%</b>, effective stiffness <b>up 31%</b>, and on power integrity, resistance <b>down 27%</b> and inductance <b>down 42%</b>. The strategic logic is panel-level packaging (branded CoPoS): move from round 300mm wafers to rectangular <b>310×310mm panels</b>, where square/rectangular packages waste far less area at the edges.</p>
+        <p><b>Absolics</b>, SKC's US subsidiary, is the furthest along the merchant path and — unusually for this industry — has a government paper trail anyone can read. The Commerce Department's CHIPS Program Office page records <b>up to $75M in direct funding</b> for a <b>120,000 sq ft</b> facility in Covington, Georgia, with <b>$343M in expected capital expenditure</b>, first customer deliveries expected <b>2025</b> and production capacity from <b>2027</b>. Korean trade reporting (ETNews, via multiple aggregators) puts the plant at ~<b>12,000 m²/year</b> and describes customer qualification discussions with AMD and AWS; treat both as reported rather than confirmed — the capacity figure and the customer list are single-upstream-sourced. At CES 2025 the company demonstrated glass-substrate packaging for AI data-center use with vendor claims (package thickness halved, faster data processing) that we note as marketing, not measurement.</p>
+        <p>The rest of the board, briefly: <b>Rapidus</b> (Japan) is developing square glass substrates for its 2nm chiplet strategy — Nikkei-reported dimensions of 30–100% more usable area and ~10× via density, again single-upstream. <b>Samsung Electro-Mechanics</b> operates a pilot line producing samples, with reported mass-production timing of 2027 or later. <b>Ibiden</b> — the company that benefits most from the ABF status quo — has glass-core R&D in its own 2023–2027 capex plan, which tells you the incumbent is not betting its existence on the status quo. And on the display side, <b>BOE</b> and <b>Corning</b> signed a three-year memorandum in May 2026 covering glass-based packaging substrates, one more sign that panel-manufacturing know-how is migrating from displays into packaging.</p>
+
+        <h2>The arithmetic: what 85×110mm means</h2>
+        <p>Now do the dimensional math, because it connects directly to the previous post. Our CoWoS piece showed that a 5.5×-reticle CoWoS-L interposer (~4,719 mm²) yields roughly <b>15 packages per 300mm wafer</b> on paper, and single digits once real yields bite. TSMC's published glass test vehicle is a <b>5× reticle package at 85×110mm ≈ 9,350 mm²</b> of package area. A 300mm wafer offers ~70,686 mm², so a round wafer fits at most <b>7</b> of these packages even with zero edge loss — and the corners a square package cannot use push that lower. On a 310×310mm panel (96,100 mm²), the same package fits <b>10</b> with materially less corner waste, and — the real point — the panel format is not the ceiling: the whole pitch of glass is that panels can keep getting bigger in a way round wafers cannot. (This division is ours, from the published areas; the published per-wafer yield figures in our previous post already showed how far paper area is from shipped units.)</p>
+        <p>The power-integrity numbers deserve their own sentence, because they are the least hyped and possibly the most consequential. Delivering hundreds of amps into a GPU package with minimal voltage droop is a substrate problem as much as a regulator problem, and TSMC's disclosed <b>27% lower resistance and 42% lower inductance</b> versus organic is exactly the improvement that makes co-packaged power and higher current density practical. Signal integrity benefits the same way — lower loss at high frequency is why the optical-integration crowd co-sponsors glass research. Warpage gets the headlines; power delivery may be the bigger engineering unlock.</p>
+
+        <h2>What could still kill it</h2>
+        <p>The failure mode is not physics, it is yield economics, and every credible analyst writeup converges on the same list. Glass is brittle: drilling tens of thousands of micron-scale through-glass vias (TGV) without micro-cracks, metallizing them reliably, and keeping large panels intact through high-temperature processing are all harder than the equivalents on organic laminate. One Chinese brokerage research note circulating in trade coverage put the bar plainly: panel-level yield needs to stabilize above roughly <b>95%</b> for costs to work — and no participant has published a yield number yet. That silence is informative. Intel's test chip was a demonstration, not a product; TSMC's June 2026 data is a validation experiment with partners, not a production commitment; and the widely-circulated 2026-validate/2027-pilot/2028-mass-produce sequence for CoPoS is TrendForce's reconstruction, not a TSMC press release. One careful analysis of TSMC's own comments noted that nothing in them commits a <i>specific</i> glass-core structure to production within any fixed window — TSMC is running a CoPoS pilot line and exploring substrates in parallel, which is what a company says when it is keeping options open.</p>
+        <p>There is also an obvious incumbency problem, and it is the mirror of the ABF story from our last post: Ajinomoto's film and the existing substrate makers do not disappear because a better material exists. The transition path that matters is hybrid — organic cores with glass interposers first, glass cores later — because that is the only ramp that reuses $billions of installed ABF capacity. Expect the marketing timeline and the deployment timeline to differ by years, exactly as CoWoS-L's did.</p>
+
+        <h2>Why a compute buyer should care</h2>
+        <p>Because every one of this series' bottlenecks — HBM stacks, reticle limits, the ABF film, transformer lead times, water — eventually turns into the same two numbers: how many accelerators can be built per year, and what each GPU-hour costs. Glass substrates are the industry's declared answer to the package-size half of that constraint. If the 2027 pilot and 2028 ramp land anywhere near the analyst timeline, the practical effects are: larger reticle-limit packages (more HBM stacks per accelerator, feeding directly into the HBM constraint from our earlier post), better power delivery per package, and — via panel economics — some relief on the packaging cost line that currently rations supply. If they slip, the 2026–2028 window stays CoWoS-bound and our packaging-wall post remains the accurate model.</p>
+        <p>The skeptical posture this forum takes on timelines applies fully here. Do not price 2028 panel capacity into anything today. Do read the June 2026 TSMC supply-chain plan as a signal that the largest foundry considers glass validation worth naming publicly — foundries do not publish partner validation programs for materials they have decided against. And note who is NOT waiting: Absolics is qualifying customers now, on US soil, with federal money behind the buildout. Distributed capacity models have a modest stake in this too — packaging cost and package-size ceilings set the economics of every compute node, whichever network it belongs to (omc.network).</p>
+
+        <h2>The 2026 reality check</h2>
+        <p>State the sourcing honestly. The Intel numbers — 10× interconnect density, 50% pattern distortion reduction, 24×24cm packages, 1T transistors by 2030, the decade of research and the Arizona line — come from Intel's own September 2023 announcement, reproduced consistently by PCMag, Chinese trade press, and a 2025 peer-reviewed review of glass substrates; they are claims by the party with the most to gain, not independent measurements. The TSMC June 2026 plan, its Ibiden/Innolux partnerships, the 0.8mm/5×-reticle/85×110mm test parameters and the 16/19/31/27/42 percent comparisons are consistently reported across TrendForce-sourced trade coverage (Securities Times, Ab-Semiconductor, and supply-chain recaps), but the underlying document went to TSMC's supply chain, not to the press — we are reading secondhand reports of a partner document. The 2026/2027/2H2028/2030+ roadmap is TrendForce's estimate and should be quoted as such. The Absolics facts that are solid — the $75M award, the facility, the capex, the delivery timeline — come from the NIST CHIPS Program Office page, a primary government source; the 12,000 m²/year capacity, the AMD/AWS qualification talks, and all Rapidus and Samsung Electro-Mechanics figures are single-upstream trade reporting, included here only with that label. The 95% yield bar is one brokerage's view. No yield figures from any participant were published as of this writing, and every production date in this piece is an estimate or a plan, not a booked schedule.</p>
+        <p>What survives the caveating is structural and unlikely to move: organic substrates are the size-limiting layer, glass is the only material with a quantified dimensional case to replace them, three independent industrial players have publicly staked 2026–2030 timelines on it, and the first volume-relevant milestones land in 2027. Everything else is a plan that can slip. Watch for exactly two signals in 2027: a TSMC pilot-line announcement with a named product, and an Absolics capacity figure confirmed by its customers. Everything before that is samples.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>The substrate is the last un-rationalized layer.</b> HBM, reticles and the ABF film were the earlier walls; organic substrate cores are the layer that limits package size next — warpage and flatness degrade as packages grow.</li>
+            <li><b>Intel's 2023 claim is still the reference numbers.</b> 10× interconnect density, 50% less pattern distortion, 50% more silicon per package, packages up to 24×24 cm, 1T transistors on a package by 2030 — a dimensional argument, not a speed claim.</li>
+            <li><b>TSMC went public in June 2026.</b> A supply-chain "Glass Substrate Development for CoWoS" plan with Ibiden and Innolux: 0.8mm glass core, 5× reticle, 85×110mm, no severe warpage; warpage −16%, CTE −19%, stiffness +31%, power resistance −27%, inductance −42% versus organic.</li>
+            <li><b>The roadmap is an estimate, not a commitment.</b> 2026 validation → 2027 pilot → 2H 2028 CoPoS mass production → 2030+ pure glass cores is TrendForce's reconstruction. TSMC has committed to no specific glass structure or date.</li>
+            <li><b>Absolics has the hardest paper trail.</b> NIST's CHIPS page: up to $75M, 120,000 sq ft in Covington GA, $343M capex, first deliveries 2025, capacity 2027 — the only player whose plant facts are a government primary source.</li>
+            <li><b>The dimensional math favors panels.</b> A 9,350 mm² package fits ~7 per 300mm wafer but ~10 per 310×310mm panel, with less corner waste — and panels, unlike wafers, can keep growing.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/water-footprint-power-plant-2026"><i data-i18n="pager.prev">Previous</i>The 12x water multiplier: 92% of a data center's water footprint sits at the power plant →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
