@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The fabric is the third bill: 800G ports, radix math, and the network that decides whether your GPUs finish (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The fabric is the third bill: 800G ports, radix math, and the network that decides whether your GPUs finish (2026) — DCF">
+  <meta name="twitter:description" content="A GPU has 1.8 TB/s of cable inside the rack and 100 GB/s of cable leaving it — a 9x cliff that every training job pays for. Inside 800G fabrics: radix math, two links per GPU, why Ethernet finally caught up, and what a GPU cloud should be asked about its network.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="NVLink 5 gives each GPU 1.8 TB/s inside the rack; a ConnectX-8 SuperNIC gives it 800 Gb/s — 100 GB/s per direction — outside it. That 9x cliff is why the network, not the GPU, sets cluster completion time. A buyer's read of 800G fabrics in 2026: radix arithmetic, why a two-tier fabric needs two links per GPU, what UEC 1.0 and Tomahawk 6 changed, and which fabric questions a GPU cloud should be able to answer." />
+  <link rel="canonical" href="https://forum.omc.network/posts/network-fabric-third-bill-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/network-fabric-third-bill-2026" />
+  <meta property="og:title" content="The fabric is the third bill: 800G ports, radix math, and the network that decides whether your GPUs finish (2026)" />
+  <meta property="og:description" content="Inside a rack, GPUs talk at 1.8 TB/s. Outside it, they talk at 100 GB/s per direction. Everything about AI cluster networking in 2026 — switch radix, optics, Ethernet versus InfiniBand, UEC 1.0 — follows from that single cliff." />
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"The fabric is the third bill: 800G ports, radix math, and the network that decides whether your GPUs finish (2026)","datePublished":"2026-10-29","dateModified":"2026-10-29","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>The fabric is the third bill: 800G ports, radix math, and the network that decides whether your GPUs finish (2026)</h1>
+        <p class="article-dek">This series has priced the accelerator, the memory, the package, the building, the water and the battery room. It has never priced the cables — which is odd, because the cables are where a training run spends its idle time. Inside one rack, an NVIDIA Blackwell GPU gets <b>1.8 TB/s</b> of bidirectional NVLink; the moment traffic leaves that rack it gets <b>800 Gb/s</b> from a ConnectX-8 SuperNIC, or <b>100 GB/s per direction</b>. That is a <b>9x</b> cliff, and every collective operation in a training job walks off it. What follows is the arithmetic of the layer that connects the expensive parts: switch radix and cluster size, the two-links-per-GPU rule, why Ethernet finally became credible here, and what a GPU buyer should demand to know about a fabric before signing.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 29, 2026</span><span>11 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>AI clusters run <b>two networks</b>, and they differ by an order of magnitude. <b>Scale-up</b> stays inside the rack: fifth-generation NVLink gives each GPU <b>1.8 TB/s</b> bidirectional across 18 links of 100 GB/s, and a GB200 NVL72 turns 72 GPUs into a <b>130 TB/s</b> domain (NVIDIA documents domains up to 576 GPUs at ~1 PB/s). <b>Scale-out</b> leaves the rack: one 800 Gb/s SuperNIC per GPU, i.e. <b>100 GB/s per direction</b> — roughly <b>9x</b> less than the cable inside the box. Everything else is consequence. Switch <b>radix</b> sets cluster size: a non-blocking two-tier fabric supports about N²/2 endpoints for an N-port switch, so NVIDIA's 144-port 800G Quantum-X800 covers ~<b>10,400</b> GPUs and Broadcom's 512-port 200G Tomahawk 6 covers ~<b>131,000</b> — matching Broadcom's own "100,000+ XPUs in two tiers" claim. That fabric costs <b>two links per GPU</b> (one down, one up), which is the optics bill nobody itemizes. In 2026 the protocol war cooled: <b>UEC 1.0</b> shipped June 11, 2025, Tomahawk 6 shipped at <b>102.4 Tbps</b>, and NVIDIA now sells both InfiniBand and Ethernet fabrics from the same rack. The buyer's question is no longer IB-or-Ethernet; it is <b>what is the bisection bandwidth per GPU, and is the fabric yours alone</b>.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>网络是第三张账单：800G 端口、radix 算术，以及决定你的 GPU 能不能跑完的那张网（2026）。<b>摘要：</b>AI 集群有两张网，差一个数量级。<b>纵向扩展（scale-up）</b>不出机柜：第五代 NVLink 给每颗 GPU <b>1.8 TB/s</b> 双向带宽（18 条链路 ×100 GB/s），GB200 NVL72 把 72 颗 GPU 连成 <b>130 TB/s</b> 的单域（NVIDIA 文档称 NVLink 域可扩至 576 颗 GPU、约 1 PB/s）。<b>横向扩展（scale-out）</b>出机柜：每颗 GPU 配一块 800 Gb/s 网卡，即<b>每方向 100 GB/s</b>，比机柜内的线缆低约 <b>9 倍</b>。其余全是推论。交换芯片的 <b>radix（端口数）</b>决定集群规模：无阻塞两层网络约可支撑 N²/2 个端点，因此 NVIDIA 144 端口 800G 的 Quantum-X800 约支持 <b>1.04 万</b> 颗 GPU，博通 512 端口 200G 的 Tomahawk 6 约支持 <b>13.1 万</b>——与博通自己「两层 10 万+ XPU」的说法吻合。这张网需要<b>每 GPU 两条链路</b>（一上一下），这就是没人细算的光模块账单。2026 年协议之争降温：<b>UEC 1.0</b> 于 2025-06-11 发布，Tomahawk 6 以 <b>102.4 Tbps</b> 出货，NVIDIA 从同一个机柜里同时卖 InfiniBand 和以太网两套网。买家的正确问题已不是「IB 还是以太网」，而是<b>每 GPU 的二分带宽是多少、这张网是不是你独占</b>。</p>
+      </div>
+
+      <div class="article-body">
+        <p>Every post in this series has circled the same question from a different side: what actually limits an AI cluster? We found the GPU, the HBM stack, the interposer, the rack's heat, the substation, the water at the plant, the battery room behind the transfer switch, and finally the fraction of rented accelerators that sit idle. This one goes after the layer all of those depend on and none of them mentions: the network that turns a pile of servers into one machine. It is the least glamorous line item on an AI cluster's bill and, in a training job, the one that decides the invoice.</p>
+        <p>The reason is structural. A single GPU generating tokens is a self-contained device — nine tenths of <a href="/posts/inference-is-the-real-compute-bill">the inference bill</a> happens inside it. A thousand GPUs training a model are not a thousand devices; they are one device that argues. Every gradient all-reduce, every expert routing decision, every pipeline stage handoff is a conversation, and the conversation runs at whatever the slowest link in the room allows. When people quote model FLOPs utilization of 40% on a large training run, the missing 60% is not all silicon: a meaningful share of it is GPUs waiting for bytes.</p>
+
+        <h2>Two networks, one 9x cliff</h2>
+        <p><b>Scale-up is the network inside the rack, and it is deliberately absurd.</b> NVIDIA's fifth-generation NVLink gives each Blackwell GPU 18 links of 100 GB/s, for <b>1.8 TB/s bidirectional</b> — the company's own technical writeup puts that at over 14x the bandwidth of PCIe Gen5. Fifty-two such GPUs in a GB200 NVL72 become a single NVLink domain with <b>130 TB/s</b> of aggregate GPU-to-GPU bandwidth, which is the hardware behind the "the rack is one GPU" claim; the same documentation describes NVLink domains scaling to 576 GPUs at roughly 1 PB/s of aggregate bandwidth. That is what it costs to make tensor parallelism behave like it lives on one die.</p>
+        <p><b>Scale-out is the network between racks, and it is a different product category.</b> Each Blackwell GPU leaves the rack through a ConnectX-8 SuperNIC at <b>800 Gb/s</b>. In the units that matter for a collective, that is <b>100 GB/s in each direction</b> — about <b>9x</b> less than the 900 GB/s per direction NVLink offers. This is not a cost-cutting oversight; it is physics plus economics. Copper reaches a couple of metres at these rates, optics cost money and burn power, and a fat-tree that gives every GPU a full 1.8 TB/s of cross-rack bandwidth would cost more than the GPUs. So the industry picked a number: 400G per GPU in the Hopper generation, 800G per GPU in Blackwell Ultra, and a design pattern — keep as much traffic as possible inside the rack — that every scheduler now assumes.</p>
+        <p>The practical consequence is the thing worth internalizing: <b>the fabric does not slow your cluster down proportionally, it slows it down where the topology is thin.</b> Tensor-parallel layers that fit inside an NVLink domain run at NVLink speed. Pipeline stages, data-parallel gradient exchanges and expert-parallel routing cross the 9x cliff, and their cost is set by how many of those crossings your parallelism strategy creates. That is why "we have 8,000 GPUs" says almost nothing on its own, and why the same 8,000 GPUs can deliver wildly different throughput per dollar depending on whether the model was sharded to keep hot traffic rack-local.</p>
+
+        <h2>Radix math: your switch's port count is your cluster's ceiling</h2>
+        <p>Cluster size is not limited by GPUs, racks or power — it is limited by how many ports a switch chip has. A non-blocking two-tier fabric (leaf switches connected to spine switches, half the ports down, half up) supports roughly <b>N²/2 endpoints</b> for an N-port switch; add a third tier and the exponent goes up again. Run the numbers on 2026 shipping silicon and a pattern appears.</p>
+        <p>NVIDIA's Quantum-X800 InfiniBand switch carries <b>144 ports at 800 Gb/s</b> — 115 Tb/s of switching capacity in one box, which the company's own material describes alongside hardware SHARPv4, adaptive routing and telemetry-based congestion control. At 144 ports, a two-tier non-blocking fabric tops out near <b>10,400 GPUs</b>. Broadcom's Tomahawk 6 is the other end of the same curve: <b>102.4 Tb/s</b> in a single chip, which at 200 Gb/s per link is <b>512 ports</b>, and 512²/2 ≈ <b>131,000</b> endpoints — consistent with Broadcom's own claim of "100,000+ XPUs in a two-tier scale-out network at 200 Gbps/link" and its stated 512-XPU scale-up domain. Higher radix is not a spec-sheet vanity number; it is the difference between needing two tiers and needing three, and every tier adds switches, optics, latency and failure domains.</p>
+        <p>Now the part that never appears in a GPU cloud's pricing page. In that two-tier fabric, each endpoint consumes one downlink and one uplink — <b>two links per GPU</b>. For 10,400 GPUs that is about <b>20,800 links</b>, each terminated at both ends, plus the switch count that goes with it (roughly 144 leaves and 72 spines at 144-port radix, by our arithmetic). Inside a rack those links can be copper; across rows they must be optics, and optics are where the network's power and failure budget goes. When a provider quotes you $/GPU-hour, some of that number is transceivers — and when a provider quotes a suspiciously low number, the first thing to check is whether the fabric is oversubscribed, because a 3:1 oversubscribed fabric is a cheaper network that shows up as slower training, not as a line item.</p>
+
+        <h2>Why Ethernet became credible here — and why InfiniBand did not go away</h2>
+        <p>For most of the last decade the answer to "what fabric for AI training" was InfiniBand, for one reason: it is lossless by design, with credit-based flow control, so a congested link applies backpressure instead of dropping packets. Ethernet's answer was to bolt losslessness on top — priority flow control, ECN marking, RoCEv2 — and tune it, which worked, but made the network an operational project rather than a purchase.</p>
+        <p>2025 was the year that changed on paper. The <b>Ultra Ethernet Consortium released Specification 1.0 on June 11, 2025</b>, a full stack spanning transport, congestion control, link and physical layers, explicitly aimed at multi-vendor interoperability rather than one vendor's dialect of RDMA. Two weeks earlier, on <b>June 3, 2025</b>, Broadcom announced it was shipping <b>Tomahawk 6</b> at 102.4 Tb/s — the first single chip past 100 Tb/s — with UEC compliance, support for Clos, rail-only, rail-optimized and torus topologies, and a co-packaged-optics variant. NVIDIA, which sells the incumbent, now sells both: Quantum-X800 for InfiniBand and Spectrum-X at 800 Gb/s per port for Ethernet, the latter with a proprietary claim worth flagging as a vendor claim rather than a measurement — <b>95% data throughput at scale versus roughly 60% for standard Ethernet</b>, attributed to congestion control and adaptive routing rather than to the wire.</p>
+        <p>Two projections are frequently quoted as if they were results, and both deserve their labels. <b>Dell'Oro Group</b> projects that Ethernet will surpass InfiniBand in AI back-end networks by <b>2027</b> (its January 2025 AI networks report, cited by Nokia among others). <b>451 Research</b> expects more than <b>40%</b> of AI-enabled data centers to adopt Ethernet-based AI fabrics by 2027. Both are analyst forecasts about a market that is being decided cluster by cluster, and both are directionally consistent with what vendors are shipping — but a forecast is not a deployment. The honest 2026 statement is narrower and more useful: <b>the protocol argument has stopped being a capability argument and become an operations argument</b>. If your team already runs Ethernet with a mature automation stack, a UEC-shaped fabric is now a defensible choice; if your job is a single very large training run and you can afford the specialty, InfiniBand's maturity still buys something real.</p>
+
+        <h2>The optics bill, and why the topology moved it</h2>
+        <p>The quiet architectural change in AI data centers is that the first tier of switching left the rack. In a CPU-era hall, top-of-rack switches sat beside the servers and copper did the work. In an AI hall the leaf switch moved to the end of the row, because the compute trays are too dense and too liquid-cooled to host it — and that move converts short copper runs into long optical ones, at both the NIC end and the switch end. NVIDIA's own engineering writeup makes exactly this argument: the topology shift is what makes optics mandatory rather than optional, and therefore what makes optical power a first-order cluster cost.</p>
+        <p>Which is why co-packaged optics became the 2026 battleground. Putting the optical engine in the same package as the switch removes the pluggable module, the electrical path to it, and a chunk of the signal conditioning. NVIDIA claims its photonics switches deliver <b>3.5x</b> better power efficiency and <b>10x</b> better resiliency than traditional pluggable designs, and quantifies the mechanism as reducing electrical signal loss from about <b>22 dB to roughly 4 dB</b>. Broadcom's third-generation CPO part, Tomahawk 6 – Davisson, claims a <b>70%</b> reduction in optical interconnect power — "more than 3.5x lower than traditional pluggable solutions" — at 102.4 Tb/s of optically enabled switching. Treat all three as vendor claims from parties selling the alternative, and treat the direction as settled anyway: at 800G per port and two links per GPU, optics are no longer a rounding error on a cluster's power budget, and the companies that make both the switch and the laser are competing on exactly that line.</p>
+
+        <h2>What to ask before you rent or build</h2>
+        <p>If you rent GPU capacity, the fabric is the part of the product you cannot see and the part most likely to be quietly degraded. Five questions cover it. <b>One:</b> what is the per-GPU scale-out bandwidth — 400G, 800G, or PCIe-attached afterthought? <b>Two:</b> what is the oversubscription ratio between tiers, and is the advertised number the bisection bandwidth or the marketing one? <b>Three:</b> is the fabric InfiniBand or Ethernet, and if Ethernet, is it UEC-shaped or hand-tuned RoCE with a single engineer who understands the ECN config? <b>Four:</b> is the fabric isolated per tenant, or shared with neighbours whose incast patterns will show up as your tail latency? <b>Five:</b> what topology — rail-optimized, Clos, torus — and does the scheduler know it?</p>
+        <p>If you are building, the arithmetic from earlier is the whole design review: pick your switch radix, compute N²/2, decide whether that number is above or below your target cluster, and count two links per GPU before you approve the optics BOM. A cluster that is one tier short is not a cluster that runs 10% slower; it is a cluster whose largest jobs do not fit at all. And if you are running a single GPU at home — the <a href="/posts/cloud-gpu-vs-home-gpu-tco">home-lab TCO case</a> — your east-west traffic bill is exactly zero, which is the structural reason one machine is superb at inference and hopeless at training. The fabric is what you buy when you stop being one machine.</p>
+        <p>Worth saying plainly for anyone sizing a distributed network of smaller nodes rather than a single monolith: the 9x cliff is the argument for both architectures at once. Rack-scale domains win on training because they keep the hot traffic on NVLink; geographically spread capacity wins on inference because inference has almost no east-west traffic to lose. Distributed compute networks inherit the second case and inherit its weakness — a node without adequate interconnect is fine for a request and useless for a gradient (omc.network). Neither architecture escapes the arithmetic; they just sit on different sides of the cliff.</p>
+        <p>The wider point is the one this series keeps arriving at from new directions. In 2026 the constraint on AI compute is a stack of coupled ceilings — power, package, memory, water, utilization — and the network is the ceiling that is easiest to hide, because it has no spec sheet on a purchase order. GPUs are advertised in units of GPUs. Clusters should be advertised in units of bisection bandwidth per GPU, and almost none of them are.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>Two networks, and they differ by ~9x.</b> NVLink 5 gives each Blackwell GPU 1.8 TB/s bidirectional inside the rack (18 links × 100 GB/s, 130 TB/s per NVL72, domains to 576 GPUs); a ConnectX-8 SuperNIC gives it 800 Gb/s — 100 GB/s per direction — outside it.</li>
+            <li><b>Port count sets cluster size.</b> A non-blocking two-tier fabric supports about N²/2 endpoints: 144-port 800G Quantum-X800 ≈ 10.4k GPUs, 512-port 200G Tomahawk 6 ≈ 131k, matching Broadcom's own "100,000+ XPUs in two tiers".</li>
+            <li><b>Two links per GPU is the hidden bill.</b> Every endpoint needs a downlink and an uplink; at 144-port radix a 10.4k-GPU fabric costs ~20.8k links plus ~216 switches — and once the leaf leaves the row, most of those links are optics.</li>
+            <li><b>The protocol war cooled into an operations argument.</b> UEC 1.0 shipped 2025-06-11; Tomahawk 6 shipped 102.4 Tb/s on 2025-06-03 with UEC compliance; NVIDIA sells both InfiniBand and Ethernet. Dell'Oro's "Ethernet overtakes IB by 2027" is a forecast, not a result.</li>
+            <li><b>Oversubscription is where cheap GPU-hours hide.</b> A 3:1 fabric is a cheaper network that appears as longer jobs, not a lower invoice — ask for bisection bandwidth per GPU and tenant isolation, not just "800G".</li>
+            <li><b>The cliff explains both architectures.</b> Rack-scale domains win training because hot traffic stays on NVLink; spread-out capacity wins inference because inference barely has east-west traffic. Neither escapes the arithmetic.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/backup-power-ten-seconds-2026"><i data-i18n="pager.prev">Previous</i>The ten seconds that decide an outage: UPS, gensets, and why power still leads the downtime bill (2026) →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
