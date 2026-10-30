@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The checkpoint tax: 419 interruptions, 6.5 TB per save, and why storage sets the training bill (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The checkpoint tax: 419 interruptions, 6.5 TB per save, and why storage sets the training bill (2026) — DCF">
+  <meta name="twitter:description" content="Meta's 405B run took 419 unexpected interruptions in 54 days — one every 3.1 hours. At that failure rate, Young/Daly says the optimal checkpoint interval is about 13 minutes and the unavoidable overhead is 7.3% of wall clock. What that costs in terabytes, GB/s and GPU-hours.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="A 405B model needs about 16 bytes per parameter of training state — roughly 6.5 TB per full checkpoint. Meta's Llama 3 run recorded 419 unexpected interruptions in 54 days, one every 3.1 hours, of which 30.1% were faulty GPUs and 17.2% HBM3 faults. Run those two numbers through the Young/Daly checkpoint model and the optimal interval is ~13 minutes with a 7.3% floor on lost wall clock — about 1.55 million GPU-hours on a 16,384-GPU cluster. The storage layer, not the GPU, sets that bill." />
+  <link rel="canonical" href="https://forum.omc.network/posts/training-checkpoint-tax-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/training-checkpoint-tax-2026" />
+  <meta property="og:title" content="The checkpoint tax: 419 interruptions, 6.5 TB per save, and why storage sets the training bill (2026)">
+  <meta property="og:description" content="Failure rates set your checkpoint cadence, and checkpoint cadence sets how much of a training run you pay for twice. The arithmetic of 419 interruptions, 6.5 TB checkpoints and the 7.3% floor nobody quotes in a GPU-hour price.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"The checkpoint tax: 419 interruptions, 6.5 TB per save, and why storage sets the training bill (2026)","datePublished":"2026-10-30","dateModified":"2026-10-30","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>The checkpoint tax: 419 interruptions, 6.5 TB per save, and why storage sets the training bill (2026)</h1>
+        <p class="article-dek">This series has priced the accelerator, the memory, the package, the network, the rack's heat, the substation and the battery room. It has never priced the thing that decides how much of a training run you pay for <i>twice</i>: the checkpoint. Meta's Llama 3 405B run recorded <b>419 unexpected interruptions in 54 days</b> — one every <b>3.1 hours</b> across 16,384 H100s — and each one is paid for in re-done work plus the bandwidth to reload it. A 405B model in mixed-precision Adam carries about <b>16 bytes per parameter</b>, which makes one full checkpoint roughly <b>6.5 TB</b>. Those two numbers, plus one equation from 1970s supercomputing, give the whole bill: an optimal interval near <b>13 minutes</b> and an unavoidable overhead of about <b>7.3%</b> of wall clock.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 30, 2026</span><span>12 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>Every serious training run is a bet that hardware will fail less often than it saves. Meta published the losing side of that bet: <b>466 job interruptions in 54 days</b> on the Llama 3 405B pretraining run, of which <b>419 were unexpected</b> — 30.1% faulty GPUs, 17.2% HBM3 faults, 12.9% software bugs, 8.4% switches and cables — while still claiming <b>over 90% effective training time</b>. Two numbers follow. <b>One:</b> the checkpoint itself. A 405B model in bf16 with fp32 master weights and two Adam moments is <b>16 bytes per parameter</b>, so a full save is about <b>6.48 TB</b>; writing that in 30 seconds needs <b>216 GB/s</b> of aggregate storage bandwidth, which is why every serious lab writes asynchronously to host memory first. <b>Two:</b> the cadence. Young and Daly's classical result gives the interval that minimises total lost work as <b>√(2 × save cost × MTBF)</b>; at Meta's measured 3.1-hour cluster MTBF and a 30-second save, that is <b>~13.6 minutes</b>, with a floor of <b>7.3%</b> of wall clock spent on saving and re-doing — about <b>1.55 million GPU-hours</b> on a 16,384-GPU run. The storage layer, not the GPU, sets that bill, and almost no GPU-hour price quotes it.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>检查点税：54 天 419 次中断、每次 6.5 TB，以及为什么训练账单由存储层决定（2026）。<b>摘要：</b>每一个严肃的训练任务都在赌「硬件故障比 checkpoint 更慢」。Meta 公布了赌输的那一面：Llama 3 405B 预训练 <b>54 天</b>内共 <b>466 次</b>任务中断，其中 <b>419 次为意外中断</b>——30.1% 是 GPU 本身故障、17.2% 是 HBM3 故障、12.9% 是软件 bug、8.4% 是交换机与线缆——但仍宣称有效训练时间 <b>超过 90%</b>。由此得到两个数字。<b>其一，检查点本身：</b>405B 模型在 bf16 权重 + fp32 master + 两个 Adam 动量下约需 <b>每参数 16 字节</b>，一次完整保存约 <b>6.48 TB</b>；要在 30 秒内写完需要 <b>216 GB/s</b> 的聚合存储带宽，这就是所有团队都先异步落内存再落盘的原因。<b>其二，保存节奏：</b>Young/Daly 经典公式给出总损失最小的间隔为 <b>√(2 × 保存成本 × MTBF)</b>；按 Meta 实测的 3.1 小时集群 MTBF、30 秒保存成本计算，最优间隔约 <b>13.6 分钟</b>，而「保存 + 重算」的损失下限是墙钟时间的 <b>7.3%</b>——在 16,384 卡的训练里约等于 <b>155 万 GPU 小时</b>。这笔钱由存储层决定，而几乎没有哪个 GPU 小时报价把它写进价目表。</p>
+      </div>
+
+      <div class="article-body">
+        <p>There is a category of cost in AI infrastructure that survives every architecture argument: work you did once, lost because a component failed, and work you did again to get back to where you were. It is not captured by FLOPS, by utilization percentages, or by the $/GPU-hour on a rental page. It is captured by two numbers that most operators never publish — how often their cluster drops a job, and how long it takes to write and reload the model's entire state.</p>
+        <p>Meta published both, indirectly, in the Llama 3 paper. The 405B pretraining run used 16,384 H100 80GB GPUs and, over a 54-day snapshot, logged <b>466 job interruptions</b>: 47 planned (firmware upgrades, operator-initiated config changes) and <b>419 unexpected</b>. That is <b>7.8 unplanned interruptions per day</b>, or one every <b>3.1 hours</b> cluster-wide by our division — the number Data Center Dynamics headlined as "one failure every three hours". The paper's own framing is worth keeping: the synchronous nature of training means a single GPU failure may require restarting the entire job.</p>
+
+        <h2>What breaks, measured</h2>
+        <p>The root-cause table is the most useful artifact in the paper for anyone buying compute, because it is a public fleet-scale failure census for H100-class hardware. Of the 419 unexpected interruptions, <b>faulty GPUs</b> accounted for <b>148 (30.1%)</b> and <b>GPU HBM3 memory</b> for <b>72 (17.2%)</b> — together more than half. Software bugs were <b>54 (12.9%)</b>, network switches and cables <b>35 (8.4%)</b>, unplanned host maintenance <b>32 (7.6%)</b>, GPU SRAM <b>19 (4.5%)</b> and the GPU system processor <b>17 (4.1%)</b>. The rest is a long tail in single digits: NICs, NCCL watchdog timeouts, silent data corruption, thermal-interface and sensor faults, SSDs, power supplies. Meta attributes about <b>78%</b> of all unexpected interruptions to confirmed or suspected hardware.</p>
+        <p>Two details in that table should change how you think about redundancy. First, <b>HBM is the second-largest single cause and it is not a "GPU died" event</b> — memory faults are often silent until they are not, which is why the same table lists six cases of <b>silent data corruption</b>. A cluster that only monitors "is the GPU present" misses a fifth of its interruptions. Second, the whole category of <b>switches and cables (8.4%)</b> is larger than every host component combined: CPU, system memory, SSD and power supply together account for roughly ten events in 54 days. The failures cluster where the bandwidth is, which is consistent with the fabric post in this series — the network is not a passive cable, it is a component with its own failure rate.</p>
+        <p>The historical comparison is the one everyone quotes for a reason. OPT-175B, trained on 992 A100s in 2022, recorded "<b>at least 35 manual restarts and the cycling of over 100 hosts</b> over the course of 2 months", with the authors estimating <b>70+ automatic restarts</b> on top. Two years and one hardware generation later, Llama 3 had 16.5x the GPUs and lost <b>three</b> interruptions to manual intervention, with the rest handled by automation. The failure count went up with scale; the human cost went down. That is the actual progress in the last three years of AI infrastructure, and it is invisible in any GPU spec sheet.</p>
+
+        <h2>A checkpoint is 16 bytes per parameter</h2>
+        <p>Reloading from "the last saved checkpoint" only works if saving is cheap enough to do often, so the first number to compute is how big the thing is. Mixed-precision Adam is the standard recipe and it multiplies the parameter count by a constant that surprises people: <b>2 bytes</b> for the bf16 weight, <b>2</b> for the bf16 gradient, <b>4</b> for the fp32 master copy the optimizer actually updates, and <b>4 + 4</b> for Adam's two moments — <b>16 bytes per parameter</b>, or 112 GB for a 7B model. For 405B parameters that is <b>6.48 TB per full checkpoint</b>, before activations, before any sharded replication, and before the two or three previous checkpoints you keep so a corrupted save does not end the run.</p>
+        <p>Now convert that into the only unit that matters operationally: bandwidth. Writing 6.48 TB in <b>30 seconds</b> requires <b>216 GB/s</b> of aggregate write throughput. Spread across 16,384 GPUs that is a modest <b>13.2 MB/s per GPU</b> — the per-GPU number is trivially small, which is exactly why people assume checkpointing is free. It is not free, because 216 GB/s is a <b>storage cluster</b> problem, not a node problem: it is roughly the aggregate bandwidth of several thousand NVMe drives behind a parallel filesystem, and it has to be provisioned for a burst that happens every fifteen minutes and lasts half a minute. Storage sized for the average is storage that stalls the most expensive computers on earth.</p>
+        <p>Which is why every serious stack does the same two things. It writes <b>asynchronously</b>: the GPUs dump state to host memory in a fraction of the time, training resumes, and the write to the parallel filesystem completes in the background — the technique every current framework advertises, and the reason published save costs are measured in tens of seconds rather than minutes. And it <b>reloads fast</b>: an operational study of a 504-GPU pretraining cluster published this year measures checkpoint save durations of <b>18.0 s</b>, <b>31.7 s</b> and <b>30.0 s</b> across its three training phases by counting consecutive NFS write-spike samples — independent confirmation that a small cluster's save cost lands in the same tens-of-seconds range that the arithmetic above assumes for a much larger one.</p>
+
+        <h2>The interval is an equation, and it has an answer</h2>
+        <p>Given a save cost and a failure rate, how often should you save? This was solved for supercomputers decades ago and the answer — the <b>Young/Daly</b> result — is now standard in LLM infrastructure papers: the optimal interval is <b>√(2 × δ × M)</b>, where δ is the cost of one checkpoint and M is the mean time between failures. At that interval the time spent saving equals the time spent re-doing work, and the minimum fraction of wall clock lost is <b>√(2δ/M)</b>. Everything about checkpoint strategy follows from that square root, including its mercy: because the loss scales as the root, a failure rate a hundred times worse only costs ten times the overhead.</p>
+        <p>Plug in Meta's fleet. M = 3.09 hours = <b>11,124 seconds</b>; a well-engineered 405B save costs δ = <b>30 seconds</b>. The optimal interval is √(2 × 30 × 11,124) = √667,440 ≈ <b>817 seconds, or about 13.6 minutes</b>. At that cadence the run spends 30/817 ≈ <b>3.7%</b> of wall clock writing checkpoints and 817/(2 × 11,124) ≈ <b>3.7%</b> re-doing work after a failure — a <b>7.3% floor</b> that no amount of engineering removes, only trades between the two terms. Snapshot 405B pretraining at 21.2 million GPU-hours (16,384 GPUs × 1,296 hours, our multiplication) and 7.3% is <b>1.55 million GPU-hours</b> spent on saving and re-doing rather than learning. Price that at whatever $/GPU-hour you rent at; the point is that it is not a rounding error.</p>
+        <p>The reason this is worth stating as arithmetic rather than anecdote is that the same equation explains why most real clusters are misconfigured in the same direction. In that 504-GPU study, the operator's actual intervals were <b>133.5, 199.0 and 81.5 minutes</b> against theoretical optima of <b>44.9, 59.7 and 58.1 minutes</b> — roughly 3x too sparse in two phases and 1.4x in the third. The measured cost of that conservatism: total overhead of <b>2.20%</b>, <b>3.22%</b> and <b>1.82%</b> of wall clock, with save overhead itself never exceeding <b>0.61%</b>. Their conclusion is the counterintuitive one worth stealing: because a save is cheap, saving <i>more</i> often is nearly free, and the expensive mistake is saving too rarely. Their mean lost time per abnormal termination was <b>0.98 hours</b> across 23 events — about an hour of 504 GPUs, thrown away and recomputed, per crash.</p>
+
+        <h2>The checkpoint is also a power event</h2>
+        <p>There is a second bill, and it lands on the utility rather than the storage vendor. Meta's paper describes what happens when tens of thousands of GPUs stop together: "when tens of thousands of GPUs may increase or decrease power consumption at the same time, for example, due to all GPUs waiting for checkpointing or collective communications to finish, or the startup or shutdown of the entire training job... it can result in instant fluctuations of power consumption across the datacenter on the order of <b>tens of megawatts</b>, stretching the limits of the power grid." Checkpointing appears in that sentence as a <i>cause of a grid event</i>, on equal footing with starting a job.</p>
+        <p>The workaround the industry converged on is telling: SemiAnalysis, reading the same disclosure alongside a 2025 Microsoft/OpenAI/NVIDIA paper on power stabilization, reports that engineers built a switch literally named <code>pytorch_no_powerplant_blowup=1</code> that injects dummy work to smooth the draw — and that at gigawatt scale the wasted energy from that smoothing runs into tens of millions of dollars a year. The same source puts Meta's 24,000-H100 cluster at roughly <b>30 MW</b> of IT capacity, which is the scale at which "save the model" becomes a substation problem. This is the same coupling the backup-power post in this series described from the other end: the building is sized for a load that changes in under a second, and the training loop is what changes it.</p>
+
+        <h2>Five questions for anyone selling you time on a cluster</h2>
+        <p>If you rent long-running training capacity — reserved, spot, or "we'll schedule it for you" — the checkpoint regime is part of the product, and it is usually undisclosed. <b>One:</b> what is the cluster's job-stopping MTBF, measured rather than marketed, and over what fleet size? A number without a denominator is a slogan. <b>Two:</b> what is the checkpoint save cost for a model of my size, and is it synchronous or host-memory-buffered? <b>Three:</b> what aggregate write bandwidth does the storage tier actually deliver during a burst, and is it shared with other tenants who checkpoint on the same schedule? <b>Four:</b> what is the preemption notice on spot capacity, and does my restart pay a full re-load or a warm one? This is where the <a href="/posts/reserved-vs-spot-gpu-spread">reserved-versus-spot spread</a> is really decided — a cheap preemptible GPU with a 20-minute reload is not cheap. <b>Five:</b> how is "effective training time" defined, and does it include the re-done work or only the queued-and-running time?</p>
+        <p>The last question matters because the headline number flatters everyone. Meta's "over 90% effective training time" is the good outcome of this arithmetic — it sits just above the 7.3% floor that the equation says is unavoidable at a 3-hour MTBF, with the remainder absorbed by fast diagnosis and automation. If a provider quotes 99% effective training time on a 16k-GPU cluster, either their MTBF is far better than Meta's published fleet, or the definition excludes something. Ask which.</p>
+        <p>For anyone building on rented or distributed capacity rather than a single owned cluster, the arithmetic gets harsher before it gets better: smaller gangs have shorter MTBFs for the same per-node failure rate, and a restart that loses an hour is an hour you paid for twice — which is why the honest pitch for geographically spread compute is inference, where a request either completes or retries in milliseconds, not training (omc.network). Neither architecture escapes √(2δM); they just sit on different sides of the equality. The utilization tax in this series is the same phenomenon measured from the other direction: <a href="/posts/the-utilization-tax-2026">most rented accelerators run at 30-50% of nameplate</a>, and a meaningful share of the missing half is not idle GPUs but GPUs waiting for a failed job to be rebuilt from disk.</p>
+        <p>The wider point is the one this series keeps arriving at from new directions. In 2026 the constraint on AI compute is a stack of coupled ceilings — power, package, memory, network, water, and now the reliability of the fleet itself — and the checkpoint is where three of them meet: it consumes storage bandwidth, it costs GPU-hours, and when it fires it moves tens of megawatts. Nobody puts it on a purchase order. Everybody pays for it.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>The failure rate is published, and it is 3.1 hours.</b> Llama 3 405B pretraining on 16,384 H100s logged 466 interruptions in 54 days, 419 of them unexpected — 7.8 per day, one every 3.1 hours cluster-wide, with only three requiring manual intervention.</li>
+            <li><b>HBM is the second-largest single cause.</b> Faulty GPUs 30.1%, GPU HBM3 17.2%, software 12.9%, switches/cables 8.4%. About 78% of unexpected interruptions are confirmed or suspected hardware, and six were silent data corruption.</li>
+            <li><b>A 405B checkpoint is ~6.5 TB, not ~800 GB.</b> Mixed-precision Adam carries 16 bytes per parameter (2 weight + 2 gradient + 4 fp32 master + 4 + 4 moments). Writing 6.48 TB in 30 seconds needs 216 GB/s of aggregate storage bandwidth — a storage-cluster problem, not a node problem.</li>
+            <li><b>Young/Daly gives the cadence: ~13.6 minutes.</b> √(2 × 30 s × 11,124 s) at Meta's MTBF, with a 7.3% floor on lost wall clock split evenly between saving and re-doing — about 1.55 million GPU-hours on that run.</li>
+            <li><b>Most operators save too rarely, not too often.</b> A 504-GPU study measured intervals 3x longer than optimal in two phases and a total cost of 2.2-3.2%; save overhead itself never exceeded 0.61%, so saving more often is nearly free.</li>
+            <li><b>Checkpointing is a grid event too.</b> Meta attributes instant swings of tens of megawatts to GPUs pausing together for checkpoint writes, which is why a dummy-workload switch exists to smooth training power draw.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/network-fabric-third-bill-2026"><i data-i18n="pager.prev">Previous</i>The fabric is the third bill: 800G ports, radix math, and the network that decides whether your GPUs finish (2026) →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
