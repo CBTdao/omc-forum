@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The agent token bill: what a 15x task actually charges (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The agent token bill: what a 15x task actually charges (2026) — DCF">
+  <meta name="twitter:description" content="An agent's bill has four segments — input, cached input, visible output, and reasoning tokens you never see. Anthropic measured agents at 4x chat tokens and multi-agent systems at 15x. What that does to an invoice once caching and invisible output are priced in.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="An agentic task is billed in four segments, not one: fresh input, cached input at roughly a tenth, visible output, and reasoning tokens that are billed as output but never shown. OpenAI's own usage example bills 1,186 output tokens of which 1,024 are invisible reasoning. Anthropic measured agents at about 4x the tokens of a chat and multi-agent systems at about 15x — with token usage alone explaining 80% of performance variance. Our arithmetic on a 20-turn agent: raw input counts overstate the bill by ~5x if caching works, and multi-agent architectures can quietly destroy the cache hits that make the raw count survivable." />
+  <link rel="canonical" href="https://forum.omc.network/posts/agent-token-bill-anatomy-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/agent-token-bill-anatomy-2026" />
+  <meta property="og:title" content="The agent token bill: what a 15x task actually charges (2026)">
+  <meta property="og:description" content="Input, cached input, visible output, invisible reasoning: the four segments of an agent's bill. The 4x and 15x multipliers Anthropic published, and the arithmetic that decides what they do to an invoice.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"The agent token bill: what a 15x task actually charges (2026)","datePublished":"2026-10-31","dateModified":"2026-10-31","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>The agent token bill: what a 15x task actually charges (2026)</h1>
+        <p class="article-dek">Every post in this series has attacked infrastructure cost from the supply side — silicon, packaging, memory, network, power, storage, reliability. This one attacks it from the demand side: the bill an <b>agentic workload</b> actually generates. Anthropic published the headline multiplier — agents use about <b>4× the tokens of a chat</b>, multi-agent systems about <b>15×</b> — and OpenAI's own usage example bills <b>1,186 output tokens of which 1,024 are reasoning the caller never sees</b>. Between the raw token count and the invoice sit two modifiers that most teams never model: cache reads at roughly a tenth of input, and output billed for work the user cannot read. Both decide whether "15×" means 15× on the bill or roughly 2×.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Oct 31, 2026</span><span>11 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>An agent's bill has <b>four segments</b>, not one. OpenAI's usage object itemizes them: <code>input_tokens</code> with a <code>cached_tokens</code> detail, and <code>output_tokens</code> with a <code>reasoning_tokens</code> detail — and the docs state plainly that reasoning tokens "are not visible via the API, they still occupy space in the model's context window and <b>are billed as output tokens</b>". In OpenAI's own documentation example, 1,186 output tokens are billed and 1,024 of them are invisible reasoning — <b>86% of that turn's output bill buys text nobody reads</b>. On the input side, Anthropic measured its own systems: <b>agents use ~4× the tokens of a chat, multi-agent systems ~15×</b>, and token usage alone explains <b>80% of the variance</b> in how well such systems perform. Our arithmetic: a 20-turn agent whose raw input count says "2M tokens" bills closer to <b>0.38M input-equivalents</b> if 90% of re-sent context is served from cache at 0.1× — a ~5× gap between the naive count and the bill. The same arithmetic reversed is why multi-agent architectures are expensive: separate agents mean separate context windows, and separate windows mean the cache hits that make single-agent bills survivable partially evaporate. Budget by bill segment, not by "a query".</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>Agent 的 token 账单：一个 15 倍任务到底收你多少钱（2026）。<b>摘要：</b>一个 agentic 任务的账单分<b>四段</b>，不是一段。OpenAI 的 usage 对象把这四段列得清清楚楚：<code>input_tokens</code>（带 <code>cached_tokens</code> 明细）与 <code>output_tokens</code>（带 <code>reasoning_tokens</code> 明细）——官方文档原话：推理 token「在 API 里不可见，但仍占用模型上下文窗口，<b>并按输出 token 计费</b>」。在 OpenAI 自己的文档示例里，一次调用计费 1,186 个输出 token，其中 1,024 个是用户永远看不到的推理 token——<b>这一轮输出账单的 86% 买的是没人读的文本</b>。输入侧，Anthropic 公布了自己系统的实测：<b>单 agent 约为聊天的 4 倍 token，多 agent 系统约 15 倍</b>，且仅 token 用量一项就解释了性能方差的 <b>80%</b>。我们的算术：一个 20 轮 agent 若原始输入计数为 200 万 token，在 90% 上下文命中缓存、缓存读按 0.1× 计费时，实际账单约合 <b>29 万等值输入 token</b>——天真相与账单之间差约 <b>7 倍</b>。反过来，多 agent 架构贵的原因也在这笔账里：各 agent 各有独立上下文窗口，独立窗口意味着让单 agent 账单活下来的缓存命中大面积蒸发。请按账单分段做预算，别按「一次查询」。</p>
+      </div>
+
+      <div class="article-body">
+        <p>Chat pricing trained a generation of buyers to think in one number: tokens in, tokens out, times two rates. An agent breaks that model in both directions at once. It re-sends most of its context on every turn — so the raw input count explodes — but most of that re-sent context is cacheable at a tenth of the price. It writes answers the user can read — but reasoning models also write thousands of tokens nobody will ever see, billed at the output rate. A team that budgets "a dollar a query" from chat-era intuition can be off by an order of magnitude in either direction on the same underlying task.</p>
+        <p>The providers itemize this whether or not you look. OpenAI's Responses API returns a usage object with exactly the structure the bill follows: <code>input_tokens</code> with an <code>input_tokens_details.cached_tokens</code> field, and <code>output_tokens</code> with an <code>output_tokens_details.reasoning_tokens</code> field. Anthropic's API separates cache creation from cache reads as distinct line items with their own multipliers. The bill's structure is public. What is missing from most budgeting spreadsheets is the habit of reading it.</p>
+
+        <h2>The meter has four segments</h2>
+        <p><b>Segment one: fresh input, full price.</b> Every new token the agent has never processed — the user's message, tool results being read for the first time, file contents being injected into context. This is the only segment billed at the headline input rate. <b>Segment two: cached input</b>, the re-sent prefix — system prompt, earlier conversation, previously-ingested files — priced at a fraction of list. The published fractions cluster around a tenth: 0.1× reads on OpenAI and Anthropic, Gemini's context cache at roughly 10% of the interactive input rate, DeepSeek's cache hits at 2% of its miss price. In an agent loop that re-sends 95%+ of its context every turn, segment two is most of the raw count and almost none of the bill.</p>
+        <p><b>Segment three: visible output</b> — the text, the tool calls, the answer. Billed at the output rate, which on every major provider is several times the input rate. <b>Segment four: reasoning tokens</b>, and this is the one the chat era never had. OpenAI's reasoning guide states it without hedging: "While reasoning tokens are not visible via the API, they still occupy space in the model's context window and <b>are billed as output tokens</b>." The same page warns that a model "may generate anywhere from a few hundred to tens of thousands of reasoning tokens", and that a response can hit <code>max_output_tokens</code> "before any visible output tokens are produced, meaning you could incur costs for input and reasoning tokens without receiving a visible response" — with a recommendation to reserve <b>at least 25,000 tokens</b> for reasoning and outputs when starting out. OpenAI's help center repeats the billing rule verbatim, so it is not a footnote; it is the product.</p>
+        <p>Put the docs' own example usage object on the desk: <code>input_tokens: 75</code>, <code>output_tokens: 1186</code>, <code>reasoning_tokens: 1024</code>. Our arithmetic on that single turn: 1,186 output tokens are billed, 1,024 are reasoning, so the visible answer is roughly 162 tokens. <b>86% of the output bill buys invisible text</b>, and the turn costs <b>7.3× what its visible length suggests</b> (1,186 ÷ 162) — before the output-rate multiplier even enters. Multiply that by an agent that calls the model dozens of times per task and "the answer was two paragraphs" stops being a cost estimate of any kind.</p>
+
+        <h2>4x and 15x: the measured multipliers</h2>
+        <p>The demand-side anchor comes from Anthropic's engineering write-up of its multi-agent research system, published June 2025. Three numbers in it matter. First, the cost: "agents typically use about <b>4× more tokens than chat interactions</b>, and multi-agent systems use about <b>15× more tokens than chats</b>" — the company's own usage data, not a benchmark. Second, the payoff: a multi-agent system with Claude Opus 4 as lead and Sonnet 4 subagents <b>outperformed single-agent Opus 4 by 90.2%</b> on their internal research eval. Third, the uncomfortable mechanism: in the BrowseComp evaluation, three factors explained 95% of performance variance, and <b>token usage alone explained 80%</b>. The architecture's main product is permission to spend more tokens — Anthropic says this in as many words: "multi-agent systems work mainly because they help spend enough tokens to solve the problem."</p>
+        <p>The same post is honest about where the pattern fails, and the failure mode is a billing one. Subagents "operate in parallel with their own context windows" — that isolation is the feature, and it is also the budget problem: each window starts cold, re-reads its own materials, and cannot inherit another agent's cached prefix. Anthropic explicitly cautions that tasks requiring all agents to share context, and <b>"most coding tasks"</b>, fit multi-agent architectures poorly. Read that against the token multipliers and the shape of the bill becomes clear: the 15× is a raw-token multiplier, and caching is what converts raw tokens into money — so the architectures that burn the most raw tokens are also, structurally, the ones with the worst cache hit rates.</p>
+
+        <h2>What the bill actually looks like</h2>
+        <p>Run one workload through the four-segment meter (our arithmetic throughout; the multipliers are the providers' published rates, the workload is constructed). A single research agent runs a 20-turn loop. Its context grows to ~150K tokens, averaging 100K re-sent per turn: <b>2M raw input tokens</b> across the session. Suppose 90% of that re-sent context hits cache at 0.1×: billed input weight = 1.8M × 0.1 + 0.2M × 1 = <b>0.38M input-equivalents</b> — the naive 2M count overstates the input bill by ~5.3×. Now the output side: the agent emits 15K visible tokens plus 60K reasoning tokens across the run, all billed at the output rate. Whatever your output rate is, <b>80% of the output bill is invisible text</b> (60K ÷ 75K), and the two "savings" and "overruns" land on different segments: caching is why the input line survives, reasoning is why the output line doesn't.</p>
+        <p>Split the same task three ways — a lead agent plus two subagents, each with its own window — and the raw token count goes to roughly the 15× regime Anthropic measured, while the cache story inverts. Each subagent re-reads overlapping source material in its own cold window; the identical prefixes that would have been one cache entry in a single process are now three, one per agent, each paid for. Our arithmetic on the shape of it: a multi-agent run can easily carry a <i>lower</i> cache-hit ratio than the single-agent version of the same task, which means the bill multiplier moves toward the raw 15× rather than away from it. The chat-to-multi-agent jump Anthropic measured is 4×→15× in tokens; whether that is 4×→15× in <i>money</i> depends almost entirely on how much of the extra spending still lands on the cache-read segment. This is the analysis layer of the infrastructure stack, and it obeys the same rule as every layer below it: the naive count is not the bill, and the gap is where the engineering lives.</p>
+        <p>One more segment interaction is worth naming because it is a silent budget killer: reasoning tokens are output, and output is not cacheable. A model that burns 20,000 reasoning tokens to produce 500 visible ones has written 40× its visible length into the only segment with no discount tier. Anthropic's caching write multiplier (1.25× for the 5-minute tier, 2× for the 1-hour tier) at least amortizes — a cache write is paid once and read at 0.1× thereafter. Reasoning spend is paid at full output price, every single time, with no read-back mechanism at all. When OpenAI recommends reserving 25,000 tokens for reasoning and outputs, a buyer should read that number in price terms: at typical output-to-input ratios it is the single largest line in the whole budget.</p>
+
+        <h2>Five questions before you deploy an agent</h2>
+        <p><b>One:</b> are you reading the usage object or the chat transcript? Every segment above is a field in the response — <code>cached_tokens</code>, <code>reasoning_tokens</code> — and every budgeting mistake we have described starts with someone estimating from what the user saw. Log all four segments per turn, from day one. <b>Two:</b> what is your reasoning budget per turn, and is <code>max_output_tokens</code> set to enforce it? OpenAI's own guidance is to reserve at least 25,000 tokens for reasoning and outputs — decide whether that reserve is a floor you want on every one of an agent's dozens of calls, or a ceiling you want to negotiate down per call. <b>Three:</b> what fraction of re-sent context actually hits cache in your workload? The gap between the raw input count and the bill is this number; if you cannot measure it, you are budgeting blind. <b>Four:</b> does the task genuinely parallelize? Anthropic's own verdict is that breadth-first research does and most coding does not — a multi-agent split that fragments your cache to buy parallelism can cost more than it buys. <b>Five:</b> what is the failure bill? An agent that crashes at turn 18 has paid for 18 turns of input-side caching and output-side reasoning that produced nothing; retries are not free in this meter the way they are in a chat.</p>
+        <p>That last question is where this series usually lands, and it lands here too. Agent economics are a demand-side mirror of the utilization tax this forum has priced from the supply side: rented GPUs run at 30-50% of nameplate, and rented context gets re-read at whatever discount the cache grants. Anyone building across distributed providers rather than a single vendor's API has one more segment to manage — the same prefixes re-cached at each provider, the same reasoning burned against each meter — which is one reason the honest pitch for distributed compute remains inference serving rather than agent hosting (omc.network). The meter is the meter everywhere; what differs is how many times you pay for the same prefix.</p>
+        <p>The wider point is the one this series keeps hitting from new directions. 2026's AI cost story is not a single rate per token; it is a four-segment meter with two discount regimes and one uncapped, undiscountable segment — invisible thinking. The teams that save money on agents are not the teams that found a cheaper model. They are the teams that read the usage object, measured their own cache-hit ratio, capped their reasoning spend, and refused to split a task into agents until the parallelism paid for the fragmentation. The bill was always itemized. Most budgets just never open the envelope.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>The agent bill has four segments.</b> Fresh input (full rate), cached input (~0.1×), visible output (output rate), and reasoning tokens — billed as output but never shown. All four are itemized in the API's usage object.</li>
+            <li><b>Reasoning is the uncapped, undiscountable segment.</b> OpenAI's own docs example bills 1,186 output tokens of which 1,024 are invisible reasoning — 86% of that output bill buys unread text, and the turn costs 7.3× its visible length (our arithmetic).</li>
+            <li><b>Anthropic measured 4× and 15×.</b> Agents use ~4× the tokens of a chat, multi-agent systems ~15×; token usage alone explained 80% of performance variance in their BrowseComp evaluation, and the multi-agent build beat single-agent by 90.2%.</li>
+            <li><b>Raw token counts overstate input bills by ~5x when caching works.</b> A 20-turn agent at 2M raw input tokens with a 90% cache-hit rate bills ~0.38M input-equivalents at published 0.1× read rates (our arithmetic).</li>
+            <li><b>Multi-agent splits attack the cache.</b> Separate context windows mean separate cold caches and duplicated prefix reads — the 15× raw-token multiplier moves toward the bill rather than away from it. Anthropic itself flags most coding tasks as a poor fit.</li>
+            <li><b>Budget by segment, cap the reasoning.</b> Log cached_tokens and reasoning_tokens per turn from day one, set max_output_tokens deliberately (OpenAI suggests reserving 25,000 tokens for reasoning and outputs), and split into subagents only when the parallelism pays for the fragmented cache.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/training-checkpoint-tax-2026"><i data-i18n="pager.prev">Previous</i>The checkpoint tax: 419 interruptions, 6.5 TB per save, and why storage sets the training bill (2026) →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
