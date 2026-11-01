@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VA vs watts: sizing a home-lab UPS that actually holds (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="VA vs watts: sizing a home-lab UPS that actually holds (2026) — DCF">
+  <meta name="twitter:description" content="Your UPS's VA number is not its capacity. APC's own guidance says a UPS's watt rating is roughly 60% of its VA rating, and sizing on VA alone is the classic home-lab overload. The watts-vs-VA arithmetic, the runtime reality check, and the checklist.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="UPS units are rated in VA, loads draw watts, and the gap between the two numbers is where home-lab sizing fails. APC's documentation puts the industry rule plainly: a UPS's watt rating is approximately 60% of its VA rating, and the safest approach without measured load data is to keep the sum of nameplate ratings below 60% of the UPS VA. Newer units at 0.9-1.0 power factor changed the arithmetic; older 0.6-0.7 units did not. Includes the two-limit rule (VA and watts both bind), the runtime curve reality, and a checklist for sizing a home server's backup power honestly." />
+  <link rel="canonical" href="https://forum.omc.network/posts/ups-sizing-va-vs-watts-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/ups-sizing-va-vs-watts-2026" />
+  <meta property="og:title" content="VA vs watts: sizing a home-lab UPS that actually holds (2026)">
+  <meta property="og:description" content="Your UPS's VA number is not its capacity. The watt rating is roughly 60% of VA on classic units, both limits bind, and runtime does not scale the way the box implies. Sizing arithmetic from APC's own documentation.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"VA vs watts: sizing a home-lab UPS that actually holds (2026)","datePublished":"2026-11-01","dateModified":"2026-11-01","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>VA vs watts: sizing a home-lab UPS that actually holds (2026)</h1>
+        <p class="article-dek">The datacenter side of this forum already covered the <a href="/posts/backup-power-ten-seconds-2026">ten seconds that decide an outage</a> — batteries catching the load in milliseconds, generators accepting it within ten. A home lab runs the same drama on a 40th of the budget, and it fails for a smaller, dumber reason: the number on the UPS box. A UPS is sold in <b>VA</b> (volt-amps), your equipment draws <b>watts</b>, and they are not the same quantity. APC's own documentation gives the industry rule without hedging — a UPS's watt rating is "approximately <b>60% of the VA rating</b>" — and sizing on the VA number alone is the classic way a "1000 VA" unit trips the moment a server spins its disks up. Here is the arithmetic that keeps a home lab's backup power honest, using the vendors' own published guidance.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 1, 2026</span><span>8 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>A UPS has <b>two</b> capacity limits and buyers usually see one. <b>VA</b> (apparent power) sizes the wiring and breakers; <b>watts</b> (real power) is what the battery and inverter must actually deliver — and APC's FAQ states the industry convention directly: "the Watt rating is approximately <b>60% of the VA rating</b>", so the safest sizing rule "unless you have high certainty of the Watt ratings of the loads" is to keep the sum of load nameplate ratings <b>below 60% of the UPS VA rating</b>. A 1000 VA classic unit is a ~600 W unit; a modern 0.9-PF 1500 VA unit delivers 1350 W, and APC's spec sheets show the same model family spanning 0.67 (older Smart-UPS 1500 VA / 1000 W) to 0.9+ (SRT-class) power factors — <b>a 30–40% capacity difference at the same VA number</b>, which is why the used market's "same VA, half the watts" traps exist. Runtime is a second, separate disappointment: it is set by the battery, it falls steeply with load, and the vendor's runtime chart — not the full-load figure on the box — is the only honest source. Our arithmetic for a typical always-on home server idling at 60–100 W: the same battery that holds a 600 W load for ~5 minutes holds an 80 W lab load roughly 6–7× longer (inverse-load approximation; read your model's actual chart). Size on watts, verify on the runtime chart, keep 20–30% headroom, and the "1000 VA" question stops being a lottery.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>VA 对瓦特：给家庭机房选一台真能撑住的 UPS（2026）。<b>摘要：</b>UPS 有<b>两个</b>容量上限，买家通常只看到一个。VA（视在功率）决定走线和断路器；瓦特（有功功率）才是电池和逆变器真正要交付的东西——APC 官方文档把行业惯例写得明明白白：瓦特额定值「约为 VA 额定值的 <b>60%</b>」，在「对负载瓦数没有十足把握」时，最稳的做法是让所有设备铭牌功率之和<b>低于 UPS VA 值的 60%</b>。一台 1000 VA 的经典机型实际只有约 600 W；现代 0.9 功率因数的 1500 VA 机型能出 1350 W——APC 同族产品从 0.67（老 Smart-UPS 1500VA/1000W）到 0.9+（SRT 系）不等，<b>同样的 VA 数字差出 30–40% 容量</b>，这正是二手市场「同 VA 半瓦数」陷阱的来源。续航是第二个坑：它由电池决定、随负载陡降，唯一诚实的来源是具体型号的官方运行时间曲线，而不是包装盒上的满载数字。我们给典型 7×24 家庭服务器（60–100 W 空闲）做的算术：撑 600 W 负载约 5 分钟的电池，对 80 W 的机房负载约能撑 6–7 倍时长（反比近似，以官方曲线为准）。按瓦特选、按曲线验证、留 20–30% 余量，「1000 VA」就不再是抽奖。</p>
+      </div>
+
+      <div class="article-body">
+        <p>Start with the physics, because the whole confusion lives in one ratio. <b>Watts</b> are real power: what your electricity meter bills, what the server's power supply converts into heat and computation. <b>Volt-amps</b> are apparent power: voltage times current, which is what wiring, breakers and the UPS's electronics have to carry regardless of whether the load converts it usefully. The ratio between the two is the load's <b>power factor</b>. APC's FAQ on the subject defines it cleanly — "the ratio of the Watt to VA rating is called the 'Power Factor'" — and notes that for computer equipment the two "can differ significantly, with the VA rating always being equal to or larger than the Watt rating." For a resistive space heater they are equal. For a server with a modern PFC power supply they are close. For the sloppy mix of devices most people actually plug in, they are not.</p>
+        <p>The UPS industry sized for that uncertainty with a convention. APC again: "it is a standard in the industry that the Watt rating is approximately <b>60% of the VA rating</b>, this being the typical power factor of common loads" — and, critically, "Neither the Watt nor the VA rating of a UPS may be exceeded." The sizing rule follows: keep the sum of your loads' nameplate ratings below 60% of the UPS's VA, "and it is impossible to exceed the Watt rating of the UPS." This is also why a naive "my rack is 900 VA, so a 1000 VA unit" calculation fails in the field: 900 VA of nameplate loads can exceed the ~600 W ceiling of a classic 1000 VA unit the moment measured watts drift above nameplate assumptions. APC's own documentation recommends its sizing tools precisely because nameplate ratings "are often in VA, which makes it difficult to know the Watt ratings."</p>
+
+        <h2>The 0.6-to-1.0 spread: why "same VA" units are not the same</h2>
+        <p>The 60% rule is a convention for the worst case, not a property of all hardware — and this is where 2026's buyer has an advantage the rule predates. Newer UPS designs ship with power factors of 0.9 or unity: APC's Smart-UPS VT documentation notes its sizing and runtime calculators "are based on Watt ratings" with VA converted using an approximation that assumes "low VA loads have a power factor of around 0.6 and high power loads have a power factor of nearly 1.0." Compare two APC units at the same nominal size: the older Smart-UPS 1500 VA class rated at 1000 W (PF 0.67) versus the SRT-class 1500 VA units rated at 1350–1500 W (PF 0.9–1.0). Same box size, same "1500 VA" label, <b>35–50% more real capacity</b>. The practical corollary for the used market: a secondhand "1500 VA" unit from 2012 and one from 2022 are different products wearing the same number. Check the watt rating, not the VA, every time.</p>
+        <p>Your <i>load's</i> power factor matters less than it used to, which is a quiet win most sizing guides skip. Modern server and desktop power supplies ship with active PFC and draw at 0.95–0.99 — the measurement our <a href="/posts/home-lab-power-bill-watts-2026">home-lab power-bill post</a> recommends (a plug-in watt meter) reads real watts directly, which is the number that must fit under the UPS's watt ceiling. The legacy 60% rule exists precisely for the cases where you cannot or did not measure. If you measured: size watts-to-watts with 20–30% headroom. If you did not: apply the 60% rule and accept an oversized, longer-running UPS as the price of not measuring — APC's own docs call the oversized result "a larger run time than expected," which is the rare failure mode that points the right way.</p>
+
+        <h2>Runtime: the second number nobody reads correctly</h2>
+        <p>Capacity sizing answers "will it hold"; runtime answers "for how long" — and the two come from different places. Runtime is set by the battery's stored energy, it falls steeply and nonlinearly as load rises, and the full-load runtime on the box (typically 3–7 minutes at capacity for consumer line-interactive units) is the worst data point on the label. Our arithmetic for the always-on home server case: a lab idling at 80 W — the realistic range our power-bill post measures for a small server stack — draws about 13% of a 600 W-rated unit's capacity, and in the light-load region runtime scales close to inversely with load, so the battery that holds 600 W for ~5 minutes holds 80 W for roughly 35–45 minutes. Two caveats keep that honest: it is an inverse-load approximation, not a curve fit — the vendor's runtime chart for your exact model is the authority — and a 3–4 year old battery delivers materially less than its rated curve, which is why runtime claims have a date stamp whether or not the chart prints one.</p>
+        <p>There is also a sizing inversion most first-time buyers get backwards. The goal for a home server is not long runtime on the UPS — it is <b>enough seconds to ride through flickers plus enough minutes to shut down cleanly</b>, with the UPS's USB/network signaling telling the host to power off. Long outages are the generator's problem at datacenter scale and "nobody's" problem at home scale; sizing a home lab for hours of battery runtime means buying battery capacity you will use a handful of times a decade. External-battery-capable units (the standard escape hatch on Smart-UPS-class hardware) exist for the cases where that math genuinely differs — a lab that must stay up — and cost proportionally. Everything else should size for graceful shutdown, which is a much cheaper UPS than the runtime fantasy suggests.</p>
+
+        <h2>The checklist</h2>
+        <p><b>One:</b> measure the load in watts with a plug-in meter over a normal day — idle, backup jobs running, boot surge if you can catch it. Nameplate watts overstate real draw by 30–50%; measured watts are the number that binds. <b>Two:</b> read the UPS's <b>watt</b> rating and require load ≤ 70–80% of it. If only VA is known, apply the 60% rule from APC's guidance and treat the result as a ceiling, not a target. <b>Three:</b> check both limits — "neither the Watt nor the VA rating of a UPS may be exceeded," and whichever your load hits first is the real size. <b>Four:</b> pull the vendor's runtime chart for your model and your measured load; ignore the full-load number on the box. Add a battery-replacement date the day you install the unit, because the chart's clock starts then. <b>Five:</b> wire the shutdown signaling before you need it — a UPS that holds power for five minutes but cannot tell the server to shut down is a battery that dies loudly instead of cleanly. The network gear matters here too: the router and switch belong on the UPS even when the servers do not, or the shutdown command dies before the servers do — the same "chain fails at its weakest link" logic our <a href="/posts/home-lab-network-2-5gbe-10gbe-2026">network post</a> applies to bandwidth, and the datacenter version of it is <a href="/posts/backup-power-ten-seconds-2026">the ten-second rule</a>. A home lab will never need Type 10 compliance, but "the backup chain itself fails more often than the grid" holds at every scale. Size it once, correctly, and the lights going out becomes a logging event instead of a recovery project.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>VA is not capacity.</b> A UPS has both a VA and a watt limit, and per APC's documentation "neither may be exceeded" — the industry convention puts the watt rating at roughly 60% of VA on classic units.</li>
+            <li><b>Same VA, different watts.</b> Older units ran at power factor ~0.6–0.7; modern SRT-class units at 0.9–1.0 — a 30–50% real-capacity difference at the same VA number. On the used market, always check the watt rating.</li>
+            <li><b>The safe rule when unmeasured:</b> keep the sum of load nameplate ratings below 60% of the UPS VA (APC's guidance). If you measured with a plug-in watt meter, size watts-to-watts with 20–30% headroom instead.</li>
+            <li><b>Runtime lives on the chart, not the box.</b> Full-load runtime is the worst number on the label; at light loads (an 80 W idle versus a 600 W rating) runtime approximates 6–7× longer — but read your model's chart, and date-stamp the battery.</li>
+            <li><b>Size for graceful shutdown, not survival.</b> Seconds to ride through flickers plus minutes for a clean power-off is the real requirement; hours of runtime is battery capacity you will use a handful of times a decade.</li>
+            <li><b>Put the network on the UPS.</b> Router and switch need backup power too, or the shutdown signal dies before the servers do — the backup chain fails at its weakest link at every scale.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/home-lab-power-bill-watts-2026"><i data-i18n="pager.prev">Previous</i>What a home lab actually costs to run: watts, meters and the idle-draw trap (2026) →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HBM ate the DRAM supply: the memory bill comes for everyone (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HBM ate the DRAM supply: the memory bill comes for everyone (2026) — DCF">
+  <meta name="twitter:description" content="The same wafers that make HBM make ordinary DDR5. TrendForce counts server DDR5 contract prices up 93-98% in a single quarter of 2026, Micron walked away from its own 29-year-old consumer brand, and the shortage is now the PC buyer's problem too.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="AI's memory demand is not additive, it is displacing: the three DRAM makers moved advanced capacity to HBM and server DDR5 and squeezed PC, mobile and consumer supply. TrendForce's published series shows conventional DRAM up 8-13% in 4Q25 alone and server DDR5 up 93-98% in Q1 2026, with a projected ~270% cumulative contract-price rise across 2026; spot DDR5 die rose 307% in four months of late 2025. Micron exited the 29-year-old Crucial consumer brand to chase a near-$8B annualized HBM run rate. What the arithmetic says about who pays, and when it ends." />
+  <link rel="canonical" href="https://forum.omc.network/posts/dram-price-shock-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/dram-price-shock-2026" />
+  <meta property="og:title" content="HBM ate the DRAM supply: the memory bill comes for everyone (2026)">
+  <meta property="og:description" content="Server DDR5 contract prices up 93-98% in one quarter. DDR5 spot die up 307% in four months. Micron quit its own consumer brand. The AI memory shortage is not a component story — it is a bill, and it reaches all the way to the home lab.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"HBM ate the DRAM supply: the memory bill comes for everyone (2026)","datePublished":"2026-11-01","dateModified":"2026-11-01","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>HBM ate the DRAM supply: the memory bill comes for everyone (2026)</h1>
+        <p class="article-dek">This forum has already priced the <a href="/posts/hbm-memory-wall-2026">memory wall</a> — the HBM stack that decides what inference costs. That story just stopped being a component story. The same fabrication capacity that makes HBM makes ordinary DDR5, and when the three DRAM makers moved advanced capacity to server memory and HBM, they did not add supply — they <b>displaced</b> it. TrendForce's published numbers read like a supply shock in slow motion: conventional DRAM contract prices up <b>8–13% in a single quarter</b> of late 2025, server DDR5 up <b>93–98% in Q1 2026</b> alone, spot DDR5 die up <b>307%</b> in four months, and a projected <b>~270%</b> cumulative contract-price rise across 2026. Micron walked away from its own 29-year-old consumer brand to chase the HBM premium. This is what it does to everyone downstream — including the person pricing a home server.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 1, 2026</span><span>11 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p>The 2026 memory shortage is <b>displacement, not addition</b>. TrendForce's September 2025 release states it directly: the three DRAM suppliers "continue to allocate advanced process capacity primarily to high-end server DRAM and HBM, <b>crowding out</b> capacity for PC, mobile, and consumer applications" — conventional DRAM contract prices rose <b>8–13% QoQ in 4Q25</b> (13–18% with HBM). Then the shock compounded through 2026: TrendForce's quarterly series for server DDR5 runs <b>+93–98% (Q1), +53–58% (Q2), +13–18% (Q3), +3–8% (Q4)</b> — our arithmetic on that series is roughly <b>3.3× within calendar 2026 alone</b>, on top of a ~64% cumulative rise across 2H2025, with TrendForce projecting a <b>~270%</b> full-year 2026 DRAM contract-price increase. The spot market moved first and hardest: DDR5 2Gbx8 die up <b>307%</b> in roughly four months of late 2025. The corporate tell: Micron announced on December 3, 2025 it would <b>wind down the 29-year-old Crucial consumer business</b> (shipping through February 2026) to focus on data center demand — the same quarter its HBM revenue hit "nearly $2 billion, implying an annualized run rate of nearly $8 billion" (its own words). TrendForce now expects 4Q26 conventional DRAM to rise <b>another 10–15%</b> and memory to reach ~68% of CSP capex by 2027. Everyone who buys memory — cloud buyer, PC buyer, home lab — pays the displaced bit.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>HBM 吃掉了 DRAM 供给：内存账单找上所有人（2026）。<b>摘要：</b>2026 年的内存短缺不是「新增需求」，而是「挤出效应」。TrendForce 在 2025 年 9 月的报告里写得很直白：三大原厂持续把先进制程产能优先分配给高端服务器 DRAM 与 HBM，<b>挤占</b> PC、手机与消费类应用产能——一般型 DRAM 合约价仅 4Q25 就环比上涨 <b>8–13%</b>（含 HBM 为 13–18%）。随后整个 2026 年持续复利：TrendForce 公布的服务器 DDR5 合约价季度序列为 <b>Q1 +93~98%、Q2 +53~58%、Q3 +13~18%、Q4 +3~8%</b>——按该序列做的算术（我们的计算）约为<b>单年 3.3 倍</b>，叠加 2025 下半年约 64% 的累计涨幅，TrendForce 预计 2026 全年 DRAM 合约价累计上涨约 <b>270%</b>。现货市场最先失控：2025 年 9 月至 12 月，DDR5 2Gbx8 颗粒现货价上涨 <b>307%</b>。企业侧的信号更直白：美光于 2025 年 12 月 3 日宣布<b>退出已有 29 年历史的 Crucial 消费级业务</b>（供货至 2026 年 2 月），全力转向数据中心——同一季度其 HBM 收入「接近 20 亿美元，年化运行率接近 80 亿美元」（官方原话）。TrendForce 目前预计 4Q26 一般型 DRAM 合约价<b>再涨 10–15%</b>，且 2027 年内存将占 CSP 资本支出约 68%。买内存的所有人——云客户、PC 用户、家庭机房——都在为被挤出的那部分位元买单。</p>
+      </div>
+
+      <div class="article-body">
+        <p>GPU bubbles get the headlines, but 2026's most universal AI cost increase never touched a GPU. It landed on the DIMMs. Memory is where the AI buildout stops being somebody else's procurement problem, because DRAM is fungible: the same fabs, the same process nodes, the same wafers that make HBM stacks for accelerators make the DDR5 in a desktop, a smartphone and a NAS. When one buyer class — AI — is willing to pay several times more per bit for the same capacity, the supply does not stretch. It moves. Everything this forum has written about <a href="/posts/hbm-memory-wall-2026">HBM's cost premium</a> was the server-side version of a story whose PC-side chapter is being written now.</p>
+        <p>The mechanism is stated in as many words by the industry's own pricing authority. TrendForce's 4Q25 DRAM release (September 24, 2025) attributes the quarter's price hikes to a single cause: "the three major DRAM suppliers continue to allocate advanced process capacity primarily to high-end server DRAM and HBM, <b>crowding out</b> capacity for PC, mobile, and consumer applications." The published result: conventional DRAM contract prices up 8–13% QoQ in 4Q25, 13–18% including HBM — and DDR4, the legacy product being run off the newest nodes fastest, having <b>nearly doubled in 3Q25</b> alone. Note the shape of that sentence: nothing in it is about demand collapsing or booming on the consumer side. The consumer price rose because the consumer supply left.</p>
+
+        <h2>2026: the compounding year</h2>
+        <p>What makes the 2026 episode unusual is not the direction of the move — memory cycles have always existed — but the magnitude and persistence once AI demand met a supply base that had already been redirected. TrendForce's quarterly forecast series for server DDR5 contract prices through 2026 reads: <b>+93–98% in Q1</b>, <b>+53–58% in Q2</b>, <b>+13–18% in Q3</b>, <b>+3–8% in Q4</b>. Our arithmetic on that published series: compounding the midpoints gives roughly <b>3.3× within calendar 2026 alone</b>, and TrendForce itself frames the full-year move as a projected <b>~270% cumulative increase in DRAM contract prices for 2026</b>, on top of ~64% cumulative across 2H2025. The firm also expects 4Q26 conventional DRAM to rise another <b>10–15%</b> (NAND 15–20%), and — the line item that should reprice every 2027 capacity model — memory rising toward <b>68% of CSP capital expenditure by 2027</b>, with HBM and RDIMM alone taking 51% of DRAM supply bits in 2026.</p>
+        <p>The spot market, which reacts before contract negotiations do, moved even harder. TrendForce spot-price tracking reported by Chinese financial media in December 2025 put DDR5 2Gbx8 die spot prices up <b>307%</b> and DDR4 1Gbx8 up <b>158%</b> in roughly the four months from early September 2025. Spot runs hotter than contract and mean-reverts faster — but the direction of travel across both series was the same, and the contract series has kept climbing for five consecutive quarters since. A supply shock that lasts this long stops being a shock and becomes a repricing.</p>
+
+        <h2>The corporate tell: Micron walks away from its own brand</h2>
+        <p>If you want to know how a supplier values its consumer business versus its AI business, do not read the marketing — read the exit. On December 3, 2025, Micron announced it would <b>wind down Crucial</b>, the consumer memory and storage brand it had operated for 29 years — the brand that pioneered retail DRAM upgrades in 1996. The company's own announcement stated consumer products would ship "through February 2026, with warranty and support continuing," and its commercial chief Sumit Sadana tied the decision directly to the displacement mechanism: data center growth driven by AI created demand that made consumer supply the thing worth giving up. Micron said it would redeploy the resources toward large strategic customers in faster-growing areas.</p>
+        <p>The same company's earnings materials supply the "toward" in that sentence. Micron's fiscal Q4 2025 prepared remarks — published on its own investor site — state: "In fiscal Q4, our HBM revenue grew to <b>nearly $2 billion, implying an annualized run rate of nearly $8 billion</b>," within a fiscal year where the data center business hit a record <b>56% of total company revenue</b>. A memory maker looking at ~$8B/yr of HBM demand with pricing agreements covering most of its calendar-2026 HBM3E supply, against a consumer business being squeezed for capacity by its own AI allocation, did arithmetic. The consumer brand lost. That is what "AI is taking the memory" looks like at the corporate level: not a shortage headline, a discontinued checkout page.</p>
+
+        <h2>Who pays, and how much</h2>
+        <p>Run the displacement through each buyer class (our arithmetic throughout; the underlying multipliers are TrendForce's published series). <b>The cloud buyer pays through the quote.</b> Server DDR5 RDIMMs are a line item in every GPU node's BOM; a ~3.3× server-DRAM move inside one year shows up either as higher rental rates or as thinner margins per accelerated hour — and TrendForce's expectation that memory reaches two-thirds of CSP capex by 2027 means memory is on its way to being <i>the</i> swing cost in AI data centers, competing with the accelerators themselves. <b>The PC buyer pays through the shelf.</b> OEMs are cutting DRAM per machine and reducing SSD capacities to hold BOM costs, per TrendForce's 4Q26 note, because the component inside the laptop rose faster than the laptop's price could. <b>The phone buyer pays through allocations</b> — TrendForce expects mobile DRAM supply to stay tight into 2027 as capacity keeps shifting to server. And the AI infrastructure cost stack gains a new top-heavy layer: inference is already <a href="/posts/inference-is-the-real-compute-bill">the real compute bill</a>, and now the memory that inference is bottlenecked on has its own repricing running in parallel.</p>
+        <p>The home-lab reader is not exempt, and the Homelab section's math changes shape because of it. The <a href="/posts/used-rtx-3090-llm-server-2026">used RTX 3090 argument</a> assumed platform costs were flat — but a 128GB DDR4/DDR5 server board build, the classic "used enterprise RAM for cheap VRAM-adjacent capacity" play, is precisely the legacy-product segment TrendForce reported as rising fastest (DDR4 nearly doubled in 3Q25). The <a href="/posts/cloud-gpu-vs-home-gpu-tco">cloud vs home TCO spreadsheet</a> from this forum now needs a memory line with a date stamp on it, the same way its electricity line does. The honest 2026 version of the home-server argument is: build with what you already own, because the upgrade path just repriced.</p>
+
+        <h2>When does it end</h2>
+        <p>Two clocks govern the exit, and they point in opposite directions. The bear-clock is supply response: memory makers have announced new capacity, and TrendForce's own framing — that price growth "moderates" through 2H26 as new fab output lands — is the classic end-of-cycle shape. The bull-clock is demand structure: enterprise SSD bit demand up <b>80%+</b> in 2026 on AI inference deployments, agentic workloads driving general-server RDIMM demand, and TrendForce's expectation that PC DRAM supply <i>shrinks again in 2027</i> as more capacity shifts to server applications. A shortage caused by real, contracted, multi-year demand does not mean-revert the way a demand panic does; it clears by new fabs, which take years — the same rhythm this forum documented in the <a href="/posts/interconnection-queue-time-to-power-2026">power queue</a> and the <a href="/posts/transformer-lead-times-2026">transformer queue</a>. Memory is the third queue, and it is the one with no way to substitute around.</p>
+        <p>That is the wider point. Every layer of the AI infrastructure stack has now had its repricing moment: silicon (<a href="/posts/cowos-packaging-wall-2026">packaging</a>), memory (<a href="/posts/hbm-memory-wall-2026">HBM</a>, and now commodity DRAM), power (queues, transformers, water), network (<a href="/posts/network-fabric-third-bill-2026">the fabric</a>), and demand-side (<a href="/posts/agent-token-bill-anatomy-2026">the agent token bill</a>). The pattern across all of them is identical — the naive price is the old price, and the gap between the old price and the invoice is where capacity actually went. Anyone building across this stack, centralized or distributed (omc.network), should read the 2026 memory series the way buyers read GPU rates: as a published, sourced, quarterly-updated meter that will not go back to zero when the news cycle moves on. Memory learned what compute learned before it. When a scarce input gets a richer customer, the old customer pays the difference — politely, quarterly, and in writing.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>The shortage is displacement.</b> TrendForce's own wording: the three DRAM suppliers allocate advanced capacity to server DRAM and HBM, "crowding out" PC, mobile and consumer. Consumer prices rose because consumer supply left, not because demand spiked.</li>
+            <li><b>The published series compounds hard.</b> Server DDR5 contract prices: +93–98% (Q1 2026), +53–58% (Q2), +13–18% (Q3), +3–8% (Q4) — roughly 3.3× within 2026 (our arithmetic on TrendForce's series), on top of ~64% cumulative in 2H2025 and a projected ~270% full-year 2026 rise.</li>
+            <li><b>Spot moved first: +307% in four months.</b> DDR5 2Gbx8 die spot prices rose 307% (DDR4 1Gbx8 +158%) from early September to December 2025, per TrendForce spot tracking.</li>
+            <li><b>Micron's exit is the corporate tell.</b> On Dec 3, 2025 it announced winding down the 29-year-old Crucial consumer brand (shipping through Feb 2026) — the same quarter its own materials reported HBM revenue "nearly $2 billion, implying an annualized run rate of nearly $8 billion."</li>
+            <li><b>4Q26 still rising; 2027 supply shrinks.</b> TrendForce projects conventional DRAM +10–15% in 4Q26, memory at ~68% of CSP capex by 2027, and PC DRAM supply declining in 2027 as capacity shifts to server.</li>
+            <li><b>Budget memory like a dated number.</b> Cloud quotes, PC prices and home-lab builds all carry the displaced bit. Update every memory line item in your TCO spreadsheets quarterly — the old price is not coming back on any timeline the current data supports.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/agent-token-bill-anatomy-2026"><i data-i18n="pager.prev">Previous</i>The agent token bill: what a 15x task actually charges (2026) →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

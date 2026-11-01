@@ -52,6 +52,7 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://forum.omc.network/posts/quantizing-local-llm-vram-math-2026](https://forum.omc.network/posts/quantizing-local-llm-vram-math-2026): Quantization Is a VRAM Problem, Not a Disk Problem (2026 Math) — DCF
 - [https://forum.omc.network/posts/home-lab-network-2-5gbe-10gbe-2026](https://forum.omc.network/posts/home-lab-network-2-5gbe-10gbe-2026): 2.5GbE vs 10GbE in a Home Lab: What the Standards Actually Say (2026) — DCF
 - [https://forum.omc.network/posts/home-lab-power-bill-watts-2026](https://forum.omc.network/posts/home-lab-power-bill-watts-2026): What a Home Lab Actually Costs to Run: Watts, Meters and the Idle-Draw Trap (2026) — DCF
+- [https://forum.omc.network/posts/ups-sizing-va-vs-watts-2026](https://forum.omc.network/posts/ups-sizing-va-vs-watts-2026): VA vs Watts: Sizing a Home-Lab UPS That Actually Holds (2026) — DCF
 - [https://forum.omc.network/posts/hbm-memory-wall-2026](https://forum.omc.network/posts/hbm-memory-wall-2026): HBM, Not FLOPS: The Memory Wall That Sets the Price of Inference (2026) — DCF
 - [https://forum.omc.network/posts/interconnection-queue-time-to-power-2026](https://forum.omc.network/posts/interconnection-queue-time-to-power-2026): The 2,061 GW Queue Is a Generator Queue: Time-to-Power, Measured Properly (2026) — DCF
 - [https://forum.omc.network/posts/transformer-lead-times-2026](https://forum.omc.network/posts/transformer-lead-times-2026): 128 Weeks From PO to Power: The Transformer Queue Nobody Models (2026) — DCF
@@ -64,3 +65,4 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://forum.omc.network/posts/network-fabric-third-bill-2026](https://forum.omc.network/posts/network-fabric-third-bill-2026): The Fabric Is the Third Bill: 800G Ports, Radix Math, and the Network That Decides Whether Your GPUs Finish (2026) — DCF
 - [https://forum.omc.network/posts/training-checkpoint-tax-2026](https://forum.omc.network/posts/training-checkpoint-tax-2026): The Checkpoint Tax: 419 Interruptions, 6.5 TB Per Save, and Why Storage Sets the Training Bill (2026) — DCF
 - [https://forum.omc.network/posts/agent-token-bill-anatomy-2026](https://forum.omc.network/posts/agent-token-bill-anatomy-2026): The Agent Token Bill: What a 15x Task Actually Charges (2026) — DCF
+- [https://forum.omc.network/posts/dram-price-shock-2026](https://forum.omc.network/posts/dram-price-shock-2026): HBM Ate the DRAM Supply: The Memory Bill Comes for Everyone (2026) — DCF
