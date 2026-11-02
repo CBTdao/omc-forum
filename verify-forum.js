@@ -54,10 +54,11 @@ const POSTS = [
   ["ups-sizing-va-vs-watts-2026", "lab"],
   ["used-rtx-3090-llm-server-2026", "lab"],
   ["water-footprint-power-plant-2026", "deep"],
+  ["workers-per-megawatt-labor-queue-2026", "land"],
   ["you-cant-police-a-gpu-you-cant-see", "land"]
 ];
 const GUIDES = ["add-omc-testnet-to-your-wallet", "testnet-tokens-and-the-airdrop", "run-a-gpu-node-on-the-testnet"];
-const SECTION_COUNTS = { hot: 2, deep: 18, pricing: 5, landscape: 6, gaming: 4, homelab: 8 };
+const SECTION_COUNTS = { hot: 2, deep: 18, pricing: 5, landscape: 7, gaming: 4, homelab: 8 };
 const CHIP_BY_SECTION = { hot: "hot", deep: "deep", pricing: "pricing", landscape: "land", gaming: "game", homelab: "lab" };
 
 let pass = 0, fail = 0;
@@ -248,7 +249,7 @@ async function run() {
     /* ---------------- registration: sitemap + llms.txt ---------------- */
     console.log("\n[registration]");
     const sitemap = fs.readFileSync(path.join(ROOT, "sitemap.xml"), "utf8");
-    ok((sitemap.match(/<url>/g) || []).length === 51, "sitemap has 51 URLs", String((sitemap.match(/<url>/g) || []).length));
+    ok((sitemap.match(/<url>/g) || []).length === 52, "sitemap has 52 URLs", String((sitemap.match(/<url>/g) || []).length));
     for (const [slug] of POSTS) ok(sitemap.includes("/posts/" + slug + "</loc>"), "sitemap includes /posts/" + slug);
     for (const slug of GUIDES) ok(sitemap.includes("/guides/" + slug + "</loc>"), "sitemap includes /guides/" + slug);
     ok(sitemap.includes("https://forum.omc.network/tracker"), "sitemap includes tracker");

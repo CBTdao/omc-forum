@@ -66,3 +66,4 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://forum.omc.network/posts/training-checkpoint-tax-2026](https://forum.omc.network/posts/training-checkpoint-tax-2026): The Checkpoint Tax: 419 Interruptions, 6.5 TB Per Save, and Why Storage Sets the Training Bill (2026) — DCF
 - [https://forum.omc.network/posts/agent-token-bill-anatomy-2026](https://forum.omc.network/posts/agent-token-bill-anatomy-2026): The Agent Token Bill: What a 15x Task Actually Charges (2026) — DCF
 - [https://forum.omc.network/posts/dram-price-shock-2026](https://forum.omc.network/posts/dram-price-shock-2026): HBM Ate the DRAM Supply: The Memory Bill Comes for Everyone (2026) — DCF
+- [https://forum.omc.network/posts/workers-per-megawatt-labor-queue-2026](https://forum.omc.network/posts/workers-per-megawatt-labor-queue-2026): 4.1 workers per megawatt: the labor queue that sets your delivery date (2026) — DCF

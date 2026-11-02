@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4.1 workers per megawatt: the labor queue that sets your delivery date (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="4.1 workers per megawatt: the labor queue that sets your delivery date (2026) — DCF">
+  <meta name="twitter:description" content="A US AI campus needs 4–5.3 construction workers per megawatt at peak and about 0.35 permanent staff per megawatt once it opens. The per-MW ratios, why the published numbers disagree by 6×, and the arithmetic that turns a month of slip into $237 per kW.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="A large US data center campus needs about 4.1 construction workers per megawatt at peak — 4,000+ people for a 1 GW build — and roughly 0.35 permanent staff per megawatt once it opens, a 12:1 cliff between building and running. Includes the per-megawatt ratios from project disclosures (Meta El Paso ~4.0, Stargate Abilene 5.3), why the Hamm Institute's 0.7–2.0 average is not the same measurement, what 42% of contractors reporting labour-driven delays implies, and the arithmetic that turns one month of slip into about $237 per kW of capacity — roughly one month of rent." />
+  <link rel="canonical" href="https://forum.omc.network/posts/workers-per-megawatt-labor-queue-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/workers-per-megawatt-labor-queue-2026" />
+  <meta property="og:title" content="4.1 workers per megawatt: the labor queue that sets your delivery date (2026)">
+  <meta property="og:description" content="Every megawatt of AI capacity is a hiring curve before it is a rack: 4.1 workers at peak, 0.35 forever. Why the published ratios differ by 6×, and what a month of slip costs in the same units as rent.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"4.1 workers per megawatt: the labor queue that sets your delivery date (2026)","datePublished":"2026-11-02","dateModified":"2026-11-02","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip land">Landscape</span>
+        <h1>4.1 workers per megawatt: the labor queue that sets your delivery date (2026)</h1>
+        <p class="article-dek">This forum has spent a year on the queues that slow compute down — <a href="/posts/transformer-lead-times-2026">128 weeks for a transformer</a>, <a href="/posts/interconnection-queue-time-to-power-2026">a 2,061 GW generator queue</a>, <a href="/posts/cowos-packaging-wall-2026">a packaging wall at 5.5× reticle</a>. All of those are queues for <i>objects</i>. There is a fourth queue, and it is made of people: a large US campus needs roughly <b>4.1 construction workers per megawatt at peak</b> — 4,000-plus bodies for a 1 GW build — and about <b>0.35 permanent staff per megawatt</b> once the doors open. That ratio is not trivia. It is the reason a delivery date slips for reasons no purchase order explains, and the reason one month of slip can cost the developer about <b>$237 per kW</b> of capacity — which is, almost exactly, one month of rent for the same kilowatt.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 2, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>Workers per megawatt</b> is the conversion rate between megawatts and hiring — the number that decides whether a signed lease becomes billable capacity on schedule. The best-evidenced figures for US builds: <b>4.1 construction workers per MW at peak</b> (median of 19 campuses under 1.5 GW that published both capacity and peak headcount, per Apollo Technical's tracker), corroborated from the outside by <b>Meta's El Paso 1 GW campus at 4,000+ peak workers (~4.0/MW)</b> and <b>Stargate Abilene's 1.2 GW at 6,400 (~5.3/MW)</b>. Once operational the ratio collapses to <b>~0.35 permanent jobs per MW</b> — a <b>12:1 cliff</b> between building and running that explains a lot of local politics. The published numbers appear to conflict by up to 6× because they measure different things: the Hamm Institute's 0.7–2.0 workers per MW is an <i>average day</i>, while 4.1 is a <i>peak</i>; phased megacampuses land near 1.9 at peak. The cost side is cleaner than the labor side: STL Partners' model of a 60 MW US facility puts one month of delay at <b>$14.2M</b> — $10.8M of it lost rent at an assumed $180/kW/month, plus $2.2M labour overrun and $1.2M in SLA penalties — with project IRR falling from <b>17.1% on time to 15.5% at one month, 12.6% at three and 8.8% at six</b>. Our arithmetic: $14.2M ÷ 60,000 kW = <b>$237/kW-month</b>, or one month of rent plus a 31% surcharge. If you are buying compute, the megawatts you were promised are a hiring curve before they are racks.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>每兆瓦 4.1 个工人：决定你交付日期的不是芯片，是人力队列（2026）。<b>摘要：</b>「每兆瓦用工人数」是把兆瓦换算成招聘量的系数——它决定一份已签租约能否按时变成可计费容量。美国项目最可靠的数字是<b>峰值每兆瓦 4.1 名建筑工人</b>（Apollo Technical 追踪的 19 个 1.5 GW 以下、同时公布容量与峰值人力的项目取中位数），外部项目披露可以互相印证：Meta 埃尔帕索 1 GW 项目峰值 4,000+ 人（约 4.0/MW），Stargate 阿比林 1.2 GW 峰值 6,400 人（约 5.3/MW）。投运后比例骤降到<b>每兆瓦约 0.35 个永久岗位</b>——建设期与运营期是 <b>12:1 的断崖</b>，这也解释了大量地方政治争议。公开数据看似互相矛盾达 6 倍，是因为口径不同：Hamm Institute 的 0.7–2.0 是「平均日」，4.1 是「峰值」；分期建设的超大园区峰值约 1.9。成本侧更清楚：STL Partners 对一个 60 MW 美国项目的建模显示，延期一个月损失<b>1,420 万美元</b>——其中 1,080 万是租金损失（按 180 美元/kW/月计），220 万是人力超支、120 万是 SLA 罚金——项目 IRR 从准时 <b>17.1% 降到 1 个月 15.5%、3 个月 12.6%、6 个月 8.8%</b>。我们的算术：1,420 万 ÷ 60,000 kW = <b>每 kW 每月 237 美元</b>，约等于一个月租金加 31% 溢价。如果你在买算力：承诺给你的兆瓦，先是一条招聘曲线，然后才是机架。</p>
+      </div>
+
+      <div class="article-body">
+        <p>Start with the definition, because the phrase is used loosely. <b>Workers per megawatt</b> is the number of people a given block of capacity requires — either at the peak of construction, or on an average day, or permanently once operating. It is a conversion rate between two units that finance teams treat separately: megawatts (capacity, and therefore revenue) and headcount (a cost line, and therefore a schedule risk). Treating labour as a cost line is the mistake. In a market where <b>42% of contractors</b> say worker shortages delayed projects — the most commonly cited cause of delay in the Associated General Contractors of America (AGC) and NCCER 2026 workforce survey of 1,830 firms — labour is not a cost, it is the delivery date.</p>
+
+        <h2>What are the actual workers-per-megawatt numbers?</h2>
+        <p>The most complete public dataset is Apollo Technical's tracker of large US campuses (100 MW and up), which measures peak construction headcount against capacity for projects that disclosed both. Its median across 19 campuses under 1.5 GW is <b>4.1 construction workers per megawatt at peak</b>. The tracker's 54 large campuses under construction — 50.5 GW — imply roughly <b>134,800 workers at peak</b> (range 96,300–157,700), and the figure is lower than 4.1 × 50,500 MW because gigascale campuses are built in phases, where the median falls to <b>1.9 per MW</b>.</p>
+        <p>Two developer disclosures check that ratio from the outside, which is the only kind of cross-check that matters here. Meta's 1 GW El Paso campus was announced at <b>4,000+ workers at peak</b> (Meta, March 2026) — about 4.0 per MW, and independently tracked at 2,300+ on site in July 2026 as the build ramped. Oracle's fact sheet for <b>Stargate Abilene</b> (1.2 GW) puts <b>6,400+ workers on site daily</b> at the busiest point — about 5.3 per MW. So the planning range for a US AI campus is <b>4 to 5.3 peak workers per megawatt</b>, with phased megacampuses closer to 2.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Source</th><th>Scope</th><th>Workers per MW</th><th>What it measures</th></tr></thead>
+            <tbody>
+              <tr><td>Apollo Technical tracker</td><td>19 US campuses under 1.5 GW</td><td><b>4.1</b></td><td>Peak, median of projects publishing both figures</td></tr>
+              <tr><td>Meta, El Paso TX</td><td>1 GW campus</td><td>~4.0 (4,000+ peak)</td><td>Peak, developer announcement (Mar 2026)</td></tr>
+              <tr><td>Oracle fact sheet, Stargate Abilene TX</td><td>1.2 GW campus</td><td>5.3 (6,400+ daily)</td><td>Peak, busiest point (Sep 2025)</td></tr>
+              <tr><td>Apollo tracker, phased megacampuses</td><td>8 projects</td><td>1.9</td><td>Peak, multi-year phased build</td></tr>
+              <tr><td>Hamm Institute (Oklahoma State), Nov 2025</td><td>National forecast</td><td>0.7–2.0</td><td><b>Average</b> day, not peak — different measurement</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Why do the published ratios differ by up to 6×?</h2>
+        <p>They are not disagreeing; they are answering different questions. The Hamm Institute for American Energy's November 2025 employment forecast puts data center construction requirements at roughly <b>0.7 to 2.0 workers per MW</b>, and that is the number a regional economist should use for a multi-year labour-demand forecast, because it averages across the whole build. Peak headcount is a different quantity — the crew on site in month nine of an eighteen-month fit-out — and it is the number a general contractor staffs to, because that is when the electrical contractor needs 40 more journeymen than the market has. Confusing the two is how a county approves a project expecting 400 workers and then meets 4,000.</p>
+        <p>The <b>electrical share</b> is why the peak is so sharp. Electrical work is 45%–70% of a data center's construction budget (IBEW, cited by multiple contractors), with a competing estimate of 40%–50% from Encor Advisors' cost guide — the ranges differ by scope definition, and we are showing both rather than picking. Either way the building is an electrical project with a shell around it, and the peak crew is not a smooth blend of trades: it is a spike in one trade, in one phase, in one metro, all at once. That is the structural reason labour behaves like a queue and not like a market — you cannot spread a commissioning crew across four years the way you can spread a transformer order.</p>
+
+        <h2>The 12:1 cliff: what happens when the building opens</h2>
+        <p>Operating ratios are the mirror image, and every independent source lands in the same narrow band. Apollo's median is <b>0.35 permanent jobs per MW</b> (25 projects). PwC's employment analysis puts long-term operations staffing at <b>50 to 300 permanent jobs</b> for a hyperscale build. Virginia's JLARC study of a typical 250,000 sq ft facility found <b>about 50 permanent jobs</b>, roughly half direct employees and half contractors. Independent explainer analysis puts a 100 MW campus at <b>25–50 permanent staff</b>. And Meta's El Paso disclosure is <b>300+ permanent jobs</b> at 1 GW — 0.3 per MW, with the city's incentive agreement requiring only 50.</p>
+        <p>So the cliff is real and roughly constant: <b>4.1 at peak, 0.35 forever, about 12:1</b>. A 1 GW campus is a 4,000-person construction project that becomes a 300-person operating site. We are not making a political argument about whether that is a good deal for a county — that debate is well covered elsewhere and depends on tax abatements we are not auditing. We are pointing at the operational consequence: <b>the labour constraint exists almost entirely in the build phase</b>, which means it bites hardest exactly when a developer is trying to convert a signed lease into revenue, and it disappears precisely when the asset starts paying. Every hour of schedule risk sits in the window where nothing is being billed.</p>
+
+        <h2>What does one month of delay actually cost?</h2>
+        <p>STL Partners modelled a 60 MW single-tenant US facility and priced the slip: <b>about $14.2M per month</b>, decomposing into <b>$10.8M</b> of lost revenue, <b>$2.2M</b> of labour cost overrun (300 contractors plus 60 technicians carried longer than planned) and <b>$1.2M</b> in SLA penalties. The return impact is the part that changes decisions: project IRR falls from <b>17.1% delivered on time</b> to <b>15.5% at one month</b>, <b>12.6% at three</b> and <b>8.8% at six</b>. Two independent write-ups of that model agree on the figures, and the internal arithmetic checks: 60,000 kW × $180/kW/month = $10.8M, which is the lost-rent component almost to the dollar.</p>
+        <p>That coincidence is the useful insight, so let us state it as arithmetic rather than metaphor. <b>$14.2M ÷ 60,000 kW = $236.67 per kW-month.</b> The delay penalty and the rent for the same capacity are the same order of magnitude, because the dominant term in the penalty <i>is</i> the rent you did not collect. One month late ≈ one month of rent, plus a 31% surcharge for the labour and contractual tail ($3.4M on $10.8M).</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Component</th><th>Per month (60 MW)</th><th>Per kW-month</th><th>Note</th></tr></thead>
+            <tbody>
+              <tr><td>Lost rent</td><td>$10.8M</td><td>$180</td><td>At the model's assumed $180/kW/month, 100% utilised</td></tr>
+              <tr><td>Labour overrun</td><td>$2.2M</td><td>$37</td><td>300 contractors + 60 technicians carried longer</td></tr>
+              <tr><td>SLA penalties</td><td>$1.2M</td><td>$20</td><td>Enterprise tenant, $100k/week class</td></tr>
+              <tr><td><b>Total</b></td><td><b>$14.2M</b></td><td><b>~$237</b></td><td>≈ one month of rent + 31% (our arithmetic)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Then re-price it in the markets that actually set the ceiling. CBRE's Q1 2026 global data puts asking rents for 250+ kW, N+1/Tier III requirements at <b>$235–265 per kW per month in Frankfurt</b> and <b>$330–475 in Singapore</b>. Run the same 60 MW through those rates and a month of slip costs <b>$14.1M–$15.9M</b> in Frankfurt and <b>$19.8M–$28.5M</b> in Singapore <i>before</i> labour overruns and penalties — because the penalty is a rent-shaped number and rent is not the same everywhere. The corollary is uncomfortable for anyone modelling delay as a fixed percentage of capex: it is not a capex percentage, it is a rent percentage, and it scales with the market you built in.</p>
+
+        <h2>Where does the queue actually break?</h2>
+        <p>In one trade. Contractors surveyed by AGC and NCCER in mid-2026 named <b>electricians as the hardest occupation to hire</b>, followed by HVAC technicians, pipefitters and welders; among the 28% of respondents who had worked on a data center project in the past year, <b>58%</b> said those projects increased competition for skilled workers, <b>49%</b> reported wage pressure, and <b>37%</b> named worker or subcontractor availability as their single biggest challenge. Across all respondents, <b>87%</b> had openings for hourly craft positions, and of those, <b>88%</b> said the jobs were as hard or harder to fill than a year earlier. Half said candidates lacked the skills, certificates or licences required — even though more than eight in ten firms had raised base pay.</p>
+        <p>The supply side is not elastic on any timeline that matters to a project. The US has <b>757,220 electricians</b> at a median <b>$63,190</b> a year (BLS, May 2025), with <b>72,700 openings a year projected through 2035</b> — a replacement rate of roughly 9.6% of the entire stock, most of it retirements, against 9% projected employment growth. The Associated Builders and Contractors puts the industry's need at <b>349,000 net new construction workers in 2026 and 456,000 in 2027</b>, and notes about <b>one in five electricians is over 55</b>; NCCER's long-standing estimate is that <b>41% of the current construction workforce retires by 2031</b>. Electrical apprenticeships run four to five years. You cannot compress that into a project schedule, which is why the shortage shows up as price and delay rather than as an unfilled job posting.</p>
+        <p>The operating side tells the same story from the other direction. Uptime Institute's 2025 Global Data Center Survey found <b>46%</b> of operators have difficulty finding qualified candidates, <b>37%</b> struggle to retain staff, and <b>35%</b> say staff are being hired away by competitors — four independent write-ups of that survey agree on all three figures. Retention is now as binding as hiring: every campus that opens takes technicians out of the same national pool, so the build boom of 2026 is quietly consuming the operations workforce of 2028.</p>
+
+        <h2>Is the shortage concentrated in specific markets?</h2>
+        <p>Yes, and the concentration is the useful planning unit. Apollo's metro pressure index compares capacity under construction against the local pool of electricians, HVAC mechanics, construction managers and electrical technicians: <b>Columbus, Ohio</b>'s 2,214 MW under construction would need about <b>6,160 workers at peak — 41% of the metro's entire combined trades pool</b> — and Atlanta sits at the same 41%. Texas carries the most large-campus capacity, <b>14.2 GW across 17 campuses</b>, much of it in rural counties far from metro labour pools, which is why those projects run on travelling crews, per diems and 75-mile commutes. The index is explicitly a stress test rather than a forecast — it asks what happens if every project peaks at once — but the ranking is what a site-selection decision should actually read, because it prices the labour market the way the interconnection queue prices the grid.</p>
+
+        <h2>Why can't higher wages fix this?</h2>
+        <p>Because wage competition moves workers between projects; it does not create them. Macrina Wilkins of AGC puts it directly: "You can poach and offer competitive wages, but if you literally do not have the number of skilled individuals needed to get a project done, you are just going to have to wait." The survey data matches — half of firms report candidates who lack the required skills even after pay increases, and <b>42%</b> report that labour shortages delayed projects, the most-cited delay cause in the survey. McKinsey's oft-recited framing of the AI-infrastructure ask — roughly <b>130,000 additional electricians</b> between 2023 and 2030 — is a training-pipeline problem, and training pipelines are measured in apprenticeship cohorts, not quarters. Poaching also has a second-order cost that shows up in the delay math: it raises turnover at the site you poached from, which pushes <i>their</i> commissioning date, which pushes the shared substation, which pushes you.</p>
+
+        <h2>What does this mean if you are buying compute?</h2>
+        <p><b>Treat announced megawatts as a hiring curve, not a delivery date.</b> A neocloud's 500 MW pipeline is 2,000-plus peak construction workers, 175 permanent operators, and a 12–18 month electrical fit-out in a metro whose trades pool may already be 40% committed. The preleasing number tells you the market already knows this: <b>80.4%</b> of capacity under construction across US primary markets was pre-leased in H1 2026, up from 74.3% a year earlier, with <b>less than 1,500 MW</b> of available future capacity left across all primary markets — about six months of demand at the current absorption rate (CBRE, H1 2026). When almost everything under construction is already spoken for, the thing you are actually buying is somebody's schedule, and the schedule is a labour plan.</p>
+        <p><b>Price the slip, not just the rate.</b> If a month of delay is worth $237/kW, then a contract that promises delivery in Q3 and delivers in Q4 has given you a 3–4% effective discount on the whole deal — worse than most of the rate negotiation you just spent three weeks on — and it has done so in a market where rent is rising <b>8.3% per half-year</b> for 3–10 MW requirements (CBRE H1 2026), i.e. the delay also moves the benchmark you will re-price against. Contracts that carry liquidated damages for late delivery are not hostile; they are the only clause that prices the queue you are actually standing in.</p>
+        <p><b>Ask who is holding the crew.</b> The question that separates a real pipeline from a slide is not "how many MW do you have" but "which electrical contractor, which metro, and how many journeymen are committed in which month." The same discipline this forum applies to <a href="/posts/the-utilization-tax-2026">utilisation</a> and to <a href="/posts/reserved-vs-spot-gpu-spread">reserved-versus-spot spreads</a> applies one layer up: the price of capacity is set by the scarcest input, and at 4.1 workers per megawatt the scarcest input is a person with a licence and a pair of boots.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>4.1 construction workers per megawatt at peak</b> is the best-evidenced US ratio (Apollo Technical's median of 19 campuses under 1.5 GW), corroborated by Meta El Paso (~4.0/MW) and Stargate Abilene (5.3/MW). A 1 GW campus is 4,000+ people.</li>
+            <li><b>The ratios that "conflict" measure different things.</b> 4.1 is a peak; the Hamm Institute's 0.7–2.0 per MW is an average day; phased megacampuses run near 1.9 at peak. Staff to peak, forecast to average.</li>
+            <li><b>Operating intensity is ~0.35 permanent jobs per MW</b> — 12:1 below the build phase. A 1 GW campus becomes a 300-person site. The labour constraint lives entirely in the unbilled window.</li>
+            <li><b>One month of delay ≈ $237 per kW</b> (STL Partners' $14.2M on 60 MW), because the dominant term is lost rent: $10.8M of the total is exactly one month at $180/kW. Project IRR drops 17.1% → 15.5% at one month, 12.6% at three, 8.8% at six.</li>
+            <li><b>Electrical is the binding trade.</b> 45–70% of construction budget, electricians ranked hardest to hire, 42% of contractors reporting labour-driven delays, and a 4–5 year apprenticeship that no wage can compress.</li>
+            <li><b>Read a pipeline as a hiring plan.</b> With 80.4% of US primary-market capacity under construction already pre-leased and under 1,500 MW available, the thing being sold is somebody's schedule — so ask which contractor, which metro, and how many committed journeymen.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/transformer-lead-times-2026"><i data-i18n="pager.prev">Previous</i>128 weeks from PO to power: the transformer queue nobody models (2026) →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
