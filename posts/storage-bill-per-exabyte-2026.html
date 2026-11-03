@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The exabyte bill: what storage actually costs under an AI data lake (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The exabyte bill: what storage actually costs under an AI data lake (2026) — DCF">
+  <meta name="twitter:description" content="One exabyte rents for $23M a month at S3 Standard rack rate, about $1M frozen in Deep Archive, roughly $7M at Backblaze — and the media itself, priced off Seagate's latest quarter, amortizes to around $0.3M. A 20–70× spread, plus $90M every time you read it out.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="What an exabyte of storage actually costs in 2026: AWS S3 Standard at $0.023/GB-month puts one exabyte at $23M/month ($21M above 500 TB), S3 Glacier Deep Archive at $0.00099/GB puts it near $1M/month, Backblaze B2's $6.95/TB (raised from $6 in May 2026) is about $7M/month, and Seagate's FQ1 2027 results ($4.23B revenue for 220 EB shipped) imply media capex of roughly $19 per shipped terabyte — about $0.32/TB-month amortized over five years. Includes the egress bill ($90M to read an exabyte out of S3), why the 20–70× spread survives, and what it means when you buy GPU capacity." />
+  <link rel="canonical" href="https://forum.omc.network/posts/storage-bill-per-exabyte-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/storage-bill-per-exabyte-2026" />
+  <meta property="og:title" content="The exabyte bill: what storage actually costs under an AI data lake (2026)">
+  <meta property="og:description" content="Storage is the fourth bill under every AI workload: $23M a month to rent an exabyte hot, $1M to freeze it, roughly $0.3M of amortized media if you own it — and $90M to read it back out. The arithmetic, from vendor rate cards and Seagate's record quarter.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"The exabyte bill: what storage actually costs under an AI data lake (2026)","datePublished":"2026-11-03","dateModified":"2026-11-03","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>The exabyte bill: what storage actually costs under an AI data lake (2026)</h1>
+        <p class="article-dek">This forum has priced the <a href="/posts/the-utilization-tax-2026">utilisation tax</a>, the <a href="/posts/agent-token-bill-anatomy-2026">agent token bill</a>, and the <a href="/posts/network-fabric-third-bill-2026">network as the third bill</a>. The bill nobody puts on the comparison table is storage — and it is the one with the widest spread in infrastructure. One exabyte of capacity rents for about <b>$23M a month</b> at Amazon S3 Standard's rack rate, freezes for about <b>$1M a month</b> in Glacier Deep Archive, and the raw disk media behind it — priced off Seagate's record quarter — amortizes to roughly <b>$0.3M a month</b>. That 20–70× spread is the storage-side argument for owning bytes, and the read-out toll is the argument against moving them: about <b>$90M</b> every time you egress an exabyte.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 3, 2026</span><span>11 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>Storage is priced in tiers that differ by 70×, and AI workloads touch all of them.</b> An <b>exabyte (EB)</b> is 1,000,000 terabytes as vendors bill it (decimal). At list rates (US East, on-demand): <b>S3 Standard</b> $0.023/GB-month (first 50 TB tier; $0.021 above 500 TB) → <b>≈$21–23M per EB per month</b>; <b>S3 Glacier Deep Archive</b> $0.00099/GB with a 180-day minimum → <b>≈$1M per EB per month</b>; <b>Backblaze B2</b> $6.95/TB-month (raised from $6 effective May 2026) → <b>≈$7M per EB per month</b>. The dock price is another world: Seagate's fiscal Q1 2027 (quarter ended 2 Oct 2026) booked <b>$4.23B of revenue on 220 EB shipped</b> — about <b>$19 per shipped terabyte</b> — which amortizes over a five-year service life to roughly <b>$0.32/TB-month</b>, or <b>$0.32M per EB per month</b> in media capex alone (our arithmetic on disclosed figures; excludes power, replication, staff and margin). Seagate's gross margin widened from 39.4% to <b>57.3%</b> in one year, nearline supply is locked under long-term agreements to <b>2028</b> (some customers to <b>2030</b>), and the company guided fiscal Q2 to <b>$4.8B</b> — the price momentum is structural, not cyclical. The egress line completes the trap: reading one exabyte back out of S3 costs about <b>$90M</b> at $0.09/GB, versus <b>$10M</b> at Backblaze's $0.01/GB overage (3× monthly storage free). If you are buying GPU capacity, the storage decision is a residency decision: data priced next to compute is cheap to keep and ruinous to move.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>EB 级账单：AI 数据湖底下的存储到底多少钱（2026）。<b>摘要：</b>存储按档位计价，档位之间差 70 倍，而 AI 工作负载横跨所有档位。按厂商列表价（美东区、按需）计：1 EB = 100 万 TB（十进制）。<b>S3 Standard</b> 单价 $0.023/GB·月（前 50 TB 档；超 500 TB 为 $0.021）→ <b>每 EB 每月约 2,100–2,300 万美元</b>；<b>S3 Glacier Deep Archive</b> 单价 $0.00099/GB、最短存储 180 天 → <b>每 EB 每月约 100 万美元</b>；<b>Backblaze B2</b> $6.95/TB·月（2026 年 5 月起从 $6 上调）→ <b>每 EB 每月约 700 万美元</b>。出厂价是另一个世界：希捷 2027 财年第一季度（截至 2026 年 10 月 2 日）营收 <b>42.3 亿美元、出货 220 EB</b>——折合每 TB 出货容量约 <b>19 美元</b>——按 5 年服役期摊销约为 <b>每 TB·月 0.32 美元</b>，即 <b>每 EB 每月约 32 万美元</b>的介质资本开支（我们对公开数据的推算，不含电力、冗余、人力与毛利）。希捷毛利率一年内从 39.4% 升到 <b>57.3%</b>，近线产能已被长约锁定至 <b>2028 年</b>（部分客户到 <b>2030 年</b>），下一财季指引 <b>48 亿美元</b>——涨价是结构性的。出口费完成合围：从 S3 读出 1 EB 约 <b>9,000 万美元</b>（$0.09/GB），Backblaze 溢价档（月存储 3 倍内免费、超出 $0.01/GB）约 <b>1,000 万美元</b>。如果你在买算力：存储决策就是驻留决策——放在算力旁边的数据留下便宜、搬走天价。</p>
+      </div>
+
+      <div class="article-body">
+        <p>Definitions first, because this is a field where the unit itself is a marketing choice. One <b>exabyte (EB)</b> is 10<sup>18</sup> bytes — 1,000,000 terabytes, or 1,000,000,000 gigabytes, using the decimal convention every cloud bill uses. (Binary-purists' exbibyte is 15% larger; nobody bills you in it.) Why should a compute buyer care about a unit this size? Because it is now the operating unit of the industry: Seagate alone shipped <b>220 EB</b> in a single quarter, and AI is the demand engine behind it — the company's CEO, Dave Mosley, attributes the "multi-year growth phase" to data that is created, retained and reused, with the shift from training to inferencing driving large-capacity drive demand for everything from model checkpoints to inference datasets.</p>
+
+        <h2>What does an exabyte cost per month at retail?</h2>
+        <p>Three rate cards bracket the retail market. At the top, <b>Amazon S3 Standard</b> charges $0.023 per GB-month for the first 50 TB in US East (N. Virginia), stepping down to $0.022 for the next 450 TB and $0.021 above 500 TB (AWS's published on-demand rates). At exabyte scale you get the volume tier: <b>0.021 × 10<sup>9</sup> GB = $21M per EB per month</b>; the headline $0.023 rate gives the $23M figure most buyers actually experience at petabyte scale. At the bottom, <b>S3 Glacier Deep Archive</b> is $0.00099 per GB-month — about <b>$1M per EB per month</b> — with a 180-day minimum storage duration and retrieval fees on the way out. In between sits the value tier: <b>Backblaze B2</b> at <b>$6.95 per TB-month</b> (Backblaze raised it from $6 effective 1 May 2026 and made standard API calls free in the same change), which is <b>$6.95M per EB per month</b>.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Layer</th><th>Rate</th><th>Per TB-month</th><th>Per EB-month</th><th>Catch</th></tr></thead>
+            <tbody>
+              <tr><td>S3 Standard (rack rate)</td><td>$0.023/GB</td><td>$23</td><td><b>$23M</b></td><td>First 50 TB tier; $0.021 above 500 TB</td></tr>
+              <tr><td>Backblaze B2</td><td>$6.95/TB</td><td>$6.95</td><td><b>$6.95M</b></td><td>3× monthly storage egress free, then $0.01/GB</td></tr>
+              <tr><td>S3 Glacier Deep Archive</td><td>$0.00099/GB</td><td>$0.99</td><td><b>≈$1M</b></td><td>180-day minimum, retrieval fees, hours to restore</td></tr>
+              <tr><td>Media capex, hyperscale (derived)</td><td>≈$19/TB shipped, 5-yr life</td><td>≈$0.32</td><td><b>≈$0.32M</b></td><td>Our arithmetic on Seagate FQ1 2027; excludes power, replication, staff</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Every row of that table is verifiable from a vendor's own page or filing, and the spread between its first and last row is <b>roughly 70×</b>. Nothing else in the infrastructure stack — not GPUs, not networking, not power — shows a 70× gap between the list price of the service and the commodity cost of the physical input. Memory came close this year (our <a href="/posts/dram-price-shock-2026">DRAM shock analysis</a> tracked server DDR5 contract prices up 93–98% in a quarter), but that was a shortage moving everyone's price up together. The storage spread is permanent architecture, not a shortage.</p>
+
+        <h2>What does it cost to get the data back out?</h2>
+        <p>The storage bill has a second meter that only shows at the exit. AWS charges $0.09 per GB for internet egress after the first 100 GB a month (published S3 data-transfer rates). Read one exabyte out over the public internet and the toll is <b>0.09 × 10<sup>9</sup> = $90M</b> — about four months of hot storage rent for the same capacity, charged for the privilege of leaving. Backblaze's model is the counter-offer: egress up to 3× your average monthly storage is free, and the overage is $0.01/GB — about <b>$10M per EB</b>, a 9× difference on the identical byte. This is why "storage is cheap now" is a half-truth: the <i>storage</i> is cheap, the <i>departure</i> is not, and any workload with a second home (training on one cloud, inference on another, a migration, a regulator's data request) prices egress long before it prices rent. The archive tiers add a third meter — retrieval fees on top of egress — plus minimum-duration charges if you delete early. Glacier Deep Archive's 180-day minimum is not a detail; it is a commitment device that makes "cheap" storage a contract.</p>
+
+        <h2>What does the industry actually pay at the loading dock?</h2>
+        <p>The cleanest public window into the dock price is Seagate's own filing. Its fiscal Q1 2027 (quarter ended 2 October 2026, reported 27–28 October) shows <b>revenue of $4.233B</b>, up 61% year over year from $2.629B, with total shipments of <b>220 EB</b> (up 21% year over year, per the earnings call) and a record <b>198 EB</b> delivered to data center customers — about 90% of volume. Divide one by the other and the company booked about <b>$19.2 of revenue per shipped terabyte</b>. A year earlier the same arithmetic on its disclosed figures gives $2.629B ÷ 182 EB ≈ <b>$14.4 per TB</b> — a 33% year-over-year rise in revenue per shipped terabyte, which is mix shift and price increases compounding (data center share rose, capacity per drive rose, and management describes a deliberate "value-based pricing strategy"). The gross-margin line confirms it independently: <b>57.3% GAAP</b> versus 39.4% a year ago — for a hardware company shipping commodity-spinning rust, that is a price story, not a cost story.</p>
+        <p>Now convert capex to a monthly rate, which is the unit a buyer actually thinks in. Assume a five-year service life — consistent with the refresh cycles drive vendors plan around — and $19.2/TB of media amortizes to <b>about $0.32 per TB-month</b>, or <b>$0.32M per EB-month</b>. Be honest about what that number excludes: drive enclosures, servers, networking, the data center shell, power (a hard drive draws 5–10 W around the clock), replication and erasure-coding overhead, technicians, and Seagate's own profit margin, which is at a record high precisely because supply is disciplined — the company says the vast majority of its nearline exabyte supply is allocated under long-term agreements through <b>2028</b>, with some cloud customers extended to <b>2030</b>, and guided fiscal Q2 2027 to <b>$4.8B ± $0.1B</b>. Real deployed storage costs multiples of the media number. But the ordering does not change: even multiplied several times over, owning bytes at the dock is an order of magnitude below renting them at retail — which is exactly why the companies with exabyte fleets build their own, and why Backblaze can sell at $6.95 where AWS charges $23.</p>
+        <p>The scarcity side deserves its own sentence: this is a supply-managed market, not a glut. Seagate's Q2 guidance of $4.8B implies another ~10% sequential revenue rise, capacity per drive is climbing (Mozaic 4 at 44 TB ramping, Mozaic 5 above 50 TB planned for 2027-end qualification), and the CFO's stated plan is to cover rising component costs with further price increases. Every layer of the AI stack in 2026 has learned the same lesson — HBM displaced DDR5 (the <a href="/posts/dram-price-shock-2026">memory bill</a>), transformers queue for years (<a href="/posts/transformer-lead-times-2026">128 weeks from PO to power</a>) — and storage is now pricing like the rest of them: allocation, long-term agreements, and list prices that only go one way.</p>
+
+        <h2>Why does the 20–70× spread survive competition?</h2>
+        <p>Because each tier sells a different promise, and the expensive tiers are expensive for reasons a disk cannot erase. <b>Durability</b>: 11 nines of design durability means redundancy — erasure coding across many drives and sites — so one stored TB consumes 1.3–1.5 TB of raw media before anyone flips a switch. <b>Latency</b>: "always-hot" storage keeps data on spinning media that answers in milliseconds; Deep Archive keeps it on tape-class economics that answer in hours. <b>Operations</b>: power, real estate, drive-churn logistics (a 24 TB drive fails on schedule, somewhere, every minute of a fleet's life), and staff. <b>And margin</b>: the top tier prices what the market pays for not thinking about storage. The spread is the market's honest accounting of how much of that burden you want to own versus rent. What has <i>changed</i> in 2026 is where the boundary sits: Backblaze's own $6.95 list price is still about 20× the derived media cost, meaning even the aggressive value tier captures the operations-and-durability multiple at scale — and the May 2026 price rise shows the input-cost wave (component prices, per the same logic as DRAM) pushing the whole ladder up, not just the top rung.</p>
+        <p>For the buyer, the honest framing is: the 70× headline is a <i>ceiling</i> illustration, not a procurement plan. You will not run your training dataset on Glacier Deep Archive, and you will not build an exabyte fleet to save 70%. The usable insight sits in the middle of the table: at petabyte scale — where most serious AI teams actually live — the difference between the $23M/EB and $7M/EB layers is $16M per month, which buys a lot of GPU-hours, and the difference between those layers and the dock is why every hyperscaler internalizes storage before it internalizes anything else.</p>
+
+        <h2>What does this mean if you are buying compute?</h2>
+        <p><b>Price storage where the compute sits, then never move it.</b> The egress arithmetic makes data heavier every year it accumulates: an exabyte that costs $23M a month to rent also costs $90M to read out. That asymmetry is the mechanism behind data gravity — once your checkpoints, embeddings and video corpus live next to a particular GPU fleet, the cost of testing a second fleet includes the toll of moving or re-generating the data. Ask any prospective GPU provider for their storage line item and their egress policy in the same breath as their hourly rate; a cheap GPU-hour attached to an expensive byte is the same trap as a cheap GPU attached to an <a href="/posts/the-utilization-tax-2026">idle-hour</a>.</p>
+        <p><b>Size the checkpoint bill before it sizes you.</b> Our <a href="/posts/training-checkpoint-tax-2026">checkpoint tax analysis</a> put a 405B-parameter run at 6.5 TB per save and one save every ~13.6 minutes at the optimum — and checkpoint retention is a pure storage-tier decision. Training keeps the last few checkpoints hot (Standard), keeps the daily lineage warm (value tier), and should push anything older than a restart-horizon into archive with an explicit retention window — remembering that Deep Archive's 180-day minimum turns "we might delete it sooner" into a fee. The storage tier is not an infrastructure detail; it is a training-reliability parameter, because a job that loses its checkpoint budget to a retrieval queue is a job that stops.</p>
+        <p><b>Read a storage quote the way you read a GPU quote.</b> The discipline is the same one that built the <a href="/posts/agent-token-bill-anatomy-2026">agent token bill</a>: decompose the line into its meters. Storage has four — capacity-month, request/API count, retrieval, and egress — and vendors quietly re-weight them. Backblaze made API calls free in May 2026 while raising capacity 16% ($6 → $6.95); AWS keeps headline storage unchanged while egress at $0.09/GB funds the margins. Neither is a scam; both are price structures. The winning question at exabyte-adjacent scale is not "what does storage cost" but "what does it cost to <i>keep</i>, what to <i>touch</i>, and what to <i>leave</i>" — and in 2026 those three numbers are $23M, $90M and zero-for-so-long-as-you-stay, respectively, per exabyte per month. Storage is no longer where data goes after the interesting part; it is the fourth bill, it is compounding, and it has the widest spread of any line on the invoice.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>An exabyte rents for $21–23M a month at S3 Standard list rates</b> ($0.023/GB first 50 TB, $0.021 above 500 TB, US East), freezes for about $1M in Glacier Deep Archive ($0.00099/GB, 180-day minimum), and costs about $7M at Backblaze B2 ($6.95/TB, raised from $6 in May 2026).</li>
+            <li><b>The dock price is another world: ~$19 per shipped terabyte.</b> Seagate's FQ1 2027 booked $4.233B on 220 EB shipped (198 EB to data centers) — amortized over a 5-year life that is ~$0.32/TB-month of media capex, a 20–70× spread under the retail tiers (our arithmetic; excludes power, redundancy, staff, margin).</li>
+            <li><b>The price momentum is structural.</b> Seagate's gross margin rose 39.4% → 57.3% in one year, revenue per shipped TB rose ~33%, nearline supply is locked under LTAs to 2028 (some to 2030), and fiscal Q2 guidance is $4.8B — a supply-managed market with one-way list prices.</li>
+            <li><b>Egress is the second meter: ~$90M to read an exabyte out of S3</b> ($0.09/GB after 100 GB free) versus ~$10M at Backblaze's $0.01/GB overage — the 9× exit-gap that turns storage decisions into residency decisions.</li>
+            <li><b>Checkpoints are the workload that touches every tier.</b> 6.5 TB per save at 405B scale, one every ~13.6 minutes at optimum: hot for the last few, warm for lineage, archive with an explicit retention window for the rest — and the 180-day archive minimum makes "temporary" a fee.</li>
+            <li><b>Decompose any storage quote into four meters</b> — capacity-month, API requests, retrieval, egress — the same discipline as the agent token bill. Vendors re-weight them constantly: Backblaze cut API fees while raising capacity 16%; AWS holds the headline and prices the exit.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/training-checkpoint-tax-2026"><i data-i18n="pager.prev">Previous</i>The checkpoint tax: 419 interruptions, 6.5 TB per save, and why storage sets the training bill →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
