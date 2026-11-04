@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CXL pooling: the memory tier that sells capacity, not bandwidth (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CXL pooling: the memory tier that sells capacity, not bandwidth (2026) — DCF">
+  <meta name="twitter:description" content="One CXL 2.0 module adds 256 GB to a Xeon 6 socket at ~32 GB/s and 2–2.5× local DRAM latency. Capacity at 5% of the socket's bandwidth — and the KV-cache arithmetic that says exactly what that costs per token.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="CXL memory pooling explained with 2026 hardware: CXL 2.0 (November 2020) added switching and pooling — a memory region owned by one host at a time and reassignable by a fabric manager; CXL 3.0 (August 2022) added multi-level switching and true sharing over PCIe 6.0. A Samsung CMM-D module holds 256 GB behind a PCIe 5.0 x8 link named at 36 GB/s, measured at 219–255 ns against 97–112 ns for local DDR5. We do the arithmetic: one module is ~5% of a Xeon 6 socket's 614 GB/s DDR bandwidth, eight modules are ~250 GB/s and 2 TB, and a 320 KB/token KV cache streamed from CXL caps a single 8K decode at ~12 tokens per second. Includes Intel Flat Memory Mode, the pooling-vs-sharing distinction, and the four questions to ask before buying." />
+  <link rel="canonical" href="https://forum.omc.network/posts/cxl-memory-pooling-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/cxl-memory-pooling-2026" />
+  <meta property="og:title" content="CXL pooling: the memory tier that sells capacity, not bandwidth (2026)">
+  <meta property="og:description" content="A CXL 2.0 module adds 256 GB to a server socket at roughly 32 GB/s and two to two-and-a-half times local DRAM latency. That trade is the whole product: capacity you can hot-add and re-assign, bandwidth you cannot. The arithmetic, from consortium specs, vendor datasheets and measured latency studies.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"CXL pooling: the memory tier that sells capacity, not bandwidth (2026)","datePublished":"2026-11-04","dateModified":"2026-11-04","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>CXL pooling: the memory tier that sells capacity, not bandwidth (2026)</h1>
+        <p class="article-dek">Every memory conversation in 2026 ends the same way: the DRAM bill went up 93–98% in a single quarter (<a href="/posts/dram-price-shock-2026">we tracked it</a>), HBM ate the supply (<a href="/posts/hbm-memory-wall-2026">we tracked that too</a>), and the honest answer to "how do we get more memory" is usually "you can't, the DIMM slots are already full." CXL is the industry's answer to that sentence — a way to hang memory off PCIe lanes instead of DDR channels, and to move it between hosts without a reboot. One module: <b>256 GB</b>, about <b>32 GB/s</b>, and <b>2 to 2.5×</b> the latency of the DRAM it sits next to. That ratio is the entire product. CXL does not sell cheaper bytes; it sells <b>bytes you can add, remove and re-assign after the server is built</b> — and it charges you in bandwidth for the privilege.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 4, 2026</span><span>12 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>CXL (Compute Express Link) is a cache-coherent interconnect that runs over the PCIe physical layer, and CXL memory pooling is the use of it to attach DRAM to a server that has run out of DIMM slots.</b> The specification history matters because the words are not interchangeable: <b>CXL 2.0</b> (November 2020) added single-level switching and <b>pooling</b> — a memory region that only one host owns at a time but that a fabric manager can re-assign without rebooting either machine; <b>CXL 3.0</b> (August 2022) moved to PCIe 6.0 and added multi-level switching plus <b>sharing</b>, where several hosts hold coherent copies of the same region at once. The hardware shipping in volume is still CXL 2.0: Samsung's <b>CMM-D (MD220)</b> puts <b>256 GB</b> (or 128 GB) of DDR5 in an E3.S 2T module behind a <b>PCIe 5.0 x8</b> link and names <b>36 GB/s</b> of device performance; Intel's Xeon 6 exposes <b>up to 64 CXL 2.0 lanes at 32 GT/s</b> and supports Type 1, 2 and 3 devices. The numbers that decide whether it belongs in your rack: one module delivers about <b>32 GB/s per direction — roughly 5% of a 12-channel Xeon 6 socket's ~614 GB/s of DDR5-6400 bandwidth</b> — at <b>219–255 ns</b> measured load latency versus <b>97–112 ns</b> for local DDR5. Eight modules fill those 64 lanes with <b>2 TB</b> and a theoretical <b>~250 GB/s</b> aggregate. Our arithmetic says the break-even is not about price per gigabyte: a KV cache of <b>320 KB per token</b> streamed from CXL caps a single 8K-context decode at about <b>12 tokens per second</b>, while the same cache in HBM supports over a thousand in theory. CXL is a tier for data you are <i>not</i> decoding right now — prefix caches, cold embeddings, staging buffers — and a bad tier for data you are.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>CXL 内存池化：卖容量、不卖带宽的内存层（2026）。<b>摘要：</b>CXL 是跑在 PCIe 物理层上的缓存一致性互连，内存池化就是拿它给「DIMM 槽已插满」的服务器挂内存。版本术语不能混用：<b>CXL 2.0</b>（2020 年 11 月）引入单级交换与<b>池化</b>——一块内存同一时刻只归一台主机所有，但 fabric 管理器可在不重启两台机器的前提下改派；<b>CXL 3.0</b>（2022 年 8 月）换到 PCIe 6.0，加入多级交换与真正的<b>共享</b>——多台主机同时持有同一区域的缓存一致副本。量产硬件仍以 CXL 2.0 为主：三星 <b>CMM-D（MD220）</b>把 <b>256 GB</b>（或 128 GB）DDR5 做进 E3.S 2T 模块，走 <b>PCIe 5.0 x8</b>，标称器件性能 <b>36 GB/s</b>；英特尔至强 6 提供<b>最多 64 条 CXL 2.0 通道、每通道 32 GT/s</b>，支持 Type 1/2/3 设备。决定它该不该进机柜的三个数字：单模块每方向约 <b>32 GB/s——约为 12 通道至强 6 插槽 DDR5-6400 约 614 GB/s 的 5%</b>；实测加载延迟 <b>219–255 ns</b>，本地 DDR5 为 <b>97–112 ns</b>；8 个模块插满 64 条通道即 <b>2 TB</b>、理论合计 <b>约 250 GB/s</b>。我们的算术结论：关键不在每 GB 价格——<b>每 token 320 KB</b> 的 KV 缓存若从 CXL 流式读取，单条 8K 上下文的解码速度被压到<b>约 12 token/秒</b>，同样内容放在 HBM 理论上可支撑上千。CXL 适合放「此刻不解码」的数据（前缀缓存、冷 embedding、暂存缓冲），不适合放正在解码的数据。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>CXL memory pooling is the practice of attaching DRAM to a server through PCIe lanes rather than DDR channels, so that capacity can be added, removed and re-assigned without rebuilding the machine.</b> The protocol — Compute Express Link, an open standard built on the PCIe electrical layer — gives a processor byte-addressable, cache-coherent load/store access to memory sitting on a card. The operating system sees that memory as an extra NUMA node with no CPU behind it. Nothing about the media changes: a CXL module is filled with the same DDR5 that goes into a DIMM. What changes is the path to it, and therefore three things a buyer cares about — how much you can fit, how fast you can reach it, and when you are allowed to change your mind.</p>
+
+        <h2>What is the difference between CXL pooling and CXL sharing?</h2>
+        <p>This is the distinction that most vendor decks blur, and it decides what your scheduler can do. The CXL Consortium's own timeline is precise about it. <b>CXL 2.0</b>, released in November 2020 on the PCIe 5.0 physical layer, introduced switching and memory pooling: devices can be partitioned into Logical Devices, each assigned to one host at a time, with a fabric manager re-assigning capacity as demand moves. Practitioners describe the consequence bluntly — pooling means <i>one owner at a time</i>. Host A cannot read the region while Host B is using it; what you get is a fast, reboot-free way to move memory between machines. <b>CXL 3.0</b>, released in August 2022, moved to PCIe 6.0 (64 GT/s, double the link rate), added multi-level switching and fabric capabilities, and introduced true memory sharing: multiple hosts holding hardware-coherent copies of the same region simultaneously. <b>CXL 3.1</b> (November 2023) extended sharing between accelerators without going through a host and added port-based routing; <b>CXL 3.2</b> (December 2024) added the CXL Hot-Page Monitoring Unit, which lets software find the pages worth keeping in the fast tier; <b>CXL 4.0</b> (November 2025) doubled the link rate again to 128 GT/s.</p>
+        <p>The practical read: if a vendor says "shared memory pool" while shipping CXL 2.0 silicon, they mean <b>re-assignable</b>, not <b>simultaneously shared</b>. That difference is not semantic — a re-assignable pool needs a policy that decides who gets the memory and when, which means downtime windows or quiesce points, whereas a shared pool needs coherence hardware and a fabric manager that can enforce it. Budget for the first, and treat the second as a 3.x roadmap item until you see the switch on the bill of materials.</p>
+
+        <h2>What does one CXL module actually add?</h2>
+        <p>Use the parts that are in volume. Samsung's CMM-D line lists two generations: the <b>MD220</b> at CXL 2.0 / PCIe 5.0 with <b>256 GB or 128 GB</b> of DDR5 at up to 6.4 Gbps in an E3.S 2T form factor, and the <b>MD310</b> at CXL 3.2 / PCIe 6.0 with 256 GB and up to <b>72 GB/s</b>. Intel's Xeon 6 product brief states <b>up to 64 lanes of CXL 2.0 at 32 GT/s per lane</b>, supporting Type 1, 2 and 3 devices, alongside up to <b>12 channels of DDR5-6400</b> — and AMD's EPYC 9005 generation documents CXL 2.0 support as well. Put those side by side and the shape of the tier appears.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Tier</th><th>Capacity per unit</th><th>Bandwidth</th><th>Load latency</th><th>Changeable after build?</th></tr></thead>
+            <tbody>
+              <tr><td>Local DDR5 (Xeon 6, 12 ch × DDR5-6400)</td><td>Up to 12 DIMMs (2 DPC drops the data rate)</td><td>≈<b>614 GB/s</b> per socket (our arithmetic: 12 × 51.2 GB/s)</td><td><b>97–112 ns</b> measured</td><td>No — population fixed at boot</td></tr>
+              <tr><td>CXL 2.0 Type 3 module, x8 (Samsung MD220)</td><td><b>256 GB</b> (128 GB option), E3.S 2T</td><td>≈<b>32 GB/s</b> per direction; vendor names 36 GB/s device performance (2R1W)</td><td><b>219–255 ns</b> measured</td><td>Yes — hot-plug, re-assignable</td></tr>
+              <tr><td>8 × CXL 2.0 modules (all 64 lanes)</td><td><b>2 TB</b></td><td>≈<b>250 GB/s</b> theoretical aggregate</td><td>Same per access, plus fabric queueing</td><td>Yes</td></tr>
+              <tr><td>NVMe (for scale)</td><td>TB per drive</td><td>6–14 GB/s per drive</td><td>≈<b>10,000 ns</b></td><td>Yes</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Two notes on the table, because both numbers look wrong at first glance. The <b>36 GB/s</b> in Samsung's datasheet exceeds the ~32 GB/s a PCIe 5.0 x8 link can carry in one direction; the figure is a device-level 2-read/1-write mix, and split that way (roughly 24 GB/s of reads and 12 GB/s of writes) it sits comfortably inside the link budget — the same arithmetic makes the 72 GB/s CXL 3.2 number consistent with a x8 PCIe 6.0 link. And the <b>250 GB/s</b> aggregate is theoretical: it assumes you spend every one of the socket's 64 CXL lanes on memory, which no real server does, because NICs, NVMe and GPU host links draw from the same budget.</p>
+
+        <h2>Why is the bandwidth so much worse than the capacity?</h2>
+        <p>It is not, per pin — which is why the usual explanation is wrong. A DDR5 channel costs roughly 300 package pins for about 51 GB/s, while a x16 CXL link costs roughly 80 pins for about 63 GB/s: serial lanes are more bandwidth-efficient per pin, not less. The reason CXL feels slow is <b>where the bandwidth comes from</b> and <b>how much of it a single device gets</b>. DDR bandwidth arrives with the socket; CXL bandwidth is carved out of the PCIe lane budget the rest of the machine also needs. And a single x8 device gets about 32 GB/s, or 5% of the socket's DDR bandwidth, so any workload that streams through one module sequentially — a large <code>memcpy</code>, a sequential scan, a model load — runs at one-twentieth of the speed it expects.</p>
+        <p>Latency is the more interesting constraint because it is now well characterised rather than argued about. Independent measurements on production CXL 2.0 Type 3 devices converge: Zhong et al. measured <b>97 ns</b> for on-board DDR5 and <b>219 ns</b> for a CXL device on Intel Sapphire Rapids, with per-core bandwidth topping out at <b>48 GB/s</b> on a x16 PCIe 5.0 link; Unal et al. (HotOS 2025) report <b>112 ns</b> versus <b>237 ns</b> with bandwidth just under 50 GB/s; Weisgut et al. recorded a median <b>255 ns</b> load latency on AMD Genoa servers with 46 GB/s of sustained copy per device, scaling to 92 GB/s across four cards. A 2026 survey by Sharma et al. explains the composition: two full traversals of the CXL port stack at roughly 21–25 ns each plus ~15 ns of flight time comes to <b>about 57 ns of protocol latency per access</b>, with queueing added under load — and about <b>6–9% of link bandwidth</b> disappears into flit headers, CRC/FEC and flow control. The rule of thumb that falls out of three independent measurements: <b>CXL memory costs you roughly double the latency of local DRAM, and lands in the same range as reaching the other socket of a two-socket server</b>.</p>
+        <p>That last sentence is the useful one for procurement. Software that already survives two-socket NUMA — most databases, most JVMs, most inference servers with a memory policy — can survive CXL. Software written on the assumption that all memory is equidistant will not, and no amount of bandwidth fixes a stall that happens once per cache line.</p>
+
+        <h2>What does CXL cost you per token?</h2>
+        <p>Here is where the tier earns or loses its place, and it needs arithmetic rather than adjectives. Take a 70B-class model with grouped-query attention: 80 layers, 8 KV heads, head dimension 128, FP16. Its KV cache is 2 × 80 × 8 × 128 × 2 bytes = <b>327,680 bytes, or 320 KB per token</b>. An 8K-token conversation therefore holds <b>2.62 GB</b> of cache, and a 2 TB CXL pool holds about <b>780</b> of those sessions. Capacity is not the problem — that is the whole point of the tier.</p>
+        <p>Throughput is. Decoding one token requires reading that sequence's KV cache once. At 32 GB/s from a single module, 2.62 GB takes <b>82 ms</b>, which caps a single 8K stream at roughly <b>12 tokens per second</b> before any model compute is counted. Aggregate eight modules and the ceiling rises to about <b>95 tokens per second</b>; put the same cache in an H100's 3.35 TB/s of HBM and the theoretical ceiling is over <b>1,280</b>. That is why KV cache lives in HBM and why every serious serving stack fights to keep it there. The conclusion is not that CXL is useless for inference — it is that <b>CXL is for the KV cache you are not decoding right now</b>: the prefix caches that get re-used across requests, the sessions that are idle between turns, the checkpoints of a conversation that may never resume.</p>
+        <p>Samsung's own whitepaper tests exactly that pattern and reports the optimistic version: using a CXL switch-based memory pool as the backend for LMCache, a KV-cache offload layer, it measured performance <b>comparable to conventional DRAM</b>, at about <b>92% of DRAM performance</b> in a multi-GPU tensor-parallel setup. Read the qualifier carefully — that is an end-to-end service-quality number for a cache that mostly hits, not a per-token streaming number, and it is the vendor's own benchmark on the vendor's own hardware. It does not contradict the 12-tokens-per-second arithmetic above; it describes a different workload. Both statements can be true at once, and the difference between them is the entire discipline of memory tiering: <b>what fraction of your accesses land in the fast tier</b>. Research on that policy question is unusually consistent, per a 2026 survey of tiered-memory work: transparent page placement (TPP) keeps a tiered system within about <b>1%</b> of an all-DRAM baseline, and Intel's hardware-managed Flat Memory Mode with the Memstrata allocator kept <b>82% of 115 Azure traces within 5%</b> of local DRAM while cutting the worst slowdown from 34% to below 6%. Both results depend on a migration policy doing real work, not on the memory being fast.</p>
+
+        <h2>Where does pooling actually pay?</h2>
+        <p><b>When the alternative is a new server.</b> DIMM population is fixed at build time: once the 12 channels are full, the only ways to add capacity are a larger DIMM (if the vendor qualifies it), a second socket, or a new machine. CXL capacity is hot-pluggable and re-assignable, which turns a capital decision into an operating one. That optionality is the product, and it is worth paying a bandwidth tax for in workloads whose memory footprint is spiky rather than sustained — analytics jobs, build fleets, virtualisation hosts with a few memory-hungry tenants, inference fleets with a long tail of idle sessions.</p>
+        <p><b>When the software already tiers.</b> Intel's Xeon 6 brief describes Flat Memory Mode as "a hardware-controlled tiering mode that is completely independent of O/S version &amp; data-tiering capabilities," and explicitly frames it as a TCO tool "when using lower-cost memory, such as DDR4 with CXL 2.0" — the memory controller, not the kernel, decides what sits where. That is the least glamorous and most deployable version of CXL in 2026: you do not need a new scheduler, you need a BIOS setting and a module population rule. The kernel-side alternative — NUMA balancing, DAMON, TPP-style demotion — gets better numbers but requires the policy work described above.</p>
+        <p><b>When lanes are cheaper than slots.</b> GPUs are hungrier for PCIe lanes than for DIMM slots on an inference node, and a CXL switch placed behind a PCIe switch lets a memory pool be attached without consuming CPU-attached PCIe slots — the configuration Samsung's whitepaper calls out, because it leaves the host's own slots free for accelerators. If your constraint is "no more DIMM slots and no more rack units," this is the argument that wins.</p>
+        <p><b>Not when you are hoping for cheaper gigabytes.</b> We could find no vendor publishing a lower cost per gigabyte for a CXL module than for an RDIMM of the same capacity, and the bill of materials argues against it: a CXL controller, a retimer and a PCB are added cost on top of identical DRAM. CXL memory also inherits the DRAM shortage rather than escaping it — the modules are filled with the same DDR5 whose contract prices rose 93–98% in a single quarter of 2026. Anyone selling CXL as a way around the memory bill is selling the wrong product. What it actually sells is the ability to <b>stop over-provisioning</b>: capacity that follows demand instead of capacity that is welded to a chassis for five years.</p>
+
+        <h2>What breaks first?</h2>
+        <p><b>The fabric manager, not the silicon.</b> Pooling requires software that knows which host owns which Logical Device, that can quiesce and re-assign without corrupting a running workload, and that fails safely when a link drops. This layer is the least standardised part of the stack and the most likely to be the reason a pilot stays a pilot. <b>Then the switch supply.</b> CXL 2.0 switches only began shipping in 2024, and CXL 3.x fabric switches are rarer still; a design that needs multi-level switching in 2026 is a design waiting on silicon. <b>Then the GPU's reach.</b> CXL memory is CPU-side. A GPU does not magically gain a terabyte of framebuffer; it reaches pooled memory over PCIe — or, more often, the CPU stages data for it. Every "CXL expands GPU memory" claim should be read as "CXL expands the buffer the CPU can stage from," which is a real benefit for offload layers like LMCache and a non-benefit for anything that assumed unified addressing.</p>
+        <p>And the strategic risk deserves a sentence, because it is the one buyers underweight: <b>HBM capacity per accelerator keeps rising</b>. Every generation that doubles accelerator memory shrinks the population of workloads that need an external tier, and the tier's economics get worse as the fast tier gets bigger. CXL pooling is therefore a bet on <b>spiky, heterogeneous, long-tail memory demand</b> — the demand a hyperscaler with mixed tenants actually has — rather than on frontier training, where the answer has been and remains "buy more HBM."</p>
+
+        <h2>What should a buyer ask before adding a CXL tier?</h2>
+        <p><b>1. Which CXL generation is on the bill of materials, and does the word "shared" mean what you think?</b> CXL 2.0 pools; CXL 3.0 shares. If the answer is pooling, ask who or what re-assigns capacity and how long that takes. <b>2. What is the per-device bandwidth, and how many devices will you actually populate?</b> One module is 5% of socket bandwidth; eight are about 40%. Buying one big module for a bandwidth problem is the classic misconfiguration. <b>3. What fraction of accesses will hit the fast tier?</b> Ask for the vendor's hit-rate curve, not their latency slide — a tiered system's performance is a hit-rate story with a latency footnote. <b>4. Does the workload's tail latency live in memory at all?</b> If p99 is set by GPU compute or by the network, an extra memory tier changes concurrency and cost, not speed, and that is a perfectly good reason to buy it — as long as nobody promised a latency win.</p>
+        <p>Our view, stated as a view: CXL pooling in 2026 is a <b>capacity instrument with a latency tax</b>, and the correct way to price it is not dollars per gigabyte but <b>dollars per gigabyte of capacity you would otherwise have bought as a whole server</b>. On that basis it wins in mixed-tenant and long-tail inference fleets, loses in single-workload training clusters, and is roughly neutral anywhere the memory sits idle most of the day — which, given what we know about <a href="/posts/the-utilization-tax-2026">utilisation rates across this industry</a>, is a larger category than the vendors admit.</p>
+      </div>
+
+      <div class="container">
+        <div class="takeaways">
+          <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+          <ul>
+            <li><b>Pooling is not sharing.</b> CXL 2.0 (November 2020) added switching and pooling — one owner at a time, re-assignable by a fabric manager. CXL 3.0 (August 2022) added multi-level switching and true coherent sharing over PCIe 6.0. Most silicon shipping in 2026 is still 2.0, so "shared pool" usually means "re-assignable pool."</li>
+            <li><b>One module = 256 GB at ~32 GB/s and 219–255 ns.</b> Samsung's CMM-D MD220 is 256 GB of DDR5 in E3.S 2T behind PCIe 5.0 x8; Intel's Xeon 6 exposes up to 64 CXL 2.0 lanes at 32 GT/s. That is roughly 5% of a 12-channel socket's ~614 GB/s of DDR5-6400 bandwidth, at 2–2.5× the measured latency of local DRAM.</li>
+            <li><b>Eight modules = 2 TB and ~250 GB/s.</b> Capacity scales with populated lanes, so the tier is fine for aggregate throughput across many devices and terrible for single-device streaming. Buying one large module to solve a bandwidth problem is the standard mistake.</li>
+            <li><b>The per-token arithmetic decides the use case.</b> A 320 KB/token KV cache (70B-class, GQA, FP16) means 2.62 GB per 8K session; streaming that from one CXL module caps a single decode at ~12 tokens/second, versus ~95 with eight modules and >1,280 in HBM. CXL belongs to the cache you are not decoding right now.</li>
+            <li><b>It is not a way around the DRAM bill.</b> No vendor we found prices a CXL module below an equivalent RDIMM, the controller adds BOM, and the modules consume the same DDR5 that rose 93–98% in a quarter. What CXL sells is optionality: capacity that follows demand instead of capacity welded to a chassis.</li>
+            <li><b>Ask for the hit-rate curve, not the latency slide.</b> Tiered-memory results (within ~1% of all-DRAM with transparent page placement; 82% of Azure traces within 5% under Flat Memory Mode) are policy results. The fabric manager, the switch supply and the GPU's inability to see CXL memory directly are the three things that decide whether the pilot ships.</li>
+          </ul>
+        </div>
+        <div class="omc-card">
+          <b>About this site</b>
+          <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+          <a href="https://omc.network/about">About OMC &rarr;</a>
+        </div>
+        <div class="comments">
+          <h3>Comments</h3>
+          <div id="giscus-slot"></div>
+        </div>
+        <div class="pager">
+          <a href="/posts/storage-bill-per-exabyte-2026"><i data-i18n="pager.prev">Previous</i>The exabyte bill: what storage actually costs under an AI data lake (2026) →</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
