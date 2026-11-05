@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Half the switch is a transceiver: what co-packaged optics actually buys (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Half the switch is a transceiver: what co-packaged optics actually buys (2026) — DCF">
+  <meta name="twitter:description" content="At 51.2 Tb/s a switch is 64 × 800G ports, and the pluggables cost ~900 W against an ASIC that draws less. CPO cuts 60–70% of those watts — about 1% of a campus. The real trade is that the last field-replaceable, multi-vendor part in the rack becomes chassis.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="Co-packaged optics (CPO) moves the optical engine from a faceplate module onto the switch package. Broadcom's official position: at 51.2 Tb/s and beyond, pluggable transceivers pass 50% of switch system power and more than 50% of its cost, and its Bailly CPO platform delivers 5 W per 800 Gbps including laser power — a 60–70% cut, or 6.25 pJ/bit against 17.5. We run the arithmetic that vendors skip: 64 × 800G at 14 W is 896 W of optics per switch and 1,792 W at 102.4T; at 100,000 GPUs the saving is ~1.8 MW against a 150–170 MW campus, about 1%; the fiber plant does not shrink at all; and the lasers stay outside the package because they are the part that fails. Includes the November 2026 shipping status of NVIDIA Quantum-X and Spectrum-X Photonics and Broadcom Bailly and Davisson." />
+  <link rel="canonical" href="https://forum.omc.network/posts/co-packaged-optics-bill-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/co-packaged-optics-bill-2026" />
+  <meta property="og:title" content="Half the switch is a transceiver: what co-packaged optics actually buys (2026)">
+  <meta property="og:description" content="CPO cuts 60–70% of the optical interconnect's power, which sounds like an energy story and is really a density story: ~1% of a campus, but a faceplate that stops melting. What it takes away is the last commodity in the rack.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Half the switch is a transceiver: what co-packaged optics actually buys (2026)","datePublished":"2026-11-05","dateModified":"2026-11-05","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>Half the switch is a transceiver: what co-packaged optics actually buys (2026)</h1>
+        <p class="article-dek">Take a 51.2 Tb/s Ethernet switch apart in your head. Sixty-four ports of 800G. At roughly 14 W per pluggable module that is <b>896 W of transceivers</b> bolted to the front panel — more power than the switch chip itself, which is why Broadcom states that at 51.2 Tb/s and beyond, pluggable optics pass <b>50% of switch system power and more than 50% of switch system cost</b>. Co-packaged optics (CPO) moves those engines onto the package and cuts their power 60–70%. That is a real win and a badly framed one: at cluster scale it is worth about <b>1%</b> of the campus, and what it quietly costs you is the last field-replaceable, multi-vendor, price-declining component in the rack.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 5, 2026</span><span>11 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>Co-packaged optics is the practice of placing the optical engine — the part that converts electrical signals to light — on the same package as the switch ASIC, instead of inside a pluggable module on the faceplate.</b> The electrical path between chip and optics falls from tens of centimetres of PCB to a few millimetres inside the substrate, which is where the savings come from. The numbers, from vendor documents rather than slideware: Broadcom's <b>Bailly</b> (51.2 Tb/s, eight 6.4 Tb/s silicon-photonics engines around a Tomahawk 5) delivers <b>5 W of optical interconnect per 800 Gbps including laser power</b> — a <b>60–70%</b> cut against a DSP-based pluggable, and <b>6.25 pJ/bit against 17.5 pJ/bit</b> by our arithmetic. NVIDIA's <b>Quantum-X Photonics</b> (144 × 800G, 115.2 Tb/s, liquid-cooled) claims <b>3.5× better power efficiency, 4× fewer lasers and 63× better signal integrity</b>, and began customer delivery in <b>June 2026</b>; its Ethernet sibling <b>Spectrum-X Photonics</b> (up to 512 × 800G, 409.6 Tb/s) reached volume production in <b>August 2026</b>. Our arithmetic on what that means: a 51.2 Tb/s switch carries ~<b>896 W</b> of pluggables and the next generation doubles it to ~<b>1,792 W</b>, while at 100,000 GPUs the campus-level saving from CPO is roughly <b>1.8 MW out of 150–170 MW — about 1%</b>. CPO is therefore a <b>density</b> technology, not an energy technology: it exists so a 102.4 Tb/s switch can be built without melting its faceplate. The trade nobody puts in the deck is that the transceiver stops being a commodity you can buy from three vendors next quarter and becomes part of the chassis you replace in five years.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>半个交换机是光模块：共封装光学到底买到了什么（2026）。<b>摘要：</b>共封装光学（CPO）是把「电转光」的光引擎从面板上的可插拔模块搬到与交换芯片同一个封装里，芯片到光学的电信号路径从几十厘米 PCB 缩短到基板内几毫米——省电就省在这里。数字取自厂商文档而非 PPT：博通 <b>Bailly</b>（51.2 Tb/s，八颗 6.4 Tb/s 硅光引擎围绕 Tomahawk 5）做到<b>每 800 Gbps 光互连 5 W（含激光）</b>，比 DSP 可插拔方案降 <b>60–70%</b>；按我们算术是 <b>6.25 pJ/bit 对 17.5 pJ/bit</b>。英伟达 <b>Quantum-X Photonics</b>（144×800G，115.2 Tb/s，液冷）宣称<b>能效 3.5 倍、激光器数量 1/4、信号完整性 63 倍</b>，<b>2026 年 6 月</b>开始交付客户；以太网版本 <b>Spectrum-X Photonics</b>（最高 512×800G、409.6 Tb/s）<b>2026 年 8 月</b>进入量产。我们的换算：一台 51.2 Tb/s 交换机带约 <b>896 W</b> 可插拔光模块，下一代翻倍到约 <b>1,792 W</b>；而在 10 万 GPU 规模上，CPO 全集群只省约 <b>1.8 MW / 150–170 MW，约 1%</b>。所以 CPO 是<b>密度</b>技术不是节能技术：它存在的意义是让 102.4 Tb/s 交换机造得出来、面板不烧。代价没人写在 PPT 里——光模块从「下季度还能找三家比价的耗材」变成「五年后整机一起换」的固定资产。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>Co-packaged optics (CPO) is a packaging change, not a new kind of laser.</b> The photons are the same photons: silicon photonics modulators, continuous-wave lasers, single-mode fibre. What changes is where the conversion happens. In a pluggable module, the switch ASIC pushes an electrical signal across 10–25 cm of PCB and through a connector before a DSP cleans it up and a modulator turns it into light. In a CPO switch, that same conversion happens on the ASIC's package, with millimetres of electrical reach. Everything the industry says about CPO follows from that one geometry change — the watts, the signal integrity, the fibre attach, the service model, and the reason a failed laser no longer means swapping a module.</p>
+
+        <h2>Why does the optics bill now exceed the switch bill?</h2>
+        <p>Because bandwidth grew faster on the panel than on the die. A 51.2 Tb/s switch is 64 ports of 800G. Each 800G pluggable dissipates roughly <b>14–16 W</b> (Broadcom's own 60–70% reduction from a 5 W CPO engine implies a 12.5–16.7 W baseline), so the faceplate carries <b>896 W to 1,024 W</b> of transceivers. Broadcom's product release states the consequence in the plainest language any vendor has used: "Today, pluggable optical transceivers consume approximately <b>50% of system power</b> and constitute <b>more than 50% of the cost</b> of a traditional switch system." Dell'Oro Group's Sameh Boujelbene, quoted in the same release, puts the trajectory at "exceeding 50% of the switch system power at 51.2 Tbps and beyond." That "and beyond" is doing a lot of work: at 102.4 Tb/s the same arithmetic gives 128 ports and <b>1,792 W</b>, against an ASIC whose own draw grows by far less per generation. The optics share does not stay at 50%; it climbs.</p>
+        <p>This is also why the honest framing of CPO is not "greener switches." The switch chip was never the thermal problem in a leaf-spine fabric; the row of hot cages was. An optical engine on the package moves ~576 W out of the airflow path of a single 1RU box, and the benefit shows up as <b>watts per rack unit and degrees of faceplate temperature</b>, not as a smaller electricity bill for the building.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Per 800G port</th><th>Power</th><th>Energy per bit (our arithmetic)</th><th>Where the part lives</th></tr></thead>
+            <tbody>
+              <tr><td>Pluggable, DSP-based (OSFP/QSFP-DD)</td><td>≈<b>14 W</b> (range 12.5–16.7)</td><td>≈<b>17.5 pJ/bit</b></td><td>Faceplate cage, field-replaceable, multi-vendor</td></tr>
+              <tr><td>Co-packaged engine (Broadcom Bailly KPI)</td><td><b>5 W</b> including laser</td><td><b>6.25 pJ/bit</b></td><td>On the ASIC package, replaced with the switch</td></tr>
+              <tr><td>51.2 Tb/s switch, all 64 ports pluggable</td><td>≈<b>896 W</b></td><td>—</td><td>64 cages on one faceplate</td></tr>
+              <tr><td>102.4 Tb/s switch, all 128 ports pluggable</td><td>≈<b>1,792 W</b></td><td>—</td><td>128 cages — the density wall</td></tr>
+              <tr><td>Same two switches with CPO engines</td><td><b>320 W</b> / <b>640 W</b></td><td>—</td><td>Optics inside the package, lasers outside</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Note what the table does not show: <b>any reduction in fibre</b>. A 512-port 800G switch still presents 512 optical links at the panel whether the engine is a module or a package. CPO deletes the transceiver, the DSP and the cage; it does not delete the cable plant, the patch panels, or the human who has to clean the connectors. Any TCO model that books CPO as a cabling saving is wrong.</p>
+
+        <h2>What does 70% lower optics power buy at cluster scale?</h2>
+        <p>Less than the percentage suggests, and it is worth doing the multiplication because the percentage is the number that gets quoted in board decks. Take a 100,000-GPU training campus, one 800G scale-out port per GPU, a non-blocking fabric. The <b>host side does not change</b>: every CPO switch on the market in 2026 still pairs with a pluggable transceiver on the NIC, so 100,000 × 14 W = <b>1.4 MW</b> of optics sits on the GPU side no matter what the switches do. The <b>switch side</b> does change, and a non-blocking two-tier fabric puts roughly two switch ports on the network for every GPU port — call it 200,000 ports. At 14 W that is <b>2.8 MW</b>; at 5 W it is <b>1.0 MW</b>; the delta is <b>≈1.8 MW</b>.</p>
+        <p>Now the denominator. A GB200 NVL72 rack draws about <b>120 kW for 72 GPUs</b>, so a 100,000-GPU campus is in the <b>150–170 MW</b> range once you add CPUs, power conversion losses and cooling. Our 1.8 MW saving is <b>about 1%</b>. That is not nothing — 1.8 MW is a small hall, or roughly the draw of 1,100 more GPUs — but it is an order of magnitude away from the story the 70% figure implies, and it is smaller than the error bar on most PUE assumptions. Any procurement case that rests on CPO's energy savings is resting on the wrong number.</p>
+        <p>The number that does hold up is per rack unit. Put 1,792 W of pluggables in a 1RU chassis and you are asking a single slot of a 42U rack to dissipate 40 W per centimetre of height, in a box whose front panel is also the air intake. That is the constraint CPO actually relieves — and it is why Broadcom frames CPO as a prerequisite for the <b>102.4 Tb/s</b> generation rather than as an efficiency upgrade to the 51.2 Tb/s one.</p>
+
+        <h2>Why do the lasers still sit outside the package?</h2>
+        <p>Because the laser is the part that fails, and everyone involved knows it. Every commercial CPO design keeps its light source off-package, in an <b>external laser source (ELS)</b> module that plugs into the panel and feeds the engines over fibre. The Optical Internetworking Forum standardised the form factor as <b>ELSFP</b>, with its 02.0 implementation agreement published in <b>January 2025</b>. NVIDIA's description of its own implementation is unusually candid about the reason: the ELS modules sit "in a dedicated thermally controlled environment independent of the main switch chassis," which reduces wavelength drift and "mitigates early failures caused by aging mechanisms," and each module is field-replaceable so an operator can swap it "without disturbing the surrounding switch infrastructure." Concentrating the light source is also what delivers the <b>4× reduction in total laser count</b> NVIDIA claims, since one high-power laser is shared across many channels instead of one small laser per channel.</p>
+        <p>The physics behind that decision is not subtle. Lasers degrade with temperature and with thermal cycling, and a package carrying a several-hundred-watt switch ASIC is the hottest place in the machine. Vendors who build the module say the same thing in different words: the laser is among the least reliable active components in the optical path, which is why it has always been socketed and swappable. Co-packaging a laser with an ASIC converts a five-minute field replacement into an RMA.</p>
+        <p>So the architecture that ships is a hybrid, and it is worth being precise about it: <b>modulators and photodetectors go on the package; the laser stays a pluggable consumable on the panel.</b> CPO does not eliminate the wear-out part. It moves everything except the wear-out part.</p>
+
+        <h2>What does CPO take away?</h2>
+        <p><b>The last commodity in the rack.</b> A pluggable transceiver is bought from at least three qualified vendors, priced annually, and improved on somebody else's roadmap: 400G modules became 800G modules became 1.6T modules, and each generation arrived as a purchase order rather than a forklift. CPO folds that line item into the switch. When your optics improve next, you buy a switch. When one fails, you replace a chassis. When you want a second source, you change platforms. That is a normal thing to do for an ASIC and a strange thing to do for the one component that used to obey a commodity price curve — and it is the reason the optics industry's own roadmaps keep a pluggable tier alive (400G/800G DR and FR modules remain the host-side standard for every CPO platform shipping today).</p>
+        <p><b>The failure granularity, and the vendor says so.</b> Broadcom's own engineering blog, discussing its joint fibre-reliability white paper with Corning, warns that "improper fiber quality control and cable assembly procedures can lead to fiber breakage and have significant operational consequences such as <b>costly checkpoint restarts and full appliance replacements</b>." Read that sentence twice: the failure mode of a CPO switch is not a dead port, it is a full appliance replacement, and in a training cluster the cost is not the appliance but the checkpoint restart — the same restart whose cost we put at <b>6.5 TB written per event</b> in <a href="/posts/training-checkpoint-tax-2026">our checkpoint post</a>. A thousand-plus fibres bonded to one package is a manufacturing achievement and a serviceability liability, and the mitigation is procedural: fibre routing discipline "similar to PCB routing," in Broadcom's words.</p>
+        <p><b>The measurement you can trust.</b> Every power figure in this article is a vendor KPI measured on the optical interconnect, not an independent teardown of a named hyperscaler SKU. Broadcom's 70% is "optical interconnect power," which is not the same claim as "the switch uses 70% less power" — a Tomahawk 5 still switches 51.2 Tb/s and still draws what it draws. NVIDIA's 3.5× is a platform claim against "traditional methods." Treat both as directional, and treat the <i>shape</i> of the argument as the durable part: optics were half the box, that share was rising, and the only way to keep building bigger boxes was to stop treating the transceiver as a separate product.</p>
+
+        <h2>Where does it actually stand in November 2026?</h2>
+        <p>Further along than the sceptics said and much less far than the slide implies. Three platforms define the market, and only two of them are shipping at volume.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Platform</th><th>Fabric / capacity</th><th>Status (Nov 2026)</th><th>What it tells you</th></tr></thead>
+            <tbody>
+              <tr><td><b>Broadcom Bailly</b> (Tomahawk 5)</td><td>Ethernet, 51.2 Tb/s, 8 × 6.4 Tb/s engines</td><td>In deployment / volume production through system partners</td><td>The reference design the industry quotes; 5 W per 800G is its published KPI</td></tr>
+              <tr><td><b>Broadcom Davisson</b> (Tomahawk 6)</td><td>Ethernet, 102.4 Tb/s CPO</td><td>Sampling since late 2025, no volume-production statement as of September 2026</td><td>The generation where CPO stops being optional — 128 cages is the density wall</td></tr>
+              <tr><td><b>NVIDIA Quantum-X Photonics</b></td><td>InfiniBand, 115.2 Tb/s, 144 × 800G, liquid-cooled</td><td>Customer delivery from <b>June 2026</b>, production deployments</td><td>First CPO switch in real training fabrics; four-ASIC design with a detachable optical sub-assembly</td></tr>
+              <tr><td><b>NVIDIA Spectrum-X Photonics</b></td><td>Ethernet, up to 409.6 Tb/s, 512 × 800G</td><td>Volume production from <b>August 2026</b></td><td>The Ethernet answer, and the one that competes with Bailly/Davisson head-on</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Two observations that matter more than the table. First, <b>CPO still has a host side</b>: the NIC in the server uses a pluggable, so the change is confined to the switch tier and the pluggable market does not disappear — it relocates. Second, <b>the conservative camp is not just waiting</b>. Several switch vendors still decline to bond a thousand fibres inside a package and prefer linear pluggable optics for the next generation, which is a rational bet if your customers care more about field service than about watts per rack unit. The deployment split that follows — hyperscalers with their own spares depots on CPO, everyone else on LPO and pluggables — is the most likely 2027 shape, and it is a procurement question before it is a technology question.</p>
+        <p>For anyone specifying a fabric this quarter, the practical reading is unglamorous. Ask what the switch's <b>optical interconnect power per 800G</b> is, not what its efficiency multiplier is. Ask what the <b>field-replaceable unit</b> is when an engine fails, and whether the answer is a module, a sub-assembly or the box. Ask whether the lasers are inside or outside the package, and who stocks the spares. And price the whole thing against a pluggable build of the same bandwidth, because the honest case for CPO is not that it is cheaper today — it is that at 102.4 Tb/s the pluggable build may not be buildable at all. That is a different argument, and it is the one that survives scrutiny.</p>
+        <p>There is a symmetry worth noting with the rest of this series. The <a href="/posts/network-fabric-third-bill-2026">fabric was the third bill</a> after compute and memory; the optics line inside it was the part everyone treated as a rounding error and then discovered was half the switch. The pattern repeats across the stack — <a href="/posts/hbm-memory-wall-2026">memory</a>, <a href="/posts/cowos-packaging-wall-2026">packaging</a>, <a href="/posts/liquid-cooling-rack-density-2026">cooling</a> — the component that was supposed to be a commodity becomes the constraint, and the industry's answer is always to integrate it and lose the commodity. CPO is that move applied to light.</p>
+      </div>
+
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>The optics are half the switch.</b> Broadcom states that at 51.2 Tb/s and beyond, pluggable transceivers consume approximately 50% of switch system power and more than 50% of its cost; Dell'Oro puts the power share above 50% "at 51.2 Tbps and beyond." A 51.2 Tb/s box is 64 × 800G, and at ~14 W per module that is ~896 W of transceivers.</li>
+          <li><b>CPO cuts 60–70% of that, per port.</b> Broadcom's Bailly delivers 5 W per 800 Gbps including laser power — 6.25 pJ/bit against ~17.5 pJ/bit for a DSP pluggable, by our arithmetic. NVIDIA claims 3.5× efficiency, 4× fewer lasers and 63× signal integrity for Quantum-X.</li>
+          <li><b>And it buys about 1% at campus scale.</b> On 100,000 GPUs with one 800G port each, host-side optics stay pluggable (1.4 MW); the switch-side saving is ~1.8 MW against a 150–170 MW campus. CPO is a density technology — it exists so a 102.4 Tb/s switch with 1,792 W of pluggables is physically buildable — not an energy strategy.</li>
+          <li><b>The lasers deliberately stay outside.</b> Every shipping design uses an external laser source on the panel (OIF ELSFP 02.0, January 2025). Lasers wear out, and an ASIC package is the hottest place in the machine; co-packaging one turns a field swap into an RMA.</li>
+          <li><b>The real cost is losing the commodity.</b> A pluggable is multi-vendor, annually priced and improved on someone else's roadmap. CPO folds optics into the chassis: new optics means a new switch, a failed engine means replacing the box — Broadcom's own fibre-reliability paper names "full appliance replacements" as the failure consequence, and in training that means a checkpoint restart.</li>
+          <li><b>2026 status, precisely.</b> NVIDIA Quantum-X (InfiniBand, 144 × 800G) delivered from June 2026; Spectrum-X Photonics (up to 512 × 800G) in volume production from August 2026; Broadcom Bailly in deployment, Davisson sampling without a volume statement. Host-side NIC optics remain pluggable on every one of them.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/cxl-memory-pooling-2026"><i data-i18n="pager.prev">Previous</i>CXL pooling: the memory tier that sells capacity, not bandwidth (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
