@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A megawatt at 800 volts: the arithmetic that retires the 54 V busbar (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="A megawatt at 800 volts: the arithmetic that retires the 54 V busbar (2026) — DCF">
+  <meta name="twitter:description" content="1 MW at 54 V is 18,519 A and 332 kg of copper per metre. At 800 V it is 1,250 A and 22 kg. But the busbar was never the loss — the conversions were, which is why the same change is quoted as 3% by Google and 5% by NVIDIA.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="800 VDC data centre power is the change that makes 1 MW racks buildable: NVIDIA's own arithmetic puts a 54 V megawatt rack at up to 200 kg of copper busbar and 64U of power shelves, and says 1 GW of such racks would need 200,000 kg of copper. At 800 V the current falls from 18,519 A to 1,250 A, copper per metre from 332 kg to 22 kg, and I²R loss from 622 W to 42 W. But that busbar loss is 0.06% of a gigawatt, so the claimed 3–5% end-to-end gain cannot come from copper — it comes from deleting conversion stages, and the two numbers differ because Google measures a sidecar retrofit while NVIDIA measures conversion at the facility perimeter. Includes the ±400 V versus +800 V split inside OCP's Mt Diablo, what the 45% and 85% copper claims actually measure, why PUE cannot see this improvement at all, and what to specify before you sign a 2027 shell." />
+  <link rel="canonical" href="https://forum.omc.network/posts/800vdc-rack-power-arithmetic-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/800vdc-rack-power-arithmetic-2026" />
+  <meta property="og:title" content="A megawatt at 800 volts: the arithmetic that retires the 54 V busbar (2026)">
+  <meta property="og:description" content="18,519 A versus 1,250 A, 332 kg of copper versus 22 kg per metre, and a 5% saving that cannot possibly come from the busbar. What 800 VDC actually buys, and what it moves somewhere else.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"A megawatt at 800 volts: the arithmetic that retires the 54 V busbar (2026)","datePublished":"2026-11-06","dateModified":"2026-11-06","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>A megawatt at 800 volts: the arithmetic that retires the 54 V busbar (2026)</h1>
+        <p class="article-dek">A 1 MW rack is <b>18,519 A</b> at the 54 VDC that every GPU shelf still runs on, and about <b>332 kg of copper per metre</b> of two-conductor busbar at a normal design current density. At 800 VDC the same megawatt is <b>1,250 A</b> and <b>22 kg</b>. That is the whole physical case, and NVIDIA states it in its own blog: up to <b>200 kg of copper</b> in a single megawatt rack, up to <b>64U of power shelves</b>, and <b>200,000 kg</b> of busbar across a gigawatt. But run the loss arithmetic and the busbar turns out to burn <b>0.06%</b> of a gigawatt — which means the <b>3–5%</b> efficiency claims floating around are not about copper at all. They are about how many times the power gets converted, and the two numbers differ because one is a retrofit and the other is a new building.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 6, 2026</span><span>12 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>800 VDC is a power-distribution architecture in which the data hall carries direct current at 800 volts from a rectifier at the building perimeter to the compute rack, which does its own DC-to-DC conversion, replacing the 54 VDC busbar that has fed GPU shelves since the 48 V generation.</b> The case for it is arithmetic, not fashion: 1 MW at 54 V is <b>18,519 A</b>; at 800 V it is <b>1,250 A</b> — a <b>14.8×</b> reduction in current, in copper cross-section and in I²R loss. NVIDIA's <b>20 May 2025</b> architecture blog puts a number on the consequence: up to <b>200 kg of copper busbar</b> per megawatt rack, <b>200,000 kg</b> across a gigawatt of them, and up to <b>64U of rack space</b> consumed by power shelves if you kept 54 V at that scale. Google's <b>2025 OCP EMEA</b> announcement and NVIDIA's blog then quote two different efficiency numbers — <b>~3%</b> for a sidecar AC-to-DC power rack that leaves the existing AC distribution alone, <b>up to 5%</b> for converting 13.8 kV straight to 800 VDC at the perimeter — and the gap is the point: most of the saving is <b>deleted conversion stages</b>, not copper. Our own check says the busbar's resistive loss is about <b>622 W per metre</b> at 1 MW, which across 1,000 racks is <b>~0.6 MW out of 1 GW — 0.06%</b>. Meanwhile the two camps have split on topology: NVIDIA runs <b>two-wire +800 VDC</b>, while OCP's <b>Mt Diablo</b> specification with Google, Meta and Microsoft runs <b>three-wire ±400 VDC</b> so that no conductor sits more than 400 V above ground. Full production is scheduled for <b>2027</b> alongside NVIDIA's Kyber racks; what you can buy in 2026 is a sidecar and a specification.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>一兆瓦、800 伏：让 54 V 母线退场的算术（2026）。<b>摘要：</b>800 VDC 是把市电在园区边缘整成 800 伏直流、由数据大厅母线送到机柜、机柜内再做 DC-DC 的配电架构，用来替代自 48 V 时代沿用至今、给 GPU 电源架供电的 54 VDC 母线。理由不是潮流是算术：1 MW 在 54 V 下是 <b>18,519 A</b>，在 800 V 下是 <b>1,250 A</b>，电流、铜截面、I²R 损耗同步降到 <b>1/14.8</b>。英伟达 <b>2025 年 5 月 20 日</b>官方架构博客给出后果：单个兆瓦机柜最多要 <b>200 kg 铜母线</b>，1 GW 要 <b>20 万 kg</b>，若坚持 54 V 则电源架会吃掉 <b>64U</b> 机柜空间。随后谷歌在 <b>2025 年 OCP EMEA 峰会</b>与英伟达博客给出两个不同的效率数字：侧挂式 AC→DC 电源柜 "<b>约 3%</b>"（不动既有交流配电），园区边缘 13.8 kV 直接整成 800 VDC "<b>最高 5%</b>"——差额的关键是<b>被删掉的变换级数</b>，不是铜。我们自己的核算：1 MW 下母线电阻损耗约 <b>622 W/米</b>，1,000 个机柜合计约 <b>0.6 MW / 1 GW，即 0.06%</b>。路线也已分裂：英伟达走<b>两线 +800 VDC</b>，谷歌/微软/Meta 在 OCP 的 <b>Mt Diablo</b> 规范里走<b>三线 ±400 VDC</b>（任一导体对地不超过 400 V）。规模量产定在 <b>2027 年</b>配 Kyber 机柜；2026 年能买到的是侧挂电源柜和一份规范。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>800 VDC is a distribution voltage, not a chip voltage.</b> Nothing on the GPU package runs at 800 volts — the accelerator still wants under a volt, and the board still wants 12 V or 48 V. What changes is the distance over which power travels at high current. In the architecture every GPU rack uses today, AC arrives at the row, an in-rack power shelf converts it to 54 VDC, and a copper busbar carries that 54 V to each compute tray across the width of the rack. At 800 VDC, the AC-to-DC conversion moves out — to a rectifier at the building perimeter, or to a power rack standing beside the compute racks — and the busbar carries 800 V instead, with a DC-to-DC converter inside each tray dropping it to what the silicon needs.</p>
+        <p>That is the entire idea, and it is worth saying plainly because most coverage dresses it up: <b>the voltage went up so the current could come down</b>, and the current had to come down because copper is heavy and I²R loss scales with the square of current. Everything else in this article — the topology war, the standards gap, the 3% versus 5% — follows from that one substitution and the decision about where to put the converter.</p>
+
+        <h2>Why does 54 V stop working at a megawatt?</h2>
+        <p>Two independent limits arrive at roughly the same place, and the vendors describe them with different numbers because they are describing different failures. NVIDIA's blog is specific about the <b>engineering</b> limit: "as racks exceed <b>200 kilowatts</b>, this approach begins to hit physical limits," and it names three — space, copper and conversion count. Google's principal engineer Madhusudan Iyengar, speaking at the <b>2025 OCP EMEA Summit</b> in Dublin, described the same busbar as having "served us very well between <b>10kW and 100kW</b> a rack," while Google's own blog predicts that machine learning "will require more than <b>500 kW</b> per IT rack before 2030." Both statements are on the record, and they are not in conflict: 200 kW is where 54 V becomes expensive to engineer, 500 kW is where it stops being buildable at any price.</p>
+        <p>The space limit is the one that reads as a punchline. A GB200 NVL72 or GB300 NVL72 rack uses "up to <b>eight power shelves</b>" to feed its compute and switch shelves. Scale that same 54 V approach to a megawatt and, in NVIDIA's words, "power shelves would consume up to <b>64 U of rack space</b> for Kyber at MW scale, leaving no room for compute." Sixty-four rack units is most of a cabinet. The alternative NVIDIA names is equally unappealing: "a dedicated rack of power supplies for every compute rack" — which is a real architecture, and it is what several operators do today, at the cost of a whole cabinet of rectifiers per cabinet of GPUs.</p>
+        <p>So the honest summary of the 54 V era is that it did not fail on efficiency. It failed on floor space and on kilograms, which are the two things a data hall has a hard quantity of.</p>
+
+        <h2>What is the copper actually worth?</h2>
+        <p>Here the vendor numbers and first-principles arithmetic can be checked against each other, which is rare enough to be worth doing carefully. NVIDIA states that 54 VDC in a single 1 MW rack "requires up to <b>200 kg of copper busbar</b>," and that "the rack busbars alone in a single 1 gigawatt data center could require up to <b>200,000 kg</b> of copper." Those two figures are internally consistent at 1,000 racks per gigawatt. The question is whether 200 kg per rack is the right order of magnitude, and it is — with a caveat about design current density that changes the answer by a factor of two in either direction.</p>
+        <p>Take the conventional busbar design rule of roughly <b>1 A/mm²</b> for naturally cooled copper in a rack (manufacturers publish ampacity tables within a factor of two of this; forced-air and liquid-cooled busbars run higher). One megawatt at 54 V is 18,519 A, so each conductor needs about 18,519 mm² of copper — 185 cm². A metre of that weighs 166 kg, and a two-conductor busbar (feed and return) weighs <b>332 kg</b>. NVIDIA's 200 kg therefore corresponds to roughly <b>0.6 metres</b> of two-conductor run, or a metre at a higher current density. Either way, the number is right and the implication is stark: the copper in a 54 V rack busbar is a structural element, not wiring.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Same power, two voltages</th><th>120 kW rack (GB200 NVL72)</th><th>1 MW rack</th></tr></thead>
+            <tbody>
+              <tr><td>Current at 54 VDC</td><td><b>2,222 A</b></td><td><b>18,519 A</b></td></tr>
+              <tr><td>Current at 800 VDC</td><td><b>150 A</b></td><td><b>1,250 A</b></td></tr>
+              <tr><td>Copper per metre, 2 conductors @1 A/mm² — 54 V</td><td>≈<b>40 kg</b></td><td>≈<b>332 kg</b></td></tr>
+              <tr><td>Same at 800 V</td><td>≈<b>2.7 kg</b></td><td>≈<b>22 kg</b></td></tr>
+              <tr><td>I²R loss per metre — 54 V</td><td>≈<b>75 W</b></td><td>≈<b>622 W</b></td></tr>
+              <tr><td>I²R loss per metre — 800 V</td><td>≈<b>5 W</b></td><td>≈<b>42 W</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Everything in that table is our arithmetic from P = V·I, ρ = 1.68×10⁻⁸ Ω·m for copper and 8.96 g/cm³, at a constant 1 A/mm² current density, and every row moves by the same <b>14.8×</b> because holding current density constant makes cross-section, mass and loss all scale linearly with current. That is the useful property: <b>the physics is one number, repeated</b>. It also explains why the industry's language slides between 14×, 15× and 16× — the ratio is 800/54 = 14.8 and everyone rounds it differently.</p>
+        <p>Two vendor claims deserve separate treatment because they are frequently quoted as if they were the same claim. NVIDIA says 800 VDC busways transmit "<b>85% more power</b> … through the same conductor size" versus 415 VAC, and separately that copper requirements fall by <b>45%</b>. The 45% we can reproduce: 1 MW at 415 VAC three-phase is about <b>1,385 A per phase</b>, and an AC busway carries that across three phases plus a neutral, so the copper is roughly 4,155 amp-conductors against 2,500 for a two-wire 800 VDC feed — a <b>40%</b> reduction, which brackets NVIDIA's 45% once you allow for how the neutral is sized. The 85% we could not reproduce from P = V·I at any conductor count; it is best read as a measurement of a specific busway product at its rated ampacity, where AC busways lose usable capacity to skin effect, proximity effect and reactive losses that DC does not have. Quote it as a product claim, not a law.</p>
+
+        <h2>If the busbar burns 0.6 kW per metre, where does 5% come from?</h2>
+        <p>This is the part of the story that gets skipped, and it changes how you read every efficiency number attached to 800 VDC. Take the 1 MW rack: 622 W per metre of busbar. Give each rack one metre and a gigawatt is 1,000 racks, so the entire busbar loss across a gigawatt of 54 V racks is about <b>0.6 MW — 0.06% of the load</b>. Replace every busbar with 800 V and you recover 0.58 MW. You do not recover 50 MW.</p>
+        <p>So the headline benefit cannot be resistive loss in the busbar, and it is not. It is the <b>number of times the power is converted</b>. In a conventional chain the power goes through a medium-voltage transformer, a UPS that rectifies to DC and inverts back to AC, a row or rack PDU, an in-rack AC-to-54 VDC power shelf, and finally a board-level converter. Each stage is a loss, and the in-rack stage is the one with the worst conditions: an 80 PLUS <b>Titanium</b> server PSU is required to hit <b>96%</b> efficiency at 50% load on 230 V, which means a megawatt rack's power shelves are dissipating on the order of <b>40 kW of heat inside the cabinet</b> at best-case efficiency, before part-load derating. The 800 VDC chain deletes the UPS's double conversion and the in-rack AC-to-DC stage: one rectifier at the perimeter, one DC-to-DC in the tray, one converter on the board.</p>
+        <p>Put the two published numbers on the same footing and the difference resolves. Google's figure — "<b>improves the end-to-end efficiency by ~3%</b>" — is for the <b>Mt Diablo sidecar</b>, an AC-to-DC power rack bolted next to existing compute racks in a hall that still distributes 480 VAC to the row. It removes the in-rack AC-to-DC conversion and keeps everything upstream. NVIDIA's figure — "<b>up to 5%</b> improvement in end-to-end power efficiency" — is for converting <b>13.8 kV AC directly to 800 VDC at the data center perimeter</b>, which also deletes the row-level AC distribution and the UPS's inverter. Different boundaries, different numbers, both defensible. If someone quotes you 5% for a sidecar retrofit, they are quoting a new-build figure against a brownfield project.</p>
+        <p>What is that worth in money? At 1 GW of IT load, 5% is <b>50 MW</b> and 3% is <b>30 MW</b>. At an assumed $70/MWh — roughly the US industrial average, and an assumption we are labelling as one — 50 MW continuous is about <b>$30.7M a year</b> and 30 MW is about <b>$18.4M</b>. That is a real number and it is the reason this transition is happening. It is also 3–5× smaller than the number implied by quoting "half the power is lost in conversion" in the same breath, which nobody credible does but plenty of slideware implies.</p>
+        <p>One more consequence worth flagging because it trips up reporting: <b>PUE cannot see this improvement, and can move the wrong way</b>. PUE is total facility power divided by IT power. If IT power falls 5% and the cooling and electrical overhead falls with it — which it roughly does, because there is 5% less heat to reject — the ratio is unchanged by construction. If the overhead does not fall, because pumps and fans are fixed, PUE gets slightly <b>worse</b> while the electricity bill gets better, since you shrank the numerator's biggest term. A site that swaps to 800 VDC and reports an unchanged PUE has not failed; it has used a metric that was never designed to measure a change in the efficiency of the IT load itself.</p>
+
+        <h2>Which 800 volts? Two wires or three.</h2>
+        <p>The industry has converged on "800 VDC" the way it converged on "USB-C": the voltage on the label matches and the implementations do not. There are two live topologies, and the difference is a safety decision before it is an engineering one.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th></th><th>NVIDIA: monopolar +800 VDC</th><th>OCP Mt Diablo: bipolar ±400 VDC</th></tr></thead>
+            <tbody>
+              <tr><td>Conductors</td><td><b>2</b> — positive and return</td><td><b>3</b> — +400 V, −400 V, midpoint</td></tr>
+              <tr><td>Highest voltage to ground</td><td><b>800 V</b> on every conductor</td><td><b>400 V</b> on every conductor</td></tr>
+              <tr><td>Where DC is made</td><td>13.8 kVAC → 800 VDC rectifier at the building perimeter; DC-to-DC inside the rack</td><td>AC-to-DC <b>sidecar power rack</b> beside the compute racks; Mt Diablo 2.0 for native 800 V</td></tr>
+              <tr><td>Claimed end-to-end gain</td><td><b>up to 5%</b></td><td><b>~3%</b> (sidecar)</td></tr>
+              <tr><td>Stated advantage</td><td>Fewer conductors, simpler cabling and protection</td><td>Insulation and clearance rated at 400 V; components borrowed from the EV supply chain</td></tr>
+              <tr><td>Documented status</td><td>Full-scale production with Kyber racks in <b>2027</b></td><td><b>0.5</b> specification draft published for industry feedback in <b>May 2025</b>; targets 1 MW per rack</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The reasoning behind ±400 V is the most instructive thing in the whole transition, because it is a supply-chain argument wearing a physics coat. Google's blog says the quiet part: choosing 400 VDC "allows us to leverage the supply chain established by electric vehicles (EVs), for greater economies of scale, more efficient manufacturing, and improved quality and scale." In a bipolar system no conductor is more than 400 V from ground, so clearances and insulation can be specified at 400 V instead of 800 V, using components that already ship by the million in EVs and industrial drives — at the price of a third conductor that carries no net power. NVIDIA's single 800 V rail makes the opposite trade: two wires instead of three, and every insulation system in the chain rated for the full 800 V.</p>
+        <p>Both are being built, and OCP's own position is that they will coexist: Mt Diablo's sidecar spec covers ±400 VDC today, with "a Mt Diablo 2.0 … coming later to support native 800V," and OCP describes two deployment paths — an LVDC side power rack next to the compute, or direct medium-voltage-to-800 VDC conversion feeding a whole data hall. For a buyer, this is a genuine standards risk and it belongs in the contract: <b>a hall wired for one topology is not a hall wired for the other</b>, and the transformer-rectifier or solid-state-transformer gear that feeds it is a long-lead item.</p>
+
+        <h2>What breaks first: safety, spares, or the workforce?</h2>
+        <p><b>Safety and standards, and the vendors say so.</b> NVIDIA's blog is unusually candid for a launch document: "Deploying 800 VDC at the facility level introduces new challenges in <b>safety, standards, and workforce training</b>." That is three problems, and only the first is about physics. A DC arc does not self-extinguish at a current zero crossing the way an AC arc does, which is why DC protection gear is a specialised product rather than a catalogue item; OCP's answer is to borrow from electric vehicles and industrial power — connectors, protection devices, breakers "and solid-state breakers that clear faults in milliseconds" — and to adapt them for AI halls. Until that gear is listed and standardised, an 800 VDC hall is a bespoke electrical installation with a bespoke approval path, and the electricians who wire it have spent their careers on AC.</p>
+        <p><b>Redundancy granularity, which nobody markets.</b> The old architecture had dozens of small PSUs per rack and N+1 or N+N sharing, so a failure cost you a module and a maintenance ticket. Centralising conversion produces a shared rectifier or a row power centre — the obvious efficiency win and the less obvious reliability trade, because the failure unit is now larger. NVIDIA acknowledges the direction of the work rather than claiming it is finished: "Innovations will still be required to fully deliver possible overcurrent protection reliability and maintenance gains," and "fault detection and serviceability in VDC systems is a key area for innovation." When a vendor writes that in the launch blog, believe it. Your specification should ask what the row rectifier's redundancy is, what a failure takes down, and whether the answer is one rack or thirty-two.</p>
+        <p><b>The rack still has power supplies.</b> "No PSUs in the rack" is shorthand for no <b>AC-to-DC</b> PSUs. Every 800 VDC design still converts, twice — 800 V to a tray rail inside the rack, and the rail to the sub-1 V the silicon wants. What changes is that the converters are DC-to-DC, they are smaller, and they no longer need to be galvanically isolated from a mains supply in the same way. Teams that budget for "PSUs disappear" are budgeting for the wrong line item: the count falls, the per-unit value rises, and the spares you stock become expensive.</p>
+        <p><b>The thing that improves quietly: heat location.</b> Moving 40 kW of conversion loss out of a 1 MW cabinet does not delete it, it relocates it — from a sealed, liquid-cooled box where every wasted watt competes with the GPUs for cooling capacity, to a power hall where it can be air-cooled or liquid-cooled on its own terms. Given that the constraint in 2026 is thermal density rather than floor area (<a href="/posts/liquid-cooling-rack-density-2026">our rack-density piece</a> runs that arithmetic), relocating 4% of the load out of the rack is worth more than the 4% itself.</p>
+
+        <h2>What can you actually buy in 2026, and what should you specify?</h2>
+        <p>The production date is unambiguous and it is not now. NVIDIA: "Full-scale production of 800 VDC data centers will coincide with <b>NVIDIA Kyber</b> rack-scale systems in <b>2027</b>." Everything shipping in 2026 is either 54 VDC inside the rack, AC to the row, or a sidecar that makes DC next to the rack. NVIDIA demonstrated the retrofit shape at GTC 2025 — "an 800 V sidecar to power <b>576 of the Rubin Ultra GPUs</b> in a single Kyber rack" — and the OCP ecosystem is standardising the interfaces in public, with more than <b>80</b> partners named in OCP's own post. That is a lot of commitment and very little installed base.</p>
+        <p>Which means the decision in front of most buyers this year is not "800 V or 54 V." It is whether the <b>shell</b> you sign for in 2027 can host either. Six questions do most of the work:</p>
+        <p><b>1. What voltage does the busway carry, and who owns the rectifier?</b> A hall built for 415 VAC distribution to the row cannot be converted to perimeter 800 VDC without new electrical infrastructure; the sidecar exists precisely to avoid that, at the cost of the 3% instead of the 5%. Ask which path the design assumes and price the difference rather than accepting "800 V ready."</p>
+        <p><b>2. How many watts per rack, at what rack unit count?</b> A megawatt rack needs the 64U of power shelves to have gone somewhere. If the answer is "a sidecar," you have spent floor area; if it is "perimeter rectifiers," you have spent a long-lead electrical package.</p>
+        <p><b>3. What is the redundancy granularity of the DC plant?</b> N+1 racks is not the same failure domain as N+1 modules. Get the answer in writing with the single-point-of-failure list.</p>
+        <p><b>4. Which topology, and is the second one supported?</b> ±400 VDC and +800 VDC are not interchangeable, and the equipment that feeds them differs. If your accelerator supplier ships one and your facility team standardises on the other, you will be buying a converter you did not budget for.</p>
+        <p><b>5. What is the DC protection and listing story?</b> Solid-state breakers that clear faults in milliseconds, DC-rated disconnects, arc-flash labelling at 800 V, and staff trained for DC. This is the item most likely to delay energisation, and it is not on the vendor's critical path — it is on yours.</p>
+        <p><b>6. Does the efficiency number you were quoted include the conversion you kept?</b> 3% is a retrofit against existing AC distribution; 5% is a new build with a perimeter rectifier. Neither is "the saving from 800 volts." Both are "the saving from deleting specific stages," and the stages are named in the design documents.</p>
+        <p>The pattern here is the same one that runs through this series. Compute was the first bill, <a href="/posts/hbm-memory-wall-2026">memory</a> the second, the <a href="/posts/network-fabric-third-bill-2026">fabric</a> the third, and <a href="/posts/co-packaged-optics-bill-2026">optics</a> turned out to be half of the third. Power was never a bill at all — it was a constraint that arrived as a queue position and a transformer lead time. What 800 VDC changes is that power distribution is now a <b>design decision with a vendor ecosystem</b>, which is progress of a sort: the constraint has become procurable. It has also become something you can get wrong for a decade, because the voltage you wire into a hall outlives the GPUs you install in it by at least two generations.</p>
+      </div>
+
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>One number explains the whole transition.</b> 1 MW at 54 VDC is 18,519 A; at 800 VDC it is 1,250 A. Current, copper cross-section and I²R loss all scale by 14.8×, so a two-conductor busbar drops from ~332 kg per metre to ~22 kg.</li>
+          <li><b>NVIDIA's own figures confirm the scale.</b> Up to 200 kg of copper busbar in a single 1 MW rack, 200,000 kg across a gigawatt, and up to 64U of rack space consumed by power shelves if 54 V were kept at that density. At 1 A/mm², 200 kg is about 0.6 m of two-conductor busbar — the right order of magnitude.</li>
+          <li><b>The busbar was never the loss.</b> 622 W per metre × 1,000 racks is ~0.6 MW out of a gigawatt, or 0.06%. The claimed 3–5% comes from deleting conversion stages — the UPS double conversion and the in-rack AC-to-54 VDC shelf — not from copper.</li>
+          <li><b>3% and 5% measure different buildings.</b> Google's ~3% is the Mt Diablo sidecar AC-to-DC rack bolted onto existing AC distribution; NVIDIA's up to 5% is 13.8 kVAC converted to 800 VDC at the perimeter. Same direction, different boundary. At 1 GW, that is 30 MW versus 50 MW — roughly $18M versus $31M a year at an assumed $70/MWh.</li>
+          <li><b>"800 VDC" is two standards.</b> NVIDIA runs two-wire +800 V; OCP's Mt Diablo (Google, Meta, Microsoft) runs three-wire ±400 V so no conductor exceeds 400 V to ground and EV-sourced components can be reused, with a native-800 V "Mt Diablo 2.0" announced but not published. They are not interchangeable in a hall.</li>
+          <li><b>PUE cannot see the gain, and may move the wrong way.</b> If overhead scales with IT load the ratio is unchanged by construction; if it does not, PUE rises while the bill falls. Judge this transition by MW per rack and by kilowatts moved out of the cabinet, not by PUE.</li>
+          <li><b>2027 is the date, and the risk is the shell.</b> Kyber-coincident production; in 2026 you can buy a sidecar and a specification. The voltage you wire into a hall outlives two GPU generations, so the six specification questions — busway voltage, watts per rack, rectifier redundancy, topology, DC protection and listing, and which conversions the quoted percentage includes — matter more than the rack you put in it.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/co-packaged-optics-bill-2026"><i data-i18n="pager.prev">Previous</i>Half the switch is a transceiver: what co-packaged optics actually buys (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

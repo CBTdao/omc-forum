@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your SSD's TBW is a workload assumption, not a lifespan (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Your SSD's TBW is a workload assumption, not a lifespan (2026) — DCF">
+  <meta name="twitter:description" content="Micron rates the same 30.72 TB drive at 56,000 TB or 14,000 TB depending on the write pattern — a 4× spread on one datasheet. What TBW, DWPD and JESD219A actually mean before you put a used enterprise SSD in a 24/7 box.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="TBW (terabytes written) is not a property of a drive — it is a drive plus a workload assumption. Micron's own datasheet for the 6550 ION at 30.72 TB lists 56,000 TB under 128K random writes and 14,000 TB under 4K random writes, a 4× spread for the same hardware, because small random writes trigger garbage collection and write amplification. The conversion everyone quotes is DWPD = TBW ÷ (capacity × 365 × years), though Micron divides by 1,826 days and Kingston by 365. Two traps follow: DWPD moves when you change the exposed capacity on the same fixed TBW (Micron Flex Capacity: 8.8 TB/day is 0.8 DWPD at 11 TB and 1.6 at 5.5 TB), and JESD218's client use condition is 8 hours a day at 40°C with UBER ≤1e-15 against the enterprise condition of 24 hours at 55°C and ≤1e-16. A consumer drive in a 24/7 NAS is outside the conditions its rating was derived under. Includes the homelab arithmetic for 50, 200 and 1,000 GB per day, and why Micron itself says JESD219's 2010 workload no longer represents modern I/O." />
+  <link rel="canonical" href="https://forum.omc.network/posts/ssd-tbw-dwpd-workload-method-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/ssd-tbw-dwpd-workload-method-2026" />
+  <meta property="og:title" content="Your SSD's TBW is a workload assumption, not a lifespan (2026)">
+  <meta property="og:description" content="One drive, one datasheet, four endurance numbers: 56 PB at 128K sequential, 14 PB at 4K random. The method behind TBW and DWPD, and what it means for a used enterprise SSD in a box that never sleeps.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Your SSD's TBW is a workload assumption, not a lifespan (2026)","datePublished":"2026-11-06","dateModified":"2026-11-06","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>Your SSD's TBW is a workload assumption, not a lifespan (2026)</h1>
+        <p class="article-dek">Every used enterprise SSD listing quotes one endurance number, and the number is a <b>compound</b>: a drive, plus an assumption about how you write to it. Micron publishes the assumption in the open and it is brutal — the same <b>30.72 TB</b> drive is rated <b>56,000 TB</b> of writes under 128K random blocks and <b>14,000 TB</b> under 4K random blocks. Same silicon, same firmware, <b>4×</b> the endurance, because small random writes make the controller do internal work you never asked for. If you are buying a used drive for a box that never sleeps, the number on the sticker is answering a question you did not ask.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 6, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>TBW (terabytes written) is an endurance rating defined by JEDEC's JESD218, measured against a workload defined in JESD219, and expressed as the total bytes a host can write before the drive leaves its rated error budget.</b> Because it is measured against <b>a</b> workload rather than <b>your</b> workload, one drive carries several valid endurance numbers at once: Micron's datasheet for the <b>6550 ION at 30.72 TB</b> lists <b>56,000 TB</b> for 100% 128K random writes (<b>1.00 DWPD</b>), <b>14,000 TB</b> for 100% 4K random writes (<b>0.25 DWPD</b>), and <b>16,500 TB</b> for the standard JESD219A mix (<b>0.30 DWPD</b>). The conversion is <b>DWPD = TBW ÷ (capacity × 365 × years)</b>; at 30.72 TB over a five-year warranty that is <b>30.72 TB per day at 1.00 DWPD and 7.68 TB per day at 0.25</b>. Three traps follow. <b>DWPD moves when you change the capacity</b> on the same fixed TBW — Micron's Flex Capacity example turns 8.8 TB/day into 0.8 DWPD at 11 TB or 1.6 DWPD at 5.5 TB. <b>Client and enterprise drives are rated under different use conditions</b>: JESD218's client class assumes <b>8 hours a day at 40°C</b> and an uncorrectable bit error rate of ≤<b>1×10⁻¹⁵</b>, against <b>24 hours a day at 55°C</b> and ≤<b>1×10⁻¹⁶</b> for enterprise — so a consumer drive in a 24/7 NAS is outside the conditions its rating came from before a single byte is written. And <b>Micron itself says JESD219's 2010 workload is obsolete</b>, which makes the number a floor and a ceiling at the same time.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>你的 SSD 的 TBW 是「工作负载假设」，不是寿命（2026）。<b>摘要：</b>TBW（terabytes written，总写入字节数）是 JEDEC JESD218 定义的耐久评级，用 JESD219 定义的工作负载测出来，含义是「主机在错误预算内可写入的总字节数」。因为测的是<b>某个</b>工作负载而非<b>你的</b>工作负载，同一块盘会同时拥有多个合法数字：美光 <b>6550 ION 30.72 TB</b> 的数据表列出 <b>56,000 TB</b>（100% 128K 随机写，<b>1.00 DWPD</b>）、<b>14,000 TB</b>（100% 4K 随机写，<b>0.25 DWPD</b>）、JESD219A 标准混合 <b>16,500 TB</b>（<b>0.30 DWPD</b>）。换算是 <b>DWPD = TBW ÷（容量 × 365 × 年数）</b>；30.72 TB 五年保 → 1.00 DWPD 对应每天 <b>30.72 TB</b>，0.25 对应每天 <b>7.68 TB</b>。三个陷阱：<b>同一 TBW 下改变暴露容量，DWPD 会变</b>（美光 Flex Capacity 例子：每天 8.8 TB 在 11 TB 容量下是 0.8 DWPD，在 5.5 TB 下是 1.6）；<b>消费级与企业级的评级使用条件不同</b>——JESD218 客户端是<b>每天 8 小时、40°C</b>、UBER ≤<b>1×10⁻¹⁵</b>，企业级是<b>每天 24 小时、55°C</b>、≤<b>1×10⁻¹⁶</b>，所以 7×24 的 NAS 里插消费盘，在写入第一个字节前就已经不在评级条件内；<b>美光自己承认 JESD219 的 2010 年工作负载已经过时</b>。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>TBW is a rating, not a countdown.</b> The letters stand for terabytes written, and the number means: under a specified workload, at a specified temperature and duty cycle, the drive is rated to absorb this much host data before the uncorrectable bit error rate exceeds the class limit. JEDEC's own summary of the standard pair is that JESD218 "creates an SSD Endurance Rating that represents the number of terabytes written by a host to the SSD (TBW)," while JESD219 describes the workload used to produce it — "because the workload that a SSD is subjected to has a significant impact on the amount of data that may be written to the drive, a standard workload is required to have comparable results." Both documents date from September 2010; JESD219 was revised in July 2012 as JESD219A, and JESD218 was updated again in May 2025.</p>
+        <p>That sentence from JEDEC is the whole article in miniature. TBW is comparable <b>because</b> everyone measures it against the same synthetic workload. It is not comparable to your workload, and it is not a prediction of when the drive dies. Which is why the same drive can legitimately be advertised with four different endurance figures, and why the figure in a marketplace listing tells you almost nothing on its own.</p>
+
+        <h2>Why does one drive have four different endurance ratings?</h2>
+        <p>Because flash cannot overwrite in place. To change one 4 KB page, the controller must read the surrounding erase block, modify it, and write the whole block somewhere else — so a 4 KB logical write can become a 64 KB, 256 KB or larger physical write. That multiplier is the <b>write amplification factor (WAF)</b>, and every unit of it is spent out of the same TBW budget. Large sequential writes keep WAF near 1; small random writes across a full drive push it up, and the endurance rating moves accordingly. Micron publishes the resulting spread instead of hiding it, which makes its datasheets unusually useful for this calculation.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Micron 6550 ION, 30.72 TB — same drive</th><th>Rated TBW</th><th>DWPD over 5 years</th><th>TB per day</th></tr></thead>
+            <tbody>
+              <tr><td>100% 128K random writes</td><td><b>56,000 TB</b></td><td><b>1.00</b></td><td>30.72</td></tr>
+              <tr><td>70% 16K / 30% 4K random</td><td>42,000 TB</td><td>0.75</td><td>23.04</td></tr>
+              <tr><td>50% 16K / 50% 4K random</td><td>33,500 TB</td><td>0.60</td><td>18.43</td></tr>
+              <tr><td>100% 8K random writes</td><td>28,000 TB</td><td>0.50</td><td>15.36</td></tr>
+              <tr><td><b>JESD219A standard mix</b></td><td><b>16,500 TB</b></td><td><b>0.30</b></td><td>9.22</td></tr>
+              <tr><td>100% 4K random writes</td><td><b>14,000 TB</b></td><td><b>0.25</b></td><td>7.68</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>The ratio between the top and bottom rows is exactly <b>4.0</b>, and it is not a rounding artefact — 56,000 ÷ 14,000 and 1.00 ÷ 0.25 are the same number. It also checks out internally against the day count Micron uses: 30.72 TB × 1,826 days = 56,095 TB ≈ 56,000, and 30.72 × 0.25 × 1,826 = 14,024 TB ≈ 14,000. The next model up the stack tells the same story more conservatively: the 6600 ION at 30.72 TB is rated 30.72 TB/day at 1.00 DWPD for 128K sequential, but <b>0.30 DWPD</b> — 9.22 TB/day — for every random pattern it lists, including the JESD219A mix.</p>
+        <p>Two footnotes in that datasheet matter more than the table. First: "values represent the theoretical maximum endurance for the given transfer size and type. Actual lifetime will vary by workload." Second: "all values provided are for reference only and are <b>not warranted values</b>." The 56,000 TB headline is a measurement, not a promise, and the warranty terms live somewhere else entirely.</p>
+
+        <h2>How do you turn TBW into years?</h2>
+        <p>The formula is one line, and both Kingston and Micron publish it: <b>DWPD = TBW ÷ (capacity × days × years)</b>, where capacity is the exposed user capacity. Micron's technical brief does a worked example — a drive rated <b>15.7 PB</b> over a five-year warranty can absorb <b>8.8 TB per day</b> (it divides by <b>1,826 days</b>, five years including the leap day). Kingston does the same arithmetic with <b>365</b>: a 1,800 GB drive with a 1,432 TB rating over five years works out to <b>0.43 DWPD</b>, or 774 GB per day. The 1,825-versus-1,826 discrepancy is 0.05% and explains why two vendors' DWPD figures for equivalent drives never reconcile to the last digit.</p>
+        <p>For a homelab the useful direction is the inverse: start from what your box actually writes, then ask how many years a rating buys. Take the most common consumer endurance figure in 2026 — <b>600 TBW</b> over five years on a 1–2 TB drive — and hold it against three real workloads.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Daily host writes</th><th>What that looks like</th><th>Years to 600 TBW</th><th>Years to 14,000 TBW (used 30.72 TB class)</th></tr></thead>
+            <tbody>
+              <tr><td><b>50 GB/day</b></td><td>Proxmox node, a few VMs, PBS incrementals</td><td><b>32.9 years</b></td><td>767 years</td></tr>
+              <tr><td><b>200 GB/day</b></td><td>Nightly full backup target, media library churn</td><td><b>8.2 years</b></td><td>192 years</td></tr>
+              <tr><td><b>500 GB/day</b></td><td>Scratch disk for video, continuous log ingestion</td><td><b>3.3 years</b></td><td>77 years</td></tr>
+              <tr><td><b>1,000 GB/day</b></td><td>Surveillance buffer, database with heavy WAL churn</td><td><b>1.6 years</b></td><td>38 years</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Our arithmetic: years = TBW ÷ (GB/day × 365 ÷ 1,000), and it assumes WAF of 1 — that is, it credits every host gigabyte at face value. Your drive does not. If garbage collection gives you a WAF of 2, the drive burns two terabytes of NAND per host terabyte and every number in that last column halves. This is exactly the caveat Kingston prints next to its own formula: "your workload can vary, and due to the unique WAF you apply, the rated TBW specification may be higher or lower than your workload."</p>
+        <p>The conclusion for a home server is uncomfortable and useful: <b>TBW is almost never the constraint for a VM host, and almost always the constraint for a write-heavy one</b>, and the difference between the two is a single measured number. Measure it before you shop. Every drive reports total host writes in SMART; on NVMe read <code>Data Units Written</code>, on SATA read the LBAs written counter, and note that Micron's datasheets tell you to watch <code>Percentage Used</code> in the SMART/Health log rather than the marketing figure.</p>
+
+        <h2>Why is DWPD a trap when you compare capacities?</h2>
+        <p>Because DWPD has capacity in the denominator, so the same TBW produces a different DWPD depending on how much of the drive you expose. Micron's Flex Capacity feature — which lets an operator reserve more or less over-provisioning — makes this explicit: "TBW is a fixed value; using the Micron Flex Capacity feature does not change the TBW. However, depending on the setting, the DWPD can change." Their worked example takes a drive rated 15.7 PB over five years, converts it to <b>8.8 TB per day</b>, and then shows the same drive at <b>0.8 DWPD</b> with 11 TB exposed and <b>1.6 DWPD</b> with 5.5 TB exposed.</p>
+        <p>Which means the sentence "drive A is 1 DWPD and drive B is 3 DWPD" is meaningless without the capacities — and doubly meaningless across a 3.84 TB drive and a 30.72 TB drive, where the small drive's higher DWPD usually reflects a smaller denominator rather than better flash. Convert everything to <b>terabytes per day</b> before comparing, because that is the unit your workload is in. On the same 30.72 TB drive, 1.00 DWPD is 30.72 TB/day and 0.25 DWPD is 7.68 TB/day; those are the numbers you can hold against a measured write rate.</p>
+
+        <h2>What changes when the drive runs 24/7 at 55°C?</h2>
+        <p>The rating was derived under a set of use conditions, and they are not the conditions in your closet. JESD218 defines two application classes, and the difference is more than a marketing tier — it is a different test environment, reproduced from the standard (with JEDEC's permission) by Kingston.</p>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>JESD218 class</th><th>Assumed powered-on use</th><th>Retention (power off)</th><th>Uncorrectable bit error rate</th></tr></thead>
+            <tbody>
+              <tr><td><b>Client</b></td><td><b>40°C, 8 hours per day</b></td><td>30°C, 1 year</td><td>≤ <b>1×10⁻¹⁵</b></td></tr>
+              <tr><td><b>Enterprise</b></td><td><b>55°C, 24 hours per day</b></td><td>40°C, 3 months</td><td>≤ <b>1×10⁻¹⁶</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Read the first row as a description of a laptop and the second as a description of a rack. A consumer drive's endurance figure is derived on the assumption that it is powered for a third of the day at 40°C; put it in a NAS that runs 8,760 hours a year in a warm cupboard and you have left the rated conditions on two axes at once — duty cycle and temperature — before the write budget is even in play. The error-rate column is the quieter half: 10⁻¹⁵ is roughly one uncorrectable bit per <b>1.11 PB</b> read, 10⁻¹⁶ one per <b>11.1 PB</b>, which is why enterprise drives carry more ECC, more over-provisioning and often power-loss protection. Those are the things you are paying for in a used enterprise drive, and they are not in the TBW number.</p>
+        <p>This is the practical defence of buying used enterprise SSDs for a home server at all: not that the TBW is bigger, but that the class assumptions match how the machine is actually used. The counter-argument is equally concrete — a used drive has already spent part of its budget, and its remaining endurance is whatever <code>Percentage Used</code> says, not what the sticker said.</p>
+
+        <h2>Why is the standard itself being revised?</h2>
+        <p>Because the workload in JESD219 was written for 2010 hardware. Micron's own storage blog is blunt about it: the standard dates from a period when "most enterprise storage workloads were built around HDDs," with "a notable number of accesses under 4KB, a majority of writes at 4KB and the highest trivial number of writes at 64KB," while in the workloads Micron measures today "no accesses are under 4KB," most writes are spread across a wider range of sizes, and some exceed 64 KB. Default Linux filesystem block sizes — ext4, XFS and Btrfs all default to 4 KB — have moved too. Micron also flags that the standard's write-amplification behaviour is "an anomaly" once larger indirection units are considered on very high-capacity drives, and proposes three fixes: fewer sub-4 KB transactions, workload scaling by indirection unit size, and payload sizes beyond 64 KB.</p>
+        <p>The analogy in that post is the right one to carry away: tyres are rated on a standard test loop, and a tyre that is fine for commuting will not last a track day. Nobody claims the rating is fraudulent; it is simply a rating for a defined condition. SSD endurance works the same way, and the industry's own standard body is the first to say the loop no longer matches the road. Treat JESD219A's mix — the 0.30 DWPD row in Micron's table — as the conservative planning number rather than the 1.00 DWPD headline, and treat both as estimates of a budget rather than a schedule for failure.</p>
+
+        <h2>What should you actually do?</h2>
+        <p><b>Measure before you buy.</b> Read total host writes on your current boot drive, divide by the days it has been in service, and you have your GB/day. Then convert any candidate drive's rating into years at that rate, not into a DWPD score. Three of the four rows in the arithmetic table above are decided by this one number.</p>
+        <p><b>For a used drive, ask for SMART output before you ask about TBW.</b> <code>Percentage Used</code> (NVMe) or the wear-levelling count (SATA), plus total host writes and the power-on hours, tells you where the drive actually is. A drive at 12% used with 40,000 hours is a different purchase from one at 60% used with 4,000 hours, and the TBW rating is identical in both listings. There is no universal "safe percentage" for used hardware — that is a risk decision about returns policy, not a spec.</p>
+        <p><b>Size for the workload, not for the badge.</b> A backup target that writes 200 GB a night needs endurance; a VM host that writes 30 GB a day is constrained by capacity and random-read latency long before it is constrained by flash wear. Buying 3 DWPD enterprise flash for a hypervisor that idles is spending money on the one axis that was never going to bind — the same mistake as buying a datacenter GPU for a workload that is memory-bandwidth-bound. <a href="/posts/truenas-vs-proxmox-first-home-server">Storage-first or VM-first</a> is the prior question; endurance is the second one.</p>
+        <p><b>Keep the number in context.</b> A TBW rating is the corner where cycling, retention, temperature and error rate all pass at once, measured against a synthetic mix that the industry is now trying to replace. That makes it a good way to compare two drives and a bad way to predict one drive's death. The drive that fails in your rack will most likely fail from a controller fault, a firmware bug or a power event — which is why the answer to endurance anxiety is still a backup, and why <a href="/posts/storage-bill-per-exabyte-2026">the storage bill</a> is dominated by redundancy rather than by flash wear.</p>
+        <p>None of this requires trusting a vendor's slide. It requires one measured number from your own machine, one division, and the discipline to stop reading the biggest number on the box as if it were a lifespan.</p>
+      </div>
+
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>TBW is defined against a workload, not against your workload.</b> JEDEC's JESD218 creates the rating and JESD219 supplies the standard mix used to measure it; both date from 2010, and JESD219 was revised in 2012.</li>
+          <li><b>The same drive carries a 4× range.</b> Micron's 6550 ION at 30.72 TB is rated 56,000 TB (1.00 DWPD) for 100% 128K random writes and 14,000 TB (0.25 DWPD) for 100% 4K random writes, with the JESD219A mix at 16,500 TB (0.30 DWPD). Write amplification from small random writes is the mechanism.</li>
+          <li><b>Convert to terabytes per day before comparing.</b> DWPD = TBW ÷ (capacity × days × years). Micron divides by 1,826 days for a five-year term, Kingston by 365 — a 0.05% difference that explains most mismatches between vendor figures.</li>
+          <li><b>DWPD moves with exposed capacity.</b> Micron's own Flex Capacity example keeps TBW fixed while turning 8.8 TB/day into 0.8 DWPD at 11 TB exposed or 1.6 DWPD at 5.5 TB. A DWPD comparison across different capacities is comparing denominators.</li>
+          <li><b>Use conditions differ by class, not just by badge.</b> JESD218's client class assumes 8 hours a day at 40°C and UBER ≤1e-15; enterprise assumes 24 hours at 55°C and ≤1e-16. A consumer drive in a 24/7 NAS sits outside its rated duty cycle and temperature.</li>
+          <li><b>The standard is acknowledged as dated.</b> Micron's own blog notes modern workloads have no sub-4 KB accesses, that 4 KB is the default filesystem block, and that JESD219's WAF behaviour becomes an anomaly at larger indirection units. Plan with the JESD219A row, not the 128K headline.</li>
+          <li><b>Buy used on measured state.</b> Percentage Used, total host writes and power-on hours beat a sticker. And TBW is a budget, not a failure date — most drives that die in a homelab die of something else.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/800vdc-rack-power-arithmetic-2026"><i data-i18n="pager.prev">Previous</i>A megawatt at 800 volts: the arithmetic that retires the 54 V busbar (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
