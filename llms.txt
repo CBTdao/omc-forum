@@ -72,4 +72,5 @@ This site is static HTML in English. Chinese is available via the language toggl
 - [https://forum.omc.network/posts/co-packaged-optics-bill-2026](https://forum.omc.network/posts/co-packaged-optics-bill-2026): Half the switch is a transceiver: what co-packaged optics actually buys (2026) — DCF
 - [https://forum.omc.network/posts/800vdc-rack-power-arithmetic-2026](https://forum.omc.network/posts/800vdc-rack-power-arithmetic-2026): A megawatt at 800 volts: the arithmetic that retires the 54 V busbar (2026) — DCF
 - [https://forum.omc.network/posts/bess-behind-the-meter-2026](https://forum.omc.network/posts/bess-behind-the-meter-2026): The biggest battery in America is hiding in a data center (2026) — DCF
+- [https://forum.omc.network/posts/colo-rent-per-kw-contract-2026](https://forum.omc.network/posts/colo-rent-per-kw-contract-2026): Colocation rent is priced per kilowatt. The real price discovery is in your renewal (2026) — DCF
 - [https://forum.omc.network/posts/ssd-tbw-dwpd-workload-method-2026](https://forum.omc.network/posts/ssd-tbw-dwpd-workload-method-2026): Your SSD's TBW is a workload assumption, not a lifespan (2026) — DCF
