@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A home lab runs on 1,920 watts, not 2,400: the NEC 80% rule (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="A home lab runs on 1,920 watts, not 2,400: the NEC 80% rule (2026) — DCF">
+  <meta name="twitter:description" content="NEC 210.20(A) sizes the branch-circuit breaker at 125% of continuous load, which means a 20-amp, 120-volt circuit is a 1,920-watt continuous circuit — not the 2,400 W on the breaker's label. A home server rack runs 24/7, which is the code's textbook definition of a continuous load. Here is the tally that keeps a home lab legal and cool, plus why 12 AWG on a 240 V L6-20 doubles your watts.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="NEC 210.20(A) requires the branch-circuit overcurrent device to be rated at the noncontinuous load plus 125% of the continuous load — the 80% rule. A 20 A / 120 V circuit therefore delivers 1,920 watts continuous (16 A), and a 15 A circuit delivers 1,440 W, against nameplate maxima of 2,400 W and 1,800 W. Because a home lab runs around the clock, it is by definition a continuous load (three hours or more). This piece walks the load tally, the receptacle math (180 VA per yoke), the wire-gauge rules (12 AWG for 20 A), and the 240-volt option that doubles usable watts on the same conductors." />
+  <link rel="canonical" href="https://forum.omc.network/posts/branch-circuit-1920-watts-homelab-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/branch-circuit-1920-watts-homelab-2026" />
+  <meta property="og:title" content="A home lab runs on 1,920 watts, not 2,400: the NEC 80% rule (2026)">
+  <meta property="og:description" content="NEC 210.20(A) sizes the breaker at 125% of continuous load: a 20 A / 120 V branch circuit is a 1,920 W continuous circuit, not 2,400 W. A 24/7 home lab is a continuous load by definition. The tally, the receptacle math, the wire gauge, and the 240 V option.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"A home lab runs on 1,920 watts, not 2,400: the NEC 80% rule (2026)","datePublished":"2026-11-13","dateModified":"2026-11-13","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>A home lab runs on 1,920 watts, not 2,400: the NEC 80% rule (2026)</h1>
+        <p class="article-dek">A 20-amp, 120-volt circuit is named for its breaker, but the number that governs a 24/7 home lab is <b>1,920 watts</b> — 80% of the nameplate. NEC 210.20(A) requires the overcurrent device to be rated at the noncontinuous load plus <b>125% of the continuous load</b>, and a home server rack running around the clock is the code's textbook continuous load: maximum current expected for <b>three hours or more</b>. This piece walks the arithmetic that keeps a lab legal, cool and un-tripped: the load tally, the receptacle math, the wire gauge, and the 240 V option that doubles your watts on the same copper.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 13, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>The watts a home lab may draw continuously are 80% of what the breaker says, and the code is arithmetic, not advice.</b> NEC 210.20(A): "Where a branch circuit supplies continuous loads or any combination of continuous and noncontinuous loads, the rating of the overcurrent device shall not be less than the noncontinuous load plus 125 percent of the continuous load." NEC 210.19(A)(1) applies the same 125% logic to conductor sizing. A continuous load is one "where the maximum current is expected to continue for three hours or more" — which is the definition of a server. So a 20 A / 120 V circuit is 2,400 W of nameplate and <b>1,920 W continuous</b> (16 A × 120 V); a 15 A circuit is 1,800 W of nameplate and <b>1,440 W continuous</b>. The same arithmetic appears across independent electrical-engineering references and matches the NEC text. The practical consequence: one full-height dual-socket server (~600–700 W), a NAS (~100 W), a switch (~30–60 W) and a UPS fit inside 1,920 W — two full-load servers plus storage start testing it. For mixed loads the formula is breaker ≥ noncontinuous + 1.25 × continuous. And the highest-leverage move available to a home lab is voltage: the same 12 AWG copper on a 240 V / 20 A circuit (NEMA L6-20) is 4,800 W nameplate and <b>3,840 W continuous</b> — double the watts, same wire, because watts = volts × amps and only amps are capped.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>家庭机房跑在 1,920 瓦上，不是 2,400 瓦：NEC 80% 规则（2026）。<b>摘要：</b>20 安 / 120 伏电路以断路器命名，但真正约束 7×24 家庭机房的是 1,920 瓦——铭牌的 80%。NEC 210.20(A) 规定：支路过电流保护装置额定值不得低于「非连续负载 + 连续负载的 125%」；210.19(A)(1) 对导线载流量适用同样的 125% 逻辑；连续负载的定义是「最大电流预计持续三小时以上」——这正是服务器的定义。于是 20A/120V 是 2,400 W 铭牌、<b>1,920 W 连续</b>（16 A × 120 V）；15A 电路是 1,800 W 铭牌、<b>1,440 W 连续</b>。这套算术在多个独立电气工程资料中口径一致，并与 NEC 条文相符。实操结论：一台满载双路服务器（约 600–700 W）+ NAS（约 100 W）+ 交换机（30–60 W）+ UPS 装得进 1,920 W；两台满载服务器加存储就开始贴线。混合负载公式：断路器 ≥ 非连续负载 + 1.25 × 连续负载。家庭机房杠杆最大的操作是升压：同一根 12 AWG 铜线接到 240 V / 20 A（NEMA L6-20）就是 4,800 W 铭牌、<b>3,840 W 连续</b>——瓦数翻倍、导线不变，因为瓦 = 伏 × 安，被卡住的只有安。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>Most home-lab power advice on the internet starts from the wrong number.</b> It takes the breaker's label — 20 amps, 120 volts, 2,400 watts — and works backward from there. The National Electrical Code (NEC) works forward from the load instead, and for loads that never stop, which is exactly what a server is, the code subtracts a fifth. The result is a hard, checkable ceiling on what a residential rack may draw: <b>1,920 watts continuous on a 20-amp circuit</b>. This piece is the arithmetic, the code sections behind it, and the three decisions — load tally, receptacle count, voltage — that actually determine whether your lab trips at 2 a.m. This is educational content, not electrical design advice: local amendments apply, and licensed electricians exist for a reason.</p>
+
+        <h2>What does the NEC actually say?</h2>
+        <p>Two sections carry the whole rule. <b>NEC 210.20(A), Overcurrent Protection</b>: "Where a branch circuit supplies continuous loads or any combination of continuous and noncontinuous loads, the rating of the overcurrent device shall not be less than the noncontinuous load plus 125 percent of the continuous load." <b>NEC 210.19(A)(1), General</b> applies the same 125% factor to conductor sizing — so the wire and the breaker are both sized for the same inflated number, and the 80% figure is simply the inverse view: a breaker that must be rated at 125% of your continuous load can only be loaded to 80% of its rating, continuously. The definition that decides which column you are in sits in Article 100: a <b>continuous load</b> is one "where the maximum current is expected to continue for three hours or more." Space heaters, EV charging and fixed lighting are the canonical examples. So is anything in your rack that does not sleep.</p>
+        <p>Apply the formula. A 20 A / 120 V circuit has a nameplate ceiling of 20 × 120 = <b>2,400 W</b>. Continuous ceiling: 16 A × 120 V = <b>1,920 W</b>. The 15 A circuit next to it: 15 × 120 = 1,800 W nameplate, <b>1,440 W continuous</b>. These four numbers — 2,400/1,920 and 1,800/1,440 — are quoted consistently across independent electrical-engineering references and match the code formula exactly, which is why this piece can state them as facts rather than estimates.</p>
+        <p>For mixed loads — the realistic case, where a rack runs 24/7 but you also plug a vacuum into the same room — the code gives the formula directly: required breaker rating ≥ noncontinuous load + (1.25 × continuous load). Run the example the other way: a 1,500 W space heater (12.5 A, and by definition continuous) plus a 200 W of noncontinuous gear needs a breaker rated at 12.5 × 1.25 + 1.7 ≈ <b>17.3 A</b> — it fits a 20 A breaker with almost nothing left, which is why the heater owns the circuit and your lab should not share it.</p>
+
+        <h2>Why does the code derate a breaker that "handles" 20 amps?</h2>
+        <p>Because the breaker's amperage is not the limiting surface — heat is. A thermal-magnetic breaker carrying near its rated current continuously generates heat at its bimetal strip and, more importantly, at every termination point: breaker lugs, wire splices, receptacle contacts. Terminations age with sustained temperature, and a breaker run at 100% for hours can trip from accumulated heat even though the instantaneous draw is below its stamped rating — the nuisance-trip that everyone blames on "a bad breaker" is usually a load that was never continuous-rated for that circuit. The 80% rule exists so that a circuit carrying its continuous load for three hours plus never reaches the thermal region where connections degrade. That is also why the rule is not negotiable by swapping hardware: the conductor, the receptacles and the panel bus are all part of the same thermal system, and NEC 110.14(C) further requires that for circuits 100 A and under, ampacity be taken from the 60 °C column unless terminals are rated higher — so the "12 AWG is rated 30 A at 90 °C" argument fails twice.</p>
+
+        <h2>How many things can you actually plug in?</h2>
+        <p>The NEC also caps receptacle planning at <b>180 volt-amperes per receptacle yoke</b> (NEC 220.14(I) for the commercial/general case). Dividing a 20 A circuit's 2,400 VA by 180 VA gives about 13 yokes for general, non-continuous use; for a continuous-load circuit the continuous ceiling of 1,920 W gives about <b>10</b>. But the yoke count is a planning baseline, not the real limit — the real limit is your device tally. The version that matters for a home lab:</p>
+        <table>
+          <thead><tr><th>Device</th><th>Typical draw</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td>Dual-socket rack server, idle→full load</td><td><b>~200 W → 650–700 W</b></td><td>The variable that decides everything; check the PSU label and measure</td></tr>
+            <tr><td>4-bay NAS (spinning disks)</td><td>~60–100 W</td><td>Startup spin-up adds briefly; UPS transfer rides through</td></tr>
+            <tr><td>Switch (8–24 port)</td><td>~15–60 W</td><td>PoE injectors change this fast</td></tr>
+            <tr><td>Workstation</td><td>~150–450 W</td><td>Gaming/ML workloads are bursty, not continuous</td></tr>
+            <tr><td>UPS (online, loaded)</td><td>~5–15% of throughput</td><td>Conversion loss counts against the circuit too</td></tr>
+            <tr><td>20 A / 120 V continuous ceiling</td><td colspan="2"><b>1,920 W</b> — the sum of everything running 3 h+</td></tr>
+          </tbody>
+        </table>
+        <p>Read the table against the ceiling and the shape of the constraint appears: one full-load server (700 W) plus NAS plus switch plus conversion losses lands near <b>900 W</b> — comfortable. Two full-load servers plus storage runs past <b>1,600 W</b> — inside the limit with little margin, and one spin-up event or one PoE switch later you are testing 1,920. Three full-load servers do not belong on one 120 V / 20 A branch at all. This is the arithmetic behind the folk wisdom that a rack "needs its own circuit": at continuous duty, it usually does (ours).</p>
+
+        <h2>What hardware must match, beyond the breaker?</h2>
+        <p>Four things, and mismatching any of them is the actual fire risk. <b>Wire gauge</b>: 12 AWG copper for 20 A circuits, 14 AWG for 15 A — a 20 A breaker on 14 AWG is an upgrade of the breaker onto wire it was never protecting, not an upgrade of the circuit. <b>Receptacle</b>: a true 20 A circuit uses a NEMA 5-20R (T-slot) receptacle for 125 V; the slot shape is the code's own enforcement mechanism, preventing a 20 A plug from landing on a 15 A circuit. <b>Terminals</b>: conductors must land on terminals rated for the size and temperature as noted above. <b>Extension cords and power strips</b>: they are not branch-circuit wiring, they add termination points, and a server rack drawing 1,000 W continuously through a consumer power strip is the single most common home-lab fire-adjacent configuration; rack PDUs with listed branch-circuit cords exist for this. If you are putting a rack on a circuit, the circuit is infrastructure, not furniture.</p>
+
+        <h2>How do you double the watts without new copper?</h2>
+        <p>Change the volts. Watts are volts × amps, and the code caps amps — so the same 12 AWG copper on a <b>240 V / 20 A two-pole circuit (NEMA L6-20)</b> is 20 × 240 = <b>4,800 W nameplate</b> and <b>3,840 W continuous</b>. Virtually every rack server PSU is auto-ranging 100–240 V and ships more efficiently at 240 V; a licensed electrician can often pull the same run to a different breaker and receptacle for a fraction of the cost of a service upgrade. This is the standard homelab escalation path, and it stacks cleanly with the numbers in this piece: 3,840 W continuous is two to four full-load servers with headroom. The 120 V / 15 A starter lab (1,440 W continuous) remains a perfectly good origin — the point is to know which ceiling you are standing under before you add the third node, not after the 2 a.m. trip.</p>
+        <p>One more number belongs in your planning file, because it connects the circuit to the battery: your UPS's output in watts, not VA. A 1,500 VA UPS is commonly 900–1,000 W of actual capacity, and if the wall behind it is only good for 1,920 W continuous, sizing the UPS above the circuit protects nothing — the breaker opens first. We cover that arithmetic — VA vs watts, power factor, runtime curves — in the companion piece below.</p>
+
+        <h2>What are the caveats?</h2>
+        <p><b>Jurisdiction and vintage.</b> The NEC is revised on a three-year cycle and adopted with local amendments; the sections quoted here (210.19(A)(1), 210.20(A), 220.14(I), 110.14(C), Article 100) are stable across recent cycles, but your AHJ's adopted edition and local rules govern. <b>Definition nuance.</b> "Expected to continue for three hours or more" is a design expectation, not a meter reading — a lab that runs 24/7 is continuous by any reading, but a bursty workstation is not, and the mixed-load formula exists precisely for rooms with both. <b>Measured vs nameplate.</b> Device wattages in the table are typical ranges, not data: a $15 plug-in power meter settles the question for your hardware, and PSU efficiency (80 Plus ratings) means DC load ≠ wall watts. <b>And the 80% rule is about thermal safety, not about performance tuning.</b> It costs you a fifth of your nameplate watts in exchange for terminations that do not age into failure — on the list of things a home lab can cheaply buy, that is the cheapest insurance there is. Nothing here is electrical design advice; when in doubt, the licensed electrician is the product.</p>
+      </div>
+
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>The ceiling is 80% of the breaker, by code.</b> NEC 210.20(A) sizes the overcurrent device at noncontinuous load + 125% of continuous load; 210.19(A)(1) applies the same factor to the conductor. A 20 A / 120 V circuit is therefore <b>1,920 W continuous</b> (16 A), not 2,400 W; a 15 A circuit is <b>1,440 W</b>, not 1,800 W.</li>
+          <li><b>A home lab is a continuous load by definition.</b> The NEC's threshold is maximum current "expected to continue for three hours or more" — any rack that never sleeps qualifies, so the 80% column is the one that governs it.</li>
+          <li><b>Heat, not amperage, is the reason.</b> A breaker at 100% for hours accumulates heat at the bimetal strip and every termination; the 80% rule keeps a 24/7 load out of the thermal region where connections degrade. Nuisance trips at rated draw are the symptom, not a bad breaker.</li>
+          <li><b>Do the tally, not the receptacle count.</b> NEC 220.14(I)'s 180 VA per yoke gives ~13 (general) or ~10 (continuous) positions on a 20 A circuit, but the real constraint is the sum of running watts: one full-load dual-socket server + NAS + switch ≈ 900 W; two ≈ 1,600 W; three do not belong on one 120 V branch (ours).</li>
+          <li><b>Mixed loads have a formula.</b> Breaker ≥ noncontinuous + 1.25 × continuous. A 1,500 W space heater (12.5 A) plus 200 W of gear needs ~17.3 A — nearly a whole 20 A circuit on its own. The lab and the heater should not share.</li>
+          <li><b>The leverage move is voltage.</b> The same 12 AWG copper at 240 V / 20 A (NEMA L6-20) is 4,800 W nameplate and <b>3,840 W continuous</b> — double the watts on identical wire, and most server PSUs run more efficiently at 240 V.</li>
+          <li><b>Match the hardware or the rule fails anyway.</b> 12 AWG for 20 A, NEMA 5-20R T-slot receptacles, terminals per 110.14(C)'s 60 °C column, and no consumer power strips on a continuous 1,000 W rack — listed rack PDUs exist for this.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/ups-sizing-va-vs-watts-2026"><i data-i18n="pager.prev">Previous</i>UPS sizing: why 1,500 VA is not 1,500 watts (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

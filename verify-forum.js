@@ -25,6 +25,8 @@ const POSTS = [
   ["bess-behind-the-meter-2026", "deep"],
   ["capacity-take-or-pay-power-bill-2026", "deep"],
   ["gas-turbine-slot-calendar-2032-2026", "deep"],
+  ["inp-optics-laser-bottleneck-2026", "deep"],
+  ["branch-circuit-1920-watts-homelab-2026", "lab"],
   ["colo-rent-per-kw-contract-2026", "deep"],
   ["ssd-tbw-dwpd-workload-method-2026", "lab"],
   ["decentralized-games-actually-shipping-2026", "game"],
@@ -69,7 +71,7 @@ const POSTS = [
   ["you-cant-police-a-gpu-you-cant-see", "land"]
 ];
 const GUIDES = ["add-omc-testnet-to-your-wallet", "testnet-tokens-and-the-airdrop", "run-a-gpu-node-on-the-testnet"];
-const SECTION_COUNTS = { hot: 2, deep: 28, pricing: 5, landscape: 7, gaming: 4, homelab: 9 };
+const SECTION_COUNTS = { hot: 2, deep: 29, pricing: 5, landscape: 7, gaming: 4, homelab: 10 };
 const CHIP_BY_SECTION = { hot: "hot", deep: "deep", pricing: "pricing", landscape: "land", gaming: "game", homelab: "lab" };
 
 let pass = 0, fail = 0;
@@ -260,7 +262,7 @@ async function run() {
     /* ---------------- registration: sitemap + llms.txt ---------------- */
     console.log("\n[registration]");
     const sitemap = fs.readFileSync(path.join(ROOT, "sitemap.xml"), "utf8");
-    ok((sitemap.match(/<url>/g) || []).length === 63, "sitemap has 63 URLs", String((sitemap.match(/<url>/g) || []).length));
+    ok((sitemap.match(/<url>/g) || []).length === 65, "sitemap has 65 URLs", String((sitemap.match(/<url>/g) || []).length));
     for (const [slug] of POSTS) ok(sitemap.includes("/posts/" + slug + "</loc>"), "sitemap includes /posts/" + slug);
     for (const slug of GUIDES) ok(sitemap.includes("/guides/" + slug + "</loc>"), "sitemap includes /guides/" + slug);
     ok(sitemap.includes("https://forum.omc.network/tracker"), "sitemap includes tracker");
