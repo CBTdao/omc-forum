@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A home rack's cooling problem is the room, not the fans (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="A home rack's cooling problem is the room, not the fans (2026) — DCF">
+  <meta name="twitter:description" content="1,000 watts of compute is 3,412 Btu/h of heat — the same as a 1 kW space heater — and it needs about 316 CFM of air at a 10 °F rise. Adding fans does not lower the temperature; it only decides the temperature difference, and by the fan laws doubling airflow costs eight times the fan power.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="A home lab's cooling limit is not the fans in the case. Every watt becomes 3.412 Btu/h of heat, and the airflow needed to carry it away follows one equation: CFM = 3.16 × watts ÷ temperature rise in °F. A 1,000 W rack therefore needs roughly 316 CFM at a 10 °F rise, which is six 120 mm fans running at free air — before filters, grilles and bends. Meanwhile 30 m³ of room air holds about 36 kJ per kelvin, so the same rack lifts the room one degree every 36 seconds with no heat rejection at all. This piece is the arithmetic, the ASHRAE inlet envelope, the fan laws, and the order of operations that actually cools a home rack." />
+  <link rel="canonical" href="https://forum.omc.network/posts/home-rack-cooling-cfm-room-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/home-rack-cooling-cfm-room-2026" />
+  <meta property="og:title" content="A home rack's cooling problem is the room, not the fans (2026)">
+  <meta property="og:description" content="1,000 W of compute is 3,412 Btu/h of heat and needs ~316 CFM at a 10 °F rise. Fans do not lower temperature — they only set the difference, and doubling airflow costs 8× the fan power. The arithmetic, the ASHRAE envelope, and the order of operations that cools a home rack.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"A home rack's cooling problem is the room, not the fans (2026)","datePublished":"2026-11-14","dateModified":"2026-11-14","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>A home rack's cooling problem is the room, not the fans (2026)</h1>
+        <p class="article-dek">A watt of compute becomes <b>3.412 Btu/h</b> of heat, and the air needed to carry it away follows one equation: <b>CFM = 3.16 × watts ÷ temperature rise in °F</b>. A 1,000-watt rack therefore needs about <b>316 CFM</b> at a 10 °F rise — roughly six 120 mm fans at free air, before filters, grilles and bends take their cut. Meanwhile 30 m³ of room air holds roughly <b>36 kJ per kelvin</b>, so the same rack lifts that room by one degree every <b>36 seconds</b> with no heat rejection at all. Fans are not the constraint. The room is.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 14, 2026</span><span>11 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>A home rack does not have a fan problem; it has a heat-rejection problem with a fan attached.</b> Every watt drawn by a server, disk or PSU leaves as heat — 1 W = <b>3.412 Btu/h</b>, so a 1,000 W rack is a 3,412 Btu/h space heater that never cycles off. Airflow does not remove heat from the room; it only controls how much the air heats up on the way through, per <b>CFM = 3.16 × W ÷ ΔT(°F)</b> (equivalently m³/h ≈ 3.0 × W ÷ ΔT(K)). At a 10 °F (5.6 °C) rise, 1,000 W needs <b>316 CFM</b> — and because the fan laws make power rise with the cube of speed, buying that with more fans costs roughly <b>eight times the fan power</b> for double the airflow. ASHRAE's recommended inlet range is <b>18–27 °C</b> (allowable A1: 15–32 °C), but the LBNL/DOE thermal guidance adds the sentence most home labs miss: above about <b>25 °C</b> server fans with variable speed spin up, and the extra fan energy "may sometimes be larger than the reduction in cooling energy." So the order of operations is fixed — measure the load, fix the air path, then size the rejection — and the cheapest upgrade is usually moving the rack, not buying a bigger fan.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>家庭机房的散热瓶颈是房间，不是风扇（2026）。<b>摘要：</b>一台家用机柜不是「风扇不够」，而是「热量没地方去，只是顺带装了风扇」。服务器、硬盘、电源吃掉的每一瓦都以热的形式出来——1 W = <b>3.412 Btu/h</b>，所以 1,000 W 的机柜就是一台永不跳闸的 3,412 Btu/h 电暖器。风量并不能把热搬出房间，它只决定空气经过时升高多少度：<b>CFM = 3.16 × 瓦 ÷ 温升(°F)</b>（公制：m³/h ≈ 3.0 × 瓦 ÷ 温升(K)）。在 10 °F（5.6 °C）温升下，1,000 W 需要 <b>316 CFM</b>；而按风机定律，功率随转速三次方上升，靠加风扇把风量翻倍约要付出 <b>8 倍</b>的风扇功率。ASHRAE 推荐进风温度 <b>18–27 °C</b>（A1 级允许 15–32 °C），但 LBNL/DOE 的热指南补了一句大多数家庭机房忽略的话：进风高于约 <b>25 °C</b> 后，变速服务器风扇会提速，多出来的风扇能耗「有时比省下的制冷能耗还大」。所以顺序是固定的——先测负载，再修风道，最后才配排热——而最便宜的升级通常是挪机柜，不是买更大的风扇。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>Most home-lab cooling advice starts with the fan and works outward, which is why it usually ends with a noisier rack at the same temperature.</b> The physics runs the other way: heat is generated at a fixed rate, air carries a fixed amount per degree, and the room can only absorb so much before its temperature rises. Get those three numbers in the right order and the design decides itself — including the cases where the correct answer is "this room cannot hold this rack." Everything below is arithmetic you can redo with your own meter reading, and every constant is one you can check independently: 3.412 Btu/h per watt, 1.08 Btu/h per CFM per °F, air density 1.2 kg/m³, air specific heat 1.005 kJ/kg·K. This is educational content, not HVAC design or electrical advice; a room that will hold a kilowatt continuously is a small construction project, and local code applies.</p>
+
+        <h2>What does a watt of compute turn into?</h2>
+        <p>Heat, entirely and immediately. A server converts electrical energy into computation and then into thermal energy at essentially the same rate, which is why the industry sizes cooling by the power draw and not by the CPU's thermal design power. The conversion is fixed: <b>1 watt = 3.412 Btu/h</b>. A 1,000 W rack is therefore a <b>3,412 Btu/h</b> heater — and unlike the heater in the corner, it runs every hour of every day, because the rack that draws 1,000 W while rendering is the same rack drawing 400–700 W at idle. For planning, use the measured sustained wall draw, not the sum of the component labels: PSU ratings are ceilings, and 80 Plus efficiency means the DC load and the wall watts are different numbers.</p>
+        <p>The useful consequence is that a home rack competes with household appliances on a single axis. A 1,500 W space heater and a 1,500 W rack put the same heat into the same room; the only difference is that the heater has a thermostat and the rack does not. That is why the electrical and thermal conversations in a home lab are the same conversation: our NEC piece established that a 20 A / 120 V circuit is a <b>1,920 W continuous</b> circuit, and this piece establishes what 1,920 W of continuous heat does to the room it is sitting in.</p>
+
+        <h2>How much air does a rack need?</h2>
+        <p>One equation, and it is the sensible-heat equation every HVAC text uses: <b>Btu/h = 1.08 × CFM × ΔT(°F)</b>. Substitute 3.412 Btu/h per watt and solve for airflow: <b>CFM = 3.16 × watts ÷ ΔT(°F)</b>. In metric, <b>m³/h ≈ 3.0 × watts ÷ ΔT(K)</b> — the same physics with the density and specific heat of air carried in the constant.</p>
+        <table>
+          <thead><tr><th>Sustained rack load</th><th>ΔT 10 °F / 5.6 °C</th><th>ΔT 15 °F / 8.3 °C</th><th>ΔT 20 °F / 11 °C</th></tr></thead>
+          <tbody>
+            <tr><td>250 W (NAS + switch)</td><td>79 CFM · 134 m³/h</td><td>53 CFM · 90 m³/h</td><td>40 CFM · 67 m³/h</td></tr>
+            <tr><td>500 W (one server, moderate load)</td><td>158 CFM · 268 m³/h</td><td>105 CFM · 179 m³/h</td><td>79 CFM · 134 m³/h</td></tr>
+            <tr><td><b>1,000 W (tower + NAS + network)</b></td><td><b>316 CFM · 537 m³/h</b></td><td><b>211 CFM · 358 m³/h</b></td><td><b>158 CFM · 268 m³/h</b></td></tr>
+            <tr><td>1,500 W (two servers + storage)</td><td>474 CFM · 805 m³/h</td><td>316 CFM · 537 m³/h</td><td>237 CFM · 402 m³/h</td></tr>
+          </tbody>
+        </table>
+        <p>Two readings of that table matter. First, the numbers are large: a 120 mm case fan moving 50–60 CFM at free air is a normal spec, so <b>316 CFM is roughly six of them</b> — before a filter, a grille, or a bend in the path. Second, <b>ΔT is a choice, not a fact</b>. Doubling the allowed rise halves the airflow you need, and for a home rack the allowed rise is set by the inlet-temperature range, not by comfort: if the room sits at 22 °C, a 10 °C rise puts the exhaust at 32 °C, which is still inside A1's allowable envelope but near its edge.</p>
+
+        <h2>Why can't more fans fix it?</h2>
+        <p>Because the fan laws charge you cubically for airflow. Across fans of the same geometry, <b>airflow varies with speed, static pressure with the square of speed, and shaft power with the cube</b> — a relationship published identically by fan manufacturers, mechanical engineering references and Chinese engineering encyclopaedias, and easy to verify on any fan curve. Double the speed and you get twice the airflow, four times the pressure, and <b>eight times the power</b>. Since sound power scales with that same input, doubling airflow also adds roughly <b>9 dB</b> (ours, treating acoustic power as proportional to fan power) — which is why "just add fans" converges on a rack you can hear through a wall while the inlet temperature barely moves.</p>
+        <p>There is a second reason, and it is the one that actually breaks home installs: <b>recirculation</b>. Air that leaves the back of a rack and finds its way to the front — around a blanking panel, over the top of the cabinet, through the gap where a shelf should be — is air that has already done its job, coming back to do it again. In a closed closet with no return path, the room's air becomes a closed loop: it heats up until the equipment's own fans reach full speed, and then the inlet temperature is whatever the room reaches at that fan speed. Blanking panels, a front-to-rear path, and a return that goes somewhere other than back into the intake matter more than the fan model. The pro version of this idea is called containment, and its whole purpose is to stop the supply and return air from mixing.</p>
+        <p>Now the envelope those fans are fighting for. ASHRAE's 2021 thermal guidelines give a <b>recommended inlet range of 18–27 °C for classes A1–A4</b>, and an <b>allowable A1 range of 15–32 °C</b>, with humidity limits and a maximum rate of change (20 °C per hour, and no more than 5 °C in any 15-minute window). The DOE/LBNL thermal-guidance material states the same recommended envelope as 65–80 °F [18–27 °C] at the IT air intakes and adds the sentence worth taping to the rack: at intake temperatures above about <b>77 °F [25 °C]</b>, gear with variable-speed fans "may speed up the fans and increase the energy use," and "the increase in fan energy may sometimes be larger than the reduction in cooling energy." In other words, the strategy of running the room hot to save on cooling has a floor at the equipment, and that floor is lower than the ASHRAE maximum (ours: the 27 °C recommended ceiling is a survival limit, not an efficiency target).</p>
+
+        <h2>What is the room actually doing?</h2>
+        <p>Absorbing heat and warming up, at a rate you can calculate. Air holds about <b>1.2 kg per m³</b> and about <b>1.005 kJ per kg per kelvin</b>, which is <b>1.2 kJ per m³ per K</b>. A small bedroom of 30 m³ therefore stores roughly <b>36 kJ per kelvin</b> — and a 1 kW load adds 1 kJ every second, so the air alone warms by <b>one kelvin every 36 seconds</b>. Ten degrees in six minutes. Real rooms are slower because walls, furniture and the building's thermal mass absorb heat too, which is why the observed figure is usually tens of minutes rather than minutes — but the direction and the order of magnitude are not in doubt: without a rejection path, a kilowatt has nowhere to go and the room is the buffer.</p>
+        <p>That calculation reframes the purchase decision. A rack in a closed closet is a rack in a kiln with a thermostat made of server fans. A rack in a bedroom is a rack heating the bedroom. A rack beside an open window in February is a rack with free cooling — and in July, the same window is a rack with a hot-air intake. The variable that decides the design is not the rack; it is <b>whether the room has a path for the heat to leave</b>, and how many months of the year that path works.</p>
+
+        <h2>What removes heat, and what only moves it?</h2>
+        <p>Four options, ranked by what they actually do to the room's heat balance. <b>Air movement alone (fans, a cracked door) moves heat; it does not remove it.</b> It lowers the inlet temperature by mixing, at the cost of warming the rest of the space — which is fine in winter and self-defeating in summer. <b>An open window or a duct to outside removes heat</b> when the outside air is cooler, which is the cheapest cooling available and the reason basements and garages work in cold climates — and the reason they fail in humid ones, where dew point rather than temperature becomes the limit. <b>A window air conditioner</b> rejects heat outdoors through the window frame: a small 5,000 Btu/h unit is <b>1.47 kW</b> of cooling, which is barely one 1.4 kW rack; 9,000 Btu/h is 2.64 kW and is the realistic minimum for a kilowatt of continuous load with any margin. <b>A portable unit</b> is the weakest option per watt, and the single-hose variant is worse than its label: it exhausts room air, creating negative pressure that pulls hot outside air back in through every gap. The US Department of Energy rewrote its portable-AC test standard (SACC) to count that infiltration, and under it a single-hose unit's rating comes out <b>30–40% below</b> the headline BTU figure; independent testing puts the effective loss at 20–40%. A dual-hose unit fixes the pressure problem by giving the condenser its own outdoor air supply, and is still less efficient than a window unit of the same rating.</p>
+        <p>There is also a category error worth naming: <b>a portable air conditioner with no window duct is a net heater</b>. It moves heat from the evaporator coil into the condenser coil and blows the second one into the same room, adding its compressor's work to the total. If the duct is not in the window, the machine is a fan with a 1 kW heater attached.</p>
+
+        <h2>What should you actually do?</h2>
+        <p>In order, because each step changes the next one's answer. <b>Measure the load</b> at the wall over a full day, including the idle hours; a plug-in meter settles in an hour what a spec sheet cannot. <b>Fix the air path</b> before buying anything: blanking panels in empty rack units, front-to-rear airflow, no shelf that lets exhaust curl back, and an intake that draws from the coolest part of the room rather than from the ceiling. <b>Decide where the heat leaves</b> — a door, a window, a duct, or a machine that rejects outdoors — and check that the path works in the worst month, not the best one. <b>Size the rejection to the measured load with margin</b>, remembering that a 5,000 Btu/h window unit is 1.47 kW and that compressors are rated at conditions your room will exceed. <b>Then, and only then, consider fans</b> — and prefer one larger, slower fan to several small fast ones, because the fan laws reward diameter and punish RPM.</p>
+        <p>The cheapest upgrade is usually geometric: raising a rack off the floor, moving it away from a corner that traps its own exhaust, or putting it under a window so the hot air leaves where it is easiest to open. Those cost nothing and change the arithmetic more than a fan upgrade does. The most expensive mistake is buying cooling before measuring, which is how a 400 W NAS ends up with a 12,000 Btu/h portable unit running in a room with no duct — a configuration that consumes more watts than the rack and heats the room while it does it (ours).</p>
+
+        <h2>What are the caveats?</h2>
+        <p><b>Steady state versus transient.</b> The 36-seconds-per-kelvin figure is the air alone with no walls and no rejection; real rooms are slower and, more importantly, reach a steady state set by the rejection path, not by the air's heat capacity. Use it to understand why a closed door matters, not to predict a thermometer. <b>Constants and units.</b> The 1.08 figure assumes standard sea-level air at roughly 21 °C; at 1,500 m the density is lower, the same CFM carries less heat, and the required airflow rises by roughly the same percentage density falls — about 12% at 1,500 m (ours). The 3.16 shortcut only works with °F — with °C the constant is about 1.76, and mixing them is the most common error in home-lab cooling posts. <b>Ratings are not delivered airflow.</b> Fan CFM is quoted at free air; filters, grilles and duct resistance cut it, and fan curves are read at a static pressure, which is why a "200 CFM" fan can deliver much less once installed. <b>ASHRAE ranges are equipment envelopes, not comfort targets</b>, and the guideline document itself is copyrighted material quoted here for reference rather than reproduced. <b>And condensation is the failure mode nobody plans for:</b> cooling a humid room below the dew point puts water where the electronics are, which is why the humidity limits in the same table exist. None of this is HVAC design advice; a continuously loaded kilowatt in a residential room is worth a professional's hour.</p>
+      </div>
+
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>Every watt becomes 3.412 Btu/h of heat.</b> A 1,000 W rack is a 3,412 Btu/h heater that never cycles off; plan from the measured sustained wall draw, not the PSU label or the CPU's TDP.</li>
+          <li><b>One equation sizes the airflow.</b> CFM = 3.16 × W ÷ ΔT(°F), or m³/h ≈ 3.0 × W ÷ ΔT(K). At a 10 °F / 5.6 °C rise, 1,000 W needs <b>316 CFM / 537 m³/h</b>; 500 W needs 158 CFM.</li>
+          <li><b>Fans set the temperature difference; they do not remove heat.</b> The fan laws make power scale with the cube of speed, so doubling airflow costs about <b>8×</b> the fan power and adds roughly 9 dB — the loudest possible way to solve a room problem.</li>
+          <li><b>Recirculation defeats airflow.</b> In a closed closet with no return path, exhaust air comes back to the intake and the loop heats until the server fans max out. Blanking panels and a front-to-rear path matter more than fan specs.</li>
+          <li><b>The equipment sets a floor under "run the room hot."</b> ASHRAE recommends 18–27 °C inlet (A1 allowable 15–32 °C), and DOE/LBNL guidance warns that above about 25 °C variable-speed server fans spin up and the extra fan energy may exceed the cooling energy saved.</li>
+          <li><b>30 m³ of air stores ~36 kJ per kelvin.</b> With no rejection path, 1 kW lifts that room one kelvin every 36 seconds — ten degrees in six minutes. The room, not the rack, is the component that has to be sized.</li>
+          <li><b>Rank cooling by what it does to the room's heat balance.</b> Fans move heat, a window or duct removes it when outside air is cooler, a 5,000 Btu/h window unit removes 1.47 kW, and a single-hose portable loses 30–40% of its rated capacity to infiltration — with no duct at all, it is a net heater.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/branch-circuit-1920-watts-homelab-2026"><i data-i18n="pager.prev">Previous</i>A home lab runs on 1,920 watts, not 2,400: the NEC 80% rule (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
