@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The per-outlet limit is the connector, not the breaker: C13/C19 in a home rack (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The per-outlet limit is the connector, not the breaker (2026) — DCF">
+  <meta name="twitter:description" content="A rack PDU has three amp limits and most people check one. The branch breaker allows 1,920 W continuous, but the C13 connector in each outlet is rated 10 A by IEC 60320 (12 A on Vertiv's own UL/CSA PDU tables) — about 1,440 W at 120 V — and one hot device can melt a connector months before any breaker notices.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="IEC 60320 connector ratings decide your PDU's per-outlet cap: C13/C14 at 10 A (IEC) or up to 12 A on Vertiv's UL/CSA-rated rPDU tables, C19/C20 at 16 A — roughly 1,440 W and 1,920 W per outlet at 120 V. Vertiv's official manual lists NEMA 5-15R at 12 A and 5-20R at 16 A per outlet. The breaker governs the sum, the connector governs each outlet, and the 80% rule applies at all three layers. C15/C16 (120 °C rating) exists for hot-running gear. The arithmetic, the three-layer tally, and the failure mode nobody plans for." />
+  <link rel="canonical" href="https://forum.omc.network/posts/pdu-per-outlet-c13-c19-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/pdu-per-outlet-c13-c19-2026" />
+  <meta property="og:title" content="The per-outlet limit is the connector, not the breaker: C13/C19 in a home rack (2026)">
+  <meta property="og:description" content="A rack PDU has three amp limits: the branch breaker (1,920 W continuous), the PDU nameplate, and the IEC 60320 connector in each outlet (C13: 10 A IEC / 12 A on Vertiv's UL tables ≈ 1,440 W at 120 V; C19: 16 A ≈ 1,920 W). The breaker never catches a single hot device exceeding the connector cap — the failure mode is a warm plug, months later.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"The per-outlet limit is the connector, not the breaker: C13/C19 in a home rack (2026)","datePublished":"2026-11-15","dateModified":"2026-11-15","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>The per-outlet limit is the connector, not the breaker: C13/C19 in a home rack (2026)</h1>
+        <p class="article-dek">Your rack has <b>three</b> amp limits, and almost everyone checks one. The branch breaker allows <b>1,920 W continuous</b> (the 80% rule from our NEC piece). But the connector in each outlet — the IEC 60320 C13 that virtually every 1U/2U server and switch uses — is rated <b>10 A by the IEC standard</b>, and Vertiv's own rPDU manual derates it to <b>12 A on UL/CSA tables</b>: about <b>1,440 W per outlet at 120 V</b>. The C19/C20 pair steps up to <b>16 A ≈ 1,920 W</b>. One hot device — a big UPS charging after an outage, a dual-PSU server pulling through one cord, a fully loaded PoE switch — can sit quietly above the connector cap for months. The breaker never trips. The plug just gets warm, then discolored, then intermittent.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 15, 2026</span><span>11 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>A rack PDU is three limits stacked, and the tightest one per outlet is the connector, not the breaker.</b> Layer 1: the branch circuit — 20 A / 120 V means <b>1,920 W continuous</b> for the whole strip (NEC 210.20(A)'s 125% rule, per our electrical piece). Layer 2: the PDU's own nameplate input rating. Layer 3: the connector in each outlet, set by IEC 60320 — <b>C13/C14: 10 A at 250 V</b> per the IEC standard, with Vertiv's official PowerIT rPDU manual listing C13 outlets at <b>"250 VAC, 10 A (UL &amp; CSA 12 A)"</b> and C19 outlets at <b>"250 VAC, 16 A (UL &amp; CSA 16 A)"</b>. Convert to watts at 120 V (ours): a C13 outlet tops out near <b>1,200–1,440 W</b>; a C19 outlet near <b>1,920 W</b>. The same connectors double their wattage at 240 V — a C13 at 2,400 W, a C19 at 4,000 W — which is the per-outlet version of the voltage lesson from our branch-circuit piece. The 80% rule repeats at every layer: Vertiv's NEMA 5-15R outlet (a 15 A household receptacle) is listed at <b>12 A per outlet</b>, and its 5-20R at <b>16 A</b> — the breaker's continuous-load rule showing up again at the outlet. The failure mode is specific: a connector running above its rating at a warm ambient fails by <b>losing contact pressure</b> as the plastic softens — an intermittent-reboot problem that shows up "months later," in the words of one connector-industry guide, not a clean breaker trip. Tally the biggest single device against the connector, the sum of all devices against the breaker, and check both every time you add hardware.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>每个插座的限制是连接器定的，不是断路器：家庭机房的 C13/C19（2026）。<b>摘要：</b>一台机架 PDU 上叠着三层电流限制，大多数人只查一层。第一层：分支电路——20 A / 120 V 意味着整条排插连续 <b>1,920 W</b>（NEC 210.20(A) 的 125% 规则，见本站电气篇）。第二层：PDU 铭牌输入额定。第三层：每个插座里的连接器，由 IEC 60320 标准决定——<b>C13/C14：IEC 额定 10 A @ 250 V</b>，Vertiv 官方 PowerIT rPDU 手册在 UL/CSA 表里把 C13 插座列到「250 VAC, 10 A (UL &amp; CSA 12 A)」、C19 插座列到「250 VAC, 16 A (UL &amp; CSA 16 A)」。按 120 V 换算（本站推算）：一个 C13 插座上限约 <b>1,200–1,440 W</b>，一个 C19 插座约 <b>1,920 W</b>。同样的连接器在 240 V 下瓦数翻倍——C13 到 2,400 W、C19 到 4,000 W——这正是电气篇「升压翻倍」教训的插座版。80% 规则在每一层都重复出现：Vertiv 的 NEMA 5-15R 插座（15 A 家用规格）在手册里按<b>每插座 12 A</b> 列出、5-20R 按 <b>16 A</b>——断路器的连续负载规则在插座上又出现了一次。失效模式很具体：连接器在超额定、环境偏热时不是干净跳闸，而是塑料变软后<b>失去接触压力</b>——按连接器行业指南的说法，几个月后才表现为「间歇性重启」，而不是断路器跳闸。每次加硬件时，把最大的单一设备对着连接器算一遍，把所有设备的总和对着断路器算一遍。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>This piece answers a question the spec sheets hide: how much power can one outlet of your PDU actually deliver?</b> The answer is not the PDU's total rating, and it is not the branch breaker — it is whatever the smallest component in the chain allows, and in a standard rack that component is a $1 connector. Every rating below is taken from the IEC 60320 standard as documented by connector-industry guides, and from Vertiv's official PowerIT rack PDU installer/user guide; each figure is cross-checked across at least two independent sources, and where sources disagree the piece drops the number instead of averaging it.</p>
+
+        <h2>What are the three limits stacked in a rack PDU?</h2>
+        <table>
+          <thead><tr><th>Layer</th><th>Governing rule</th><th>Limit (US home, 120 V)</th><th>What it caps</th></tr></thead>
+          <tbody>
+            <tr><td>Branch circuit</td><td>NEC 210.20(A): breaker ≥ noncontinuous + 125% × continuous</td><td><b>1,920 W continuous</b> (20 A / 120 V)</td><td>The sum of everything plugged in, for the whole strip</td></tr>
+            <tr><td>PDU nameplate</td><td>Manufacturer's input rating</td><td>Whatever the unit lists (often ≥ the branch, sometimes lower on metered units)</td><td>The unit's total throughput</td></tr>
+            <tr><td>Per-outlet connector</td><td>IEC 60320 ratings; UL/CSA per-outlet derating</td><td>C13: <b>10 A IEC / 12 A UL</b> ≈ <b>1,200–1,440 W</b>; C19: <b>16 A</b> ≈ <b>1,920 W</b>; NEMA 5-15R: <b>12 A</b> per Vertiv; 5-20R: <b>16 A</b> per Vertiv</td><td>The single device in that outlet</td></tr>
+          </tbody>
+        </table>
+        <p>The connector ratings are the layer people skip, so pin them down. IEC 60320-1 rates the C13/C14 pair at <b>10 A, 250 V</b> — and this figure is stated identically by Vertiv's official rPDU manual, by a PDU-industry selection guide, and by a connector-manufacturing sourcing guide. North American catalogs often list C13 higher (one guide says "UL ratings permit up to 15 A"); Vertiv's own table lands at <b>12 A UL/CSA</b> for C13 outlets on its PDUs — which is the 80% rule applied to the connector, the same 125%-derated arithmetic that gives the branch its 1,920 W. Where sources disagreed — one connector guide's temperature table put the C19 mating-face limit at 155 °C where the PDU-industry guide puts C19 at 70 °C (155 °C belongs to the C21/C22 class) — we dropped the disputed number entirely rather than pick a side.</p>
+
+        <h2>How do connector amps turn into watts?</h2>
+        <p>Multiply by voltage (ours — this is arithmetic on the verified amp ratings, not a new spec): at US household 120 V, a C13 outlet's ceiling is 10 A × 120 V = <b>1,200 W</b> at the IEC rating, or 12 A × 120 V = <b>1,440 W</b> at the UL/CSA per-outlet rating Vertiv uses. A C19 outlet at 16 A is <b>1,920 W</b> — notably, exactly the continuous budget of an entire 20 A branch. At 240 V, the same connectors double: a C13 carries up to 2,400 W (IEC 10 A) and a C19 up to 4,000 W, which is why every high-density rack design — and our own branch-circuit piece — keeps arriving at the same conclusion: <b>voltage is the cheapest amp you will ever buy</b>.</p>
+        <p>Now run the numbers on real hardware (ours, using the ratings above). A dual-PSU server drawing 1,900 W is fine on C13 in a US rack: each power supply pulls ~950 W through its own cord, about 7.9 A — comfortably inside even the IEC 10 A limit, and the redundancy gives you a second failure domain for free. The same 1,900 W through a single-PSU box on one C13 cord at 120 V is 15.8 A — above the 12 A UL per-outlet rating and the IEC 10 A rating both. That single fact explains why high-draw servers ship with <b>C20 inlets</b>: the C19/C20 pair exists precisely because the C13's 10 A ceiling ran out somewhere in the blade-and-big-router era. Vertiv's own manual matches the split: C13 outlets for standard 1U/2U gear, C19 outlets for the high-draw tier, NEMA L6-20R (250 V, 16 A) listed for 240 V feeds.</p>
+        <p>The aggregate view is where home labs get caught. A 24-outlet C13 strip can theoretically carry 24 × 1,440 W = 34.6 kW of connected devices — but it is fed by one 20 A branch at <b>1,920 W continuous</b>. The breaker governs the sum; the connector governs each socket; and the ratio between the two is not a contradiction, it is the design. A PDU is not 24 little circuits. It is one circuit with 24 delivery points, each of which must stay under its connector cap while the fleet stays under the breaker.</p>
+
+        <h2>What does an overloaded connector actually look like?</h2>
+        <p>Not like a tripped breaker — that is the whole point. The C13's limiting component is not the copper, it is the plastic and the contact spring. A connector-industry sourcing guide puts the C13 mating-face temperature limit at <b>70 °C per IEC 60320-1</b> and describes the failure sequence precisely: a cord that carries the current fine at room temperature "can soften, discolour and lose contact pressure in a hot enclosure," and the result arrives "months later as intermittent reboots rather than as a clean open circuit." A rack running 24/7 (continuous load, by definition) with warm intake air is exactly that enclosure. The 70 °C limit is a property of the plastic and spring, "not of the copper" — the wire inside the cord is sized for the current, but the mating interface is not sized for the heat that a loose, oxidized or overloaded interface generates on its own.</p>
+        <p>For hot-running gear, the standard already drew the escalation path: the <b>C15/C16</b> pair is the same 10 A rating with a <b>120 °C</b> mating-face limit, used for equipment that radiates heat into its own inlet — dense PoE switches, blade-class boxes. Both a PDU selection guide and a connector sourcing guide list the C15 at 120 °C against the C13's 70 °C (three independent sources agree on the 120 °C figure). If a device's inlet runs hot, the fix is not a "better" C13 cord — the fix is the connector class designed for the temperature. (One sourcing note from the same guides: the C-family is keyed so hot-class and cold-class connectors do not intermate freely; treat the keying as the spec, not an inconvenience.)</p>
+
+        <h2>What is the actual checklist?</h2>
+        <p>Three tallies, in order (ours): <b>First, the biggest single device against the connector.</b> Anything drawing more than ~1,440 W at 120 V does not belong on a C13 outlet, period — it needs a C19 outlet, a 240 V feed, or two cords on two PDUs. A big line-interactive UPS recharging after a Deep outage is the classic surprise load: check its charge-current spec, not just its output rating. <b>Second, the sum against the breaker.</b> 1,920 W continuous on a 20 A / 120 V branch, per the NEC piece — and remember the branch carries the PDU's own overhead plus anything else on the circuit. <b>Third, the 80% rule at every layer.</b> Vertiv's own per-outlet tables (12 A on a 15 A-class receptacle, 16 A on a 20 A-class) are the same 125% continuous-load discipline showing up one more time; a device running at 100% of any nameplate in a warm rack is a device with no margin. Dual-PSU servers get one upgrade for free: put the two cords on two different PDUs — ideally two branches or two phases — and a tripped breaker stops meaning a down server.</p>
+        <p>And the cheapest diagnostic in the whole chain is a hand. A C13 plug face that is warm-to-hot at idle, or a cord that has taken a slight set near the mold, is the failure mode announcing itself months before the intermittent reboots start. The breaker will never tell you; the connector will, if you check.</p>
+
+        <h2>What are the caveats?</h2>
+        <p><b>Voltage matters more than the connector in 240 V regions.</b> The 1,440 W figure is a US-120 V number; on European 230 V mains a C13 at 10 A is 2,300 W and the per-outlet limit rarely binds first — this piece's arithmetic is US-home-specific and says so. <b>Per-outlet derating is manufacturer-specific.</b> Vertiv lists C13 at 12 A UL/CSA; one industry guide mentions UL ratings up to 15 A for the bare connector; the honest number for your rack is whatever your PDU's manual states per outlet — read the table, not the marketing. <b>One source conflict was dropped.</b> The two guides disagree on the C19 mating-face temperature class (70 °C vs 155 °C); since 155 °C is the C21/C22 class in both guides' own C13/C15/C19/C21 comparison tables, we exclude the disputed figure rather than publish one side. <b>The failure-mode description comes from a connector-industry guide</b>, not from an insurance investigation — it is consistent with the 70 °C standard and with ordinary contact physics, but it is an industry account, not a lab study. <b>And nothing here is a substitute for your local electrical code</b> — the NEC citations in our branch-circuit piece are US-specific, and so is this one.</p>
+      </div>
+
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>Three limits, one checked.</b> Branch (1,920 W continuous), PDU nameplate, per-outlet connector. The connector is almost always the binding per-outlet constraint: <b>C13 = 10 A IEC / 12 A UL ≈ 1,440 W at 120 V</b>; <b>C19 = 16 A ≈ 1,920 W</b> (Vertiv rPDU manual + IEC 60320 guides, multi-source).</li>
+          <li><b>The 80% rule shows up at the outlet too.</b> Vertiv lists NEMA 5-15R at <b>12 A per outlet</b> and 5-20R at <b>16 A</b> — the same 125% continuous-load discipline that sized your breaker, applied to receptacles.</li>
+          <li><b>Voltage doubles the connector, same hardware.</b> C13: 1,440 W at 120 V → 2,400 W at 240 V; C19: 1,920 W → 4,000 W (ours). The per-outlet version of the L6-20 lesson from the branch-circuit piece.</li>
+          <li><b>Dual-PSU servers are C13-safe; single-PSU 1,900 W boxes are not.</b> Two cords at ~950 W each = 7.9 A per cord, inside every limit; one cord at 15.8 A exceeds both the IEC 10 A and UL 12 A ratings — which is why high-draw gear ships with C20 inlets (ours).</li>
+          <li><b>Connector overload fails as intermittent reboots, not trips.</b> The C13's mating face is rated 70 °C by IEC 60320-1; sustained over-rating softens the plastic and loses contact pressure — months later, per connector-industry documentation. A warm plug at idle is the warning.</li>
+          <li><b>Hot gear escalates to C15 (120 °C), not to a "better" C13.</b> Three independent sources agree C15/C16 carries the same 10 A at a 120 °C mating-face rating for equipment that heats its own inlet.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/branch-circuit-1920-watts-homelab-2026"><i data-i18n="pager.prev">Previous</i>A home lab runs on 1,920 watts, not 2,400: the NEC 80% rule (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
