@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your PSU closes the UPS's gap: hold-up time decides the topology, not the transfer spec (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Your PSU closes the UPS's gap: hold-up time decides the topology, not the transfer spec (2026) — DCF">
+  <meta name="twitter:description" content="A line-interactive UPS pauses its output for 2–4 ms when transferring to battery. The Intel ATX12V spec requires a power supply to hold regulated output for 17 ms at full load — and ATX 3.1 (2023) still mandates 12 ms. The capacitors in your PSU are spec'd to bridge the UPS's gap three to six times over. For most home racks, AVR and correct sizing matter more than double conversion.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="UPS topologies differ in one number: how long the output pauses when the unit transfers to battery. Standby units take 10–20 ms; line-interactive units with an AVR take a typical 2–4 ms (Eaton's own comparison says 2–4 ms; distributor documentation says up to ~10 ms); online double-conversion units transfer in 0 ms because their inverter runs continuously. On the other side, the Intel ATX12V power-supply specification requires a PSU to sustain regulated DC output for at least 17 milliseconds after total loss of AC at full load — a window chosen to span one full 60 Hz cycle (16.67 ms) plus warning margin — and the ATX 3.1 revision (2023) still mandates 12 ms at full load, with 17 ms retained as a recommendation. Hold-up time is inversely proportional to load, so a rack running at half rating extends the bridge further. The arithmetic: for a home rack on grid power of ordinary quality, a line-interactive unit's 2–4 ms gap sits comfortably inside what the PSU is spec'd to bridge — the events that actually matter at home are sags, which the AVR regulates without touching the battery. Double conversion buys total isolation and 0 ms transfer at the cost of several points of efficiency, 24/7: at 300 W that is roughly 17 W of continuous extra draw, about 149 kWh and a space heater's worth of proportionate heat per year." />
+  <link rel="canonical" href="https://forum.omc.network/posts/ups-topology-hold-up-time-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/ups-topology-hold-up-time-2026" />
+  <meta property="og:title" content="Your PSU closes the UPS's gap: hold-up time decides the topology, not the transfer spec (2026)">
+  <meta property="og:description" content="Line-interactive UPS transfer: 2–4 ms (Eaton's own comparison). ATX12V hold-up floor: 17 ms at full load; ATX 3.1: 12 ms. The PSU is spec'd to bridge the UPS's gap three to six times over — for most home racks, AVR beats double conversion.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Your PSU closes the UPS's gap: hold-up time decides the topology, not the transfer spec (2026)","datePublished":"2026-11-16","dateModified":"2026-11-16","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>Your PSU closes the UPS's gap: hold-up time decides the topology, not the transfer spec (2026)</h1>
+        <p class="article-dek">The UPS buying guide ritual goes: standby is a toy, line-interactive is the sensible middle, double-conversion online is what serious racks run. The ritual skips the spec that actually decides it. A line-interactive unit pauses its output for <b>2–4 ms</b> when it transfers to battery. The Intel ATX specification requires your power supply to hold regulated output for <b>17 ms</b> at full load — and the ATX 3.1 revision still mandates <b>12 ms</b>. The bridge your PSU was born with is three to six times longer than the gap a line-interactive unit opens.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 16, 2026</span><span>11 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>The spec that decides whether you need an online double-conversion UPS is not the UPS's — it is your power supply's hold-up time at your actual load.</b> The three UPS topologies differ in one number: standby units pass mains through and take <b>10–20 ms</b> to transfer to battery; line-interactive units add an AVR voltage regulator and pause the output <b>2–4 ms</b> on transfer (Eaton's own comparison figure; distributor documentation cites up to ~10 ms); online double-conversion units transfer in <b>0 ms</b> because their inverter runs continuously off the rectified DC bus. On the other side of the relay sits Intel's ATX12V design guide: a power supply must sustain regulated DC output for <b>at least 17 ms after total loss of AC input at 100% load</b> — a window sized to span one full 60 Hz cycle (16.67 ms) — and the ATX 3.1 revision (2023) still mandates <b>12 ms</b> at full load, with 17 ms retained as a recommendation (per Corsair's and other vendors' summaries of the spec). Hold-up time shrinks as load rises, so a rack running at half rating extends the bridge further. The conclusion for a home rack on ordinary grid power: the line-interactive gap is a fraction of what the PSU is spec'd to survive, the events you actually get are sags — which the AVR regulates without cycling the battery — and double conversion's real product is total electrical isolation, purchased with several points of efficiency burned 24/7. At 300 W that is roughly <b>17 W of continuous extra draw, ~149 kWh a year</b> (ours), plus the heat.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>你的电源替 UPS 补上缺口：决定拓扑的是保持时间，不是切换规格（2026）。<b>摘要：</b>UPS 三种拓扑只差一个数字：后备式直通市电、切换到电池要 10–20 ms；在线互动式多一颗 AVR 稳压器、切换时输出暂停典型 2–4 ms（Eaton 官方对比口径；经销商文档给到 ~10 ms）；在线双变换 0 ms 切换，因为逆变器永远在跑。另一头，Intel ATX12V 设计指南要求电源在满载断电后至少维持 17 ms 稳压输出——这个窗口就是按 60 Hz 一个完整周期（16.67 ms）加告警余量设计的——ATX 3.1（2023）仍强制满载 12 ms、17 ms 降为推荐值（Corsair 等厂商对规范的转述一致）。保持时间随负载上升而缩短，半载运行的机柜桥更长。结论：普通市电下的家庭机柜，在线互动式的 2–4 ms 缺口远小于电源规范自带的桥；你真正遇到的事件是电压暂降——AVR 不经电池就能整流掉。双变换卖的是「完全隔离」，代价是 24/7 烧掉几个点的效率：300 W 负载约多耗 17 W、一年约 149 kWh（我们测算），还有相应的房间发热。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>The question this piece answers: when does a home rack actually need an online (double-conversion) UPS, and what is the spec that proves it?</b> This is the fourth piece in the home-rack power series — the 1,920 W branch, the per-outlet connector limits, the rack PDU — and it is the piece that decides what sits upstream of all of that. Every transfer-time and hold-up-time number below is quoted from vendor documentation or the specification itself, with at least two independent sources per number; where a claim rests on a single analysis, the piece says so.</p>
+
+        <h2>What do the three UPS topologies actually do?</h2>
+        <p>The names describe where the inverter sits, and the inverter's position is the whole product. A <b>standby (offline)</b> unit passes utility power straight to the outlets through a relay; only when the power fails does it start its inverter and switch to battery. That mechanical relay takes <b>10–20 ms</b> to move (two independent sources agree on the range: a UPS-selection guide and vendor product documentation). A <b>line-interactive</b> unit keeps the pass-through path but adds an automatic voltage regulator (AVR) — a transformer that corrects sags and swells by tapping the windings, <i>without going to battery</i>. When the power does fail, the transfer to battery pauses the output briefly: <b>2–4 ms</b> per Eaton's own comparison material (published through DigiKey's engineering channel), with distributor documentation citing a 2–10 ms range depending on model. An <b>online double-conversion</b> unit never passes mains through at all: it rectifies AC to DC, and the inverter that powers your equipment runs continuously from that DC bus, with the battery floating in parallel. Mains failure changes nothing downstream — <b>0 ms</b>, a figure Eaton, distributor documentation and integrator guides all state identically, because there is no switching event to time.</p>
+        <table>
+          <thead><tr><th>Topology</th><th>On mains</th><th>Transfer to battery</th><th>Efficiency</th><th>Built for</th></tr></thead>
+          <tbody>
+            <tr><td>Standby (offline)</td><td>Pass-through, no regulation beyond surge clamping</td><td><b>10–20 ms</b></td><td>~99% (pass-through)</td><td>Non-critical loads; the outage is the only event that matters</td></tr>
+            <tr><td><b>Line-interactive</b></td><td>Pass-through + <b>AVR</b> corrects sags/swells without battery</td><td><b>2–4 ms typical</b> (Eaton; up to ~10 ms per vendor docs)</td><td>~97–99% (integrator guide)</td><td>Home racks, NAS, network gear on ordinary grid power</td></tr>
+            <tr><td><b>Online double-conversion</b></td><td>Full rectify→invert regeneration; output never touches mains</td><td><b>0 ms</b></td><td>~90–94% (OpenZFS docs: "at most 94%" without high-efficiency mode; 90–96% per the same guide)</td><td>Bad grids, frequent generator transfers, unattended sites, medically critical loads</td></tr>
+          </tbody>
+        </table>
+        <p>One row of that table deserves emphasis because it is the one marketing skips: the AVR. Line-interactive units handle the most common power event — the sag — by regulating voltage through the transformer, <b>without spending battery cycles</b>. Battery cycles are the consumable that kills UPS units; lead-acid batteries last roughly three to five years in home conditions (the OpenZFS project's hardware documentation quotes the same window), and a topology that avoids discharging them for everyday fluctuations is a topology that ages slower. Double conversion, by contrast, re-regulates everything through its own inverter all the time — maximum protection, maximum wear on nothing but your electricity bill.</p>
+
+        <h2>What is hold-up time, and why does it outrank the transfer spec?</h2>
+        <p>A power supply's <b>hold-up time</b> is how long it keeps its DC rails inside spec after its AC input disappears entirely — the bridge built out of the primary bulk capacitor. The Intel ATX12V design guide, which every desktop PSU follows, requires <b>17 ms of hold-up at 100% rated load</b>, and requires the Power Good (PWR_OK) signal to stay asserted for at least 16 ms, dropping at least 1 ms before the rails leave regulation — a warning the motherboard uses to halt the CPU cleanly rather than corrupt data. Two independent references (a homelab engineering site and the OpenZFS project's hardware documentation) state the 17 ms figure identically, and the 17 ms value has a physical explanation: one full 60 Hz cycle is 16.67 ms, so the spec guarantees survival of one complete AC cycle plus margin.</p>
+        <p>The number most buyers have not heard: the <b>ATX 3.1</b> revision (September 2023) <b>lowered the mandatory hold-up floor to 12 ms at full load</b>, keeping 17 ms as a recommendation. Corsair's own explainer states the reduction plainly ("compared with ATX 3.0's 17 ms hold-up time, ATX 3.1 shortens it to 12 ms"), and PSU vendors and system integrators describe the change identically; the stated reason is capacitor cost and size. One engineering analysis has also measured budget consumer units failing even the published minimums under full load — we report that as a single-source finding, not a spec, but the direction is documented: <b>hold-up time is the spec vendors don't advertise, it is inversely proportional to load</b> (OpenZFS docs note the inverse relationship too), and it ages as the bulk capacitor dries out.</p>
+        <p>Now put the two sides of the relay together, and the purchase decision becomes arithmetic instead of ritual (ours). Worst common case: a line-interactive unit transfers in 4 ms (Eaton's comparison figure). Even a pessimistic 8–10 ms relay reading — the top of the distributor-documented range — sits <b>inside</b> the 12 ms ATX 3.1 mandatory floor at full load, and far inside the 17 ms ATX12V floor that most PSUs still meet at real-world loads well below rating. The PSU is spec'd to bridge the UPS's gap <b>three to six times over</b>. The relay is a mechanical part that moves once per outage; the "seamless" double-conversion alternative burns 24/7 watts to eliminate a pause your hardware was born unable to notice.</p>
+
+        <h2>So when does a home rack actually need double conversion?</h2>
+        <p>The honest list is short, and it matches Eaton's own guidance for unattended network closets: <b>bad or unknown grid quality</b> (frequent deep sags, wiring so marginal that regulation matters), <b>generator-heavy sites</b> where transfer events are frequent and messy, and <b>unattended locations</b> where nobody can reset hung gear after a dirty event. If your rack lives in a home on a municipal grid that keeps the lights on, none of those apply — and the events you actually experience are sags and momentaries, which the AVR handles without a battery cycle. The buying priority inverts: <b>correct VA/W sizing</b> (the piece from October covers the arithmetic), <b>pure sine output</b> for active-PFC supplies, <b>AVR</b>, and <b>network-card graceful-shutdown</b> all move your uptime more than the topology does.</p>
+        <p>Price the topology decision itself (ours). A 300 W home rack on a double-conversion unit running at ~93% efficiency draws ~323 W at the wall; on a line-interactive unit at ~98% it draws ~306 W. That 17 W difference runs 24/7: about <b>149 kWh a year</b>, roughly $22 at $0.15/kWh — and, per the cooling piece in this series, 149 kWh a year of heat dumped into the room the rack sits in, every hour of a summer night included. Double conversion is a space heater in series with your rack that charges you for the privilege of closing a gap your PSU already closes. That is not an argument against the topology — it is the reason the topology is for sites whose grid or generator profile actually opens a gap longer than 12 ms.</p>
+        <p>One more practical bridge-check, since hold-up time is undocumented on most retail boxes (ours): run your rack at its worst-case load and pull the UPS's "on battery" test with the unit's monitoring software — if the machine rides through a transfer while saturated, your real-world margin is proven on your hardware, which beats any spec sheet. And replace the batteries on schedule; a five-year-old battery turns a 4 ms transfer gap into a different conversation entirely.</p>
+
+        <h2>What are the caveats?</h2>
+        <p><b>Transfer times are ranges, not constants.</b> The 2–4 ms line-interactive figure is Eaton's own comparison; other vendors' documentation extends to ~10 ms depending on model and load, and a degraded relay changes the number over time — always check the specific unit's spec sheet. <b>ATX 3.1's 12 ms floor is a floor, not a promise.</b> Hold-up time is load-dependent, capacitor-dependent and age-dependent; a unit running at 90% load with dried capacitors bridges less than the spec says, which is why the saturated-transfer test above is worth doing. <b>The efficiency figures mix sources.</b> The 90–94% double-conversion range comes from OpenZFS's documentation plus one integrator guide; the 97–99% line-interactive figure comes from that same guide alone, so treat the gap as "several points" rather than a precise spread. <b>This is not electrical-safety advice.</b> The upstream rules — the 1,920 W branch limit, the per-outlet connector caps — bind no matter which UPS you buy, and a whole-rack online unit is a continuous load on the same branch as everything else.</p>
+      </div>
+
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>The topologies differ in one number.</b> Standby transfers in 10–20 ms; line-interactive pauses 2–4 ms typical (Eaton's comparison; up to ~10 ms per vendor docs); online double-conversion is 0 ms because its inverter never stops.</li>
+          <li><b>Your PSU already bridges the gap.</b> ATX12V mandates 17 ms of hold-up at full load (sized for one 60 Hz cycle, 16.67 ms, plus PWR_OK warning margin); ATX 3.1 (2023) still mandates 12 ms. Even a 10 ms relay worst case fits inside the floor — the PSU is spec'd to bridge the UPS's gap 3–6× over.</li>
+          <li><b>Hold-up time is load-dependent and undocumented.</b> It shrinks as load rises and ages with the bulk capacitor; one engineering analysis reports budget units failing the published minimums at full load (single source — treat as directional). The saturated on-battery test proves your own margin.</li>
+          <li><b>The AVR is the underrated feature.</b> Sags — the most common home power event — get regulated without a battery cycle. Line-interactive ages slower because it spends its consumable rarely.</li>
+          <li><b>Double conversion is for bad grids, not good ones.</b> Eaton's own guidance for unattended closets: choose online when power quality is poor, generator transfers are frequent, or nobody can reset hung gear. A municipal-grid home rack qualifies for none.</li>
+          <li><b>Efficiency is the ongoing bill.</b> Double conversion runs ~90–94%; at 300 W that is ~17 W of continuous extra draw ≈ <b>149 kWh/year</b> ≈ $22/year plus the heat (ours) — a space heater in series with the rack.</li>
+          <li><b>Buy order for a home rack:</b> correct VA/W sizing → pure sine output → AVR → network graceful-shutdown → and only then, if your grid deserves it, topology.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/pdu-per-outlet-c13-c19-2026"><i data-i18n="pager.prev">Previous</i>The per-outlet limit is the connector, not the breaker: C13/C19 in a home rack (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
