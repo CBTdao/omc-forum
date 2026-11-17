@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your GPU server is limited by lanes, not slots (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Your GPU server is limited by lanes, not slots (2026) — DCF">
+  <meta name="twitter:description" content="AM5 gives you 24 usable PCIe 5.0 lanes. Xeon 6 gives 96. EPYC 9005 gives 128 per socket, 160 in a dual-socket board. Four GPUs at x16 needs 64 of them before a single NVMe — so the slot count on the box is marketing and the lane budget is the spec.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="A PCIe lane budget is the number of point-to-point links a CPU exposes to devices, and it decides how many GPUs a home server can actually feed: 24 usable lanes on AM5 (28 native), 96 on Intel Xeon 6, 128 per EPYC 9005 socket (160 in dual-socket), 144 usable on Threadripper PRO with WRX90. Each PCIe 4.0 lane carries 1.97 GB/s after 128b/130b encoding, so a 40 GB model loads in 5.1 s at x4 and 1.27 s at x16. For single-GPU inference the lane count barely moves tokens per second — weights live in VRAM after load — but it decides checkpoint writes, dataset streaming and whether a second GPU is possible at all." />
+  <link rel="canonical" href="https://forum.omc.network/posts/pcie-lane-budget-multi-gpu-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/pcie-lane-budget-multi-gpu-2026" />
+  <meta property="og:title" content="Your GPU server is limited by lanes, not slots (2026)">
+  <meta property="og:description" content="24 usable lanes on AM5, 96 on Xeon 6, 128 per EPYC socket, 144 on Threadripper PRO. Four GPUs at x16 needs 64 lanes before storage. Lane count buys model-load time and multi-GPU headroom — not tokens per second.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Your GPU server is limited by lanes, not slots (2026)","datePublished":"2026-11-17","dateModified":"2026-11-17","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>Your GPU server is limited by lanes, not slots (2026)</h1>
+        <p class="article-dek">A consumer board with three x16 slots is not a three-GPU board. AM5 exposes <b>24 usable PCIe 5.0 lanes</b> (28 native); Xeon 6 exposes <b>96</b>; EPYC 9005 exposes <b>128 per socket</b>, or 160 across a dual-socket board; Threadripper PRO with WRX90 exposes <b>144 usable</b>. Four GPUs at x16 need <b>64</b> of those lanes before a single NVMe drive — which is why the slot count on the box is a marketing number and the lane budget is the specification.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 17, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>A PCIe lane budget is the number of point-to-point serial links a processor exposes to devices, and it — not the slot count — decides how many accelerators a machine can actually feed.</b> The published figures: <b>24 usable</b> PCIe 5.0 lanes on AMD's AM5 desktop platform (28 native, with 4 going to the chipset), <b>96</b> on Intel Xeon 6's 6900P series (or 64 CXL 2.0), <b>128 per socket</b> on AMD EPYC 9005 with up to <b>160</b> in a dual-socket server, and <b>144 usable</b> (148 total) on Threadripper PRO 7000 WX with the WRX90 chipset. Each PCIe 4.0 lane carries <b>1.97 GB/s</b> after 128b/130b encoding (16 GT/s × 128/130 ÷ 8), so a 40 GB model loads in <b>5.1 s</b> at x4 and <b>1.27 s</b> at x16 — and 0.63 s at PCIe 5.0 x16. The counterintuitive part (ours): <b>lane width barely moves tokens per second</b>, because after load the weights live in VRAM and the decode loop never touches the bus. Lanes buy <i>load time, checkpoint speed, and the right to add a second GPU</i> — not inference throughput.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>限制你的 GPU 服务器的是通道数，不是插槽数（2026）。<b>摘要：</b>PCIe 通道预算指 CPU 能向设备提供的点对点串行链路数量，它——而不是主板上的插槽数——决定一台机器到底能喂饱几张加速卡。官方数字：AMD AM5 桌面平台 <b>可用 24 条</b> PCIe 5.0（原生 28 条，其中 4 条给芯片组）、Intel 至强 6 6900P 系列 <b>96 条</b>（或 64 条 CXL 2.0）、AMD EPYC 9005 <b>每路 128 条</b>（双路服务器最多 160 条）、Threadripper PRO 7000 WX 配 WRX90 <b>可用 144 条</b>（总计 148）。PCIe 4.0 每通道经 128b/130b 编码后为 <b>1.97 GB/s</b>（16 GT/s × 128/130 ÷ 8），因此 40 GB 模型在 x4 下加载需 <b>5.1 秒</b>、x16 下 <b>1.27 秒</b>、PCIe 5.0 x16 下 0.63 秒。反直觉的结论（我们测算）：<b>通道宽度几乎不影响每秒 token 数</b>——权重加载后在显存里，解码循环根本不走总线。通道买的是加载时间、checkpoint 写入速度，以及「能不能再加一张卡」的资格。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>The question this piece answers: how many GPUs can a home server actually feed, and which specification decides it?</b> Not the slot count, and not the power supply. It is the lane budget — the number of PCIe links the processor exposes, how the board is allowed to split them, and what the chipset's own uplink costs you. The platform numbers below come from AMD's and Intel's own product pages and press materials, re-checked on 2026-11-17; the bandwidth figures are derived from the PCI-SIG encoding rules and shown as arithmetic so you can check them; every other number marked "ours" is a calculation, not a vendor claim.</p>
+
+        <h2>What is a PCIe lane budget?</h2>
+        <p>A PCIe lane is one bidirectional serial link, and devices are wired in groups of 1, 2, 4, 8 or 16 of them. A "x16 slot" is sixteen lanes bonded into one link. The <b>lane budget</b> is how many lanes the CPU can supply in total — a hard, physical limit set by the package and the socket, not by how many slots the board vendor soldered on. Every device you attach spends from that budget: a GPU at x16 spends 16, an NVMe drive typically spends 4, a 25 GbE NIC spends 4, and the chipset itself spends 4 on a desktop platform.</p>
+        <p>The bandwidth per lane is fixed by generation and encoding. PCIe 4.0 runs at 16 gigatransfers per second and uses 128b/130b line coding, so one lane carries 16 × 128 ÷ 130 ÷ 8 = <b>1.97 GB/s</b>; PCIe 5.0 doubles the transfer rate to 32 GT/s and carries <b>3.94 GB/s</b> per lane. Multiply out and the familiar numbers appear: x16 at 4.0 is <b>31.5 GB/s</b>, x16 at 5.0 is <b>63.0 GB/s</b>, and x4 at 5.0 (15.75 GB/s) equals x8 at 4.0. That equivalence is the one to keep in mind, because it is how a board vendor turns four lanes into a "PCIe 5.0 slot".</p>
+
+        <h2>What does each platform actually give you?</h2>
+        <p>Here is the published budget, by platform, from the manufacturers' own specifications.</p>
+        <table>
+          <thead><tr><th>Platform</th><th>PCIe budget</th><th>Practical GPU count</th><th>What eats the rest</th></tr></thead>
+          <tbody>
+            <tr><td>AM5 desktop (Ryzen 9000)</td><td><b>28 native / 24 usable</b> PCIe 5.0</td><td><b>1</b> at x16, or 2 at x8/x8 with storage moved</td><td>4 lanes to the chipset, 4 to the primary M.2; X870E adds 8 Gen4, X670E adds 12 Gen4 from the board</td></tr>
+            <tr><td>Intel Xeon 6 6900P</td><td><b>96</b> PCIe 5.0 (or 64 CXL 2.0)</td><td><b>4</b> at x16, or 8 at x8</td><td>NVMe, NICs, and any CXL devices share the same 96</td></tr>
+            <tr><td>AMD EPYC 9005 (SP5)</td><td><b>128</b> PCIe 5.0 per socket, <b>160</b> dual-socket</td><td><b>8</b> at x16 single-socket</td><td>12 memory channels are separate; lanes go to GPUs, NVMe and fabric NICs</td></tr>
+            <tr><td>Threadripper PRO 7000 WX + WRX90</td><td><b>148 total / 144 usable</b>, up to 128 at Gen5</td><td><b>4–7</b> depending on bifurcation</td><td>8-channel memory; TRX50 boards drop to 92/88 with 48 at Gen5</td></tr>
+            <tr><td>EPYC 8005 (SP6)</td><td><b>96</b> PCIe 5.0 + <b>8</b> PCIe 3.0</td><td><b>4</b> at x16</td><td>6 memory channels; the edge-focused socket</td></tr>
+          </tbody>
+        </table>
+        <p>Two details in that table are worth more than the headline numbers. <b>The first is the AM5 chipset uplink.</b> AMD's own spec pages list "Native PCIe Lanes (Total/Usable) 28, 24" — the four missing lanes are the link to the chipset, which then fans out to SATA, USB, Ethernet and the secondary slots. Everything hanging off the chipset shares those four lanes, which is why a board with "three x16 slots" will run the third one at x4 through the chipset, and why an NVMe drive in a chipset-attached M.2 slot can contend with your network card. <b>The second is bifurcation.</b> A x16 slot can be split into x8/x8 or x4/x4/x4/x4, but only if the board is wired and the firmware allows it — and splitting is how a 24-lane platform pretends to host two cards at x8 each while quietly moving storage to the chipset.</p>
+
+        <h2>Does x8 versus x16 change tokens per second?</h2>
+        <p>Almost not at all, and this is where most homelab GPU advice goes wrong. During <b>decode</b> — the token-by-token generation that dominates wall-clock time for a chat workload — the weights are resident in VRAM and the model reads them from HBM, not from the host. The PCIe link carries the prompt in once and the tokens out once per request. A single-GPU inference server therefore runs at essentially the same speed on x4 as on x16; the bus is idle most of the time. What the link <i>does</i> set is how long the model takes to get into VRAM in the first place.</p>
+        <table>
+          <thead><tr><th>Link</th><th>Bandwidth</th><th>40 GB of weights loads in</th><th>Four GPUs, sequential</th></tr></thead>
+          <tbody>
+            <tr><td>PCIe 4.0 x4</td><td>7.88 GB/s</td><td><b>5.1 s</b></td><td>20.4 s</td></tr>
+            <tr><td>PCIe 4.0 x8</td><td>15.75 GB/s</td><td>2.5 s</td><td>10.2 s</td></tr>
+            <tr><td>PCIe 4.0 x16</td><td>31.5 GB/s</td><td>1.27 s</td><td>5.1 s</td></tr>
+            <tr><td>PCIe 5.0 x16</td><td>63.0 GB/s</td><td>0.63 s</td><td>2.5 s</td></tr>
+          </tbody>
+        </table>
+        <p>Those figures assume the storage can keep up and the loader is not the bottleneck, which is why they are an upper bound on the link's contribution. The practical reading (ours): if your workflow restarts a 40 GB model twenty times a day, the difference between x4 and x16 is about <b>77 seconds a day</b> — real but small. If it restarts a hundred times a day, or if you are loading a 400 GB mixture-of-experts checkpoint, the same ratio becomes minutes per hour, and the lane budget starts to matter more than the GPU's clock speed.</p>
+
+        <h2>When does the lane budget actually bite?</h2>
+        <p>Four cases, in descending order of how often they surprise people.</p>
+        <ul>
+          <li><b>Adding the second GPU.</b> On AM5 the second card usually costs you x8/x8 — acceptable for inference, but it also forces storage onto the chipset's four lanes, which is where the "why is my dataset load slow" complaints come from. On a 96-lane Xeon 6 or 128-lane EPYC, a second and third card cost nothing that matters.</li>
+          <li><b>Multi-GPU without NVLink.</b> Consumer and most workstation cards have no NVLink, so tensor parallelism runs its collectives over PCIe. The traffic per token is small — tens of kilobytes per layer — but the latency per collective is not free, and with dozens of layers and two collectives per layer the round trips add up. Narrow links hurt here through latency, not bandwidth.</li>
+          <li><b>Checkpointing and dataset streaming.</b> Training writes state to disk constantly; that traffic shares the same lanes as the GPUs if the NVMe is CPU-attached. This is the case where x4 really is a mistake, and where a platform with 96+ lanes pays for itself without a single extra FLOP.</li>
+          <li><b>Host-to-device copies for offload.</b> Any workflow that streams layers or experts from system RAM to VRAM is bounded by the link — the one inference pattern where lane width becomes a throughput number rather than a loading-time number.</li>
+        </ul>
+
+        <h2>What should a home builder actually buy?</h2>
+        <p>The decision collapses to a single question: <b>do you intend to run more than one accelerator?</b> If the answer is no, an AM5 board with 24 usable lanes is not a compromise — a single GPU at x8 loses nothing measurable in tokens per second, and the money is better spent on VRAM. If the answer is yes, then the lane budget is the first specification you shop, before the GPU: a used EPYC or a Threadripper platform with 96–128 lanes costs more than a desktop board and less than the second GPU it makes useful.</p>
+        <p>Two buying rules follow (ours). <b>Count lanes, then slots.</b> Add up what you plan to attach — 16 per GPU, 4 per NVMe, 4 per NIC — and compare against the usable figure, not the native one; the 4 lanes the chipset took never come back. <b>Check the board's bifurcation table before the CPU.</b> A 128-lane processor on a board that only wires one x16 slot and three x4 slots is a 128-lane processor you cannot use, and the manual's slot diagram is the only place that is written down.</p>
+
+        <h2>What are the caveats?</h2>
+        <p><b>Lane counts are per socket.</b> Dual-socket EPYC reaching 160 lanes is a property of the pair of processors and the board's wiring, not something a single CPU delivers; a 2P board also splits memory across sockets, which changes NUMA behaviour for anything you pin to a GPU. <b>Bandwidth figures are theoretical.</b> Real transfers lose a few percent to protocol overhead, and a 40 GB load also has to be read from disk, so the link is rarely the only bottleneck. <b>The x4-is-fine conclusion is workload-specific.</b> It holds for single-GPU inference with the model resident in VRAM; it does not hold for training, for offload-heavy serving, or for multi-GPU tensor parallelism at large batch. <b>And none of this replaces the power and thermal budget.</b> Four GPUs at x16 is a ~2.5–3 kW machine before you count the rest, which is a different article in this series — the branch circuit and the room, not the bus.</p>
+      </div>
+
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>Slots are soldered; lanes are budgeted.</b> AM5 exposes 24 usable PCIe 5.0 lanes (28 native), Xeon 6 6900P 96 (or 64 CXL 2.0), EPYC 9005 128 per socket with 160 in dual-socket, Threadripper PRO with WRX90 144 usable.</li>
+          <li><b>Do the per-lane math once.</b> PCIe 4.0 = 16 GT/s × 128/130 ÷ 8 = <b>1.97 GB/s</b> per lane; 5.0 doubles it. x8 Gen4 equals x4 Gen5, which is how boards relabel lanes.</li>
+          <li><b>x8 versus x16 barely moves tokens per second.</b> During decode the weights sit in VRAM and the bus is idle; the link sets load time, not generation speed (ours).</li>
+          <li><b>What lanes really buy:</b> a 40 GB model loads in 5.1 s at x4 and 1.27 s at x16; four GPUs sequentially take 20.4 s versus 5.1 s — and a second GPU becomes possible at all.</li>
+          <li><b>The chipset uplink is the hidden tax.</b> Four lanes disappear to the chipset on AM5, and everything attached there competes with your network card and secondary NVMe.</li>
+          <li><b>One GPU? AM5 is fine.</b> Two or more? Shop the lane budget first — 96–128 lanes cost less than the second card they make useful.</li>
+          <li><b>Read the board's bifurcation table.</b> A 128-lane CPU on a board that wires one x16 and three x4 slots is 128 lanes you cannot reach.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/ups-topology-hold-up-time-2026"><i data-i18n="pager.prev">Previous</i>Your PSU closes the UPS's gap: hold-up time decides the topology, not the transfer spec (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
