@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A 1.73% quarter, a 1.41% lifetime: reading Backblaze's Q2 2026 drive stats like a homelab buyer — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="A 1.73% quarter, a 1.41% lifetime: reading Backblaze's Q2 2026 drive stats like a homelab buyer — DCF">
+  <meta name="twitter:description" content="Backblaze's Q2 2026 Drive Stats: 354,415 drives, 1,498 failures, a quarterly AFR of 1.73% — the highest in a while — against a lifetime AFR of 1.41%. The outliers are 7-to-8.5-year-old drives in small populations; the zero-failure honor roll is mostly a statement about drive-days, not durability. What that means for anyone screening used drives.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="Backblaze's Q2 2026 Drive Stats report (published 2026-09-29): 359,101 drives monitored, 354,415 analyzed over 31,553,350 drive days, 1,498 failures, quarterly AFR 1.73% (up from 1.24% in Q1 2026), lifetime AFR 1.41% over 558,148,607 drive days and 21,609 failures. The three outliers (7.63%, 9.33%, 8.26% AFR) are drives 7-8.5 years old or in populations under 1,300 units; the zero-failure models include one with only 1,499 drive days of exposure. The lesson for homelab buyers in a doubled-price drive market: read the denominator before the percentage. Figures verified against Backblaze's own report and independent transcriptions on 2026-11-20." />
+  <link rel="canonical" href="https://forum.omc.network/posts/hdd-afr-drive-days-homelab-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/hdd-afr-drive-days-homelab-2026" />
+  <meta property="og:title" content="A 1.73% quarter, a 1.41% lifetime: reading Backblaze's Q2 2026 drive stats like a homelab buyer">
+  <meta property="og:description" content="The quarter's AFR was the highest in years. The lifetime AFR barely moved. Both facts are the same fact — and the difference between them is exactly the skill a used-drive buyer needs.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"A 1.73% quarter, a 1.41% lifetime: reading Backblaze's Q2 2026 drive stats like a homelab buyer","datePublished":"2026-11-20","dateModified":"2026-11-20","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>A 1.73% quarter, a 1.41% lifetime: reading Backblaze's Q2 2026 drive stats like a homelab buyer</h1>
+        <p class="article-dek">Backblaze's Q2 2026 Drive Stats report landed on <b>September 29, 2026</b>: <b>354,415</b> hard drives analyzed, <b>1,498</b> failures, a quarterly annualized failure rate of <b>1.73%</b> — the highest in quite a while, up from <b>1.24%</b> the quarter before. The lifetime number barely moved: <b>1.41%</b>. Both facts are the same fact, and the gap between them is exactly the reading skill that separates a smart used-drive purchase from an expensive one.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 20, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>AFR is a fraction, and the denominator is where the information lives.</b> In Q2 2026 (April 1–June 30), Backblaze monitored <b>359,101</b> drives, removed boot drives and models that didn't meet criteria, and analyzed <b>354,415</b> of them over <b>31,553,350 drive days</b> with <b>1,498 failures</b> — a quarterly AFR of <b>1.73%</b>, the highest in recent quarters (Q1 2026 was <b>1.24%</b>). The lifetime table — <b>353,041</b> drives, <b>558,148,607</b> drive days, <b>21,609</b> failures — sits at <b>1.41%</b>, a slight uptick but essentially flat. The quarter's three outliers tell you why the gap exists: a <b>12TB HGST</b> at <b>7.63%</b> (nearly seven years old), a <b>10TB Seagate</b> at <b>9.33%</b> (about 8.5 years old, only <b>965</b> units, 22 failures) and a <b>14TB Seagate</b> at <b>8.26%</b> (1,235 units, 25 failures). Meanwhile <b>10 of 31</b> models exceeded 3.0% AFR — a skew Backblaze itself flags as unusual. And the zero-failure "honor roll" includes a model with all of <b>1,499 drive days</b> of exposure — about <b>6 days per drive</b>. Nothing about that is durability evidence. For a homelab buyer paying doubled prices for capacity: compute AFR yourself as failures ÷ drive-days × 365, read the denominator first, weight age over brand, and treat any model's small-sample quarterly number — good or bad — as noise until lifetime-scale drive days exist.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>单季 1.73%，终身 1.41%：像家庭机房买家一样读 Backblaze 的 2026 年二季度硬盘报告。<b>摘要：</b>2026 年 9 月 29 日发布的 Backblaze Q2 报告：监测 <b>359,101</b> 块、纳入分析 <b>354,415</b> 块，累计 <b>3,155 万盘天</b>、故障 <b>1,498</b> 块，季度年化故障率 <b>1.73%</b>——近年最高（上季度 1.24%）；终身口径 <b>3.53 万块</b>、<b>5.58 亿盘天</b>、<b>21,609</b> 块故障，AFR <b>1.41%</b>，几乎纹丝不动。三款离群盘解释了差距：<b>12TB HGST 7.63%</b>（近 7 年机龄）、<b>10TB 希捷 9.33%</b>（约 8.5 年机龄、仅 965 块、22 次故障）、<b>14TB 希捷 8.26%</b>（1,235 块、25 次故障）；全季 31 个型号里有 <b>10 个</b> AFR 超过 3.0%，Backblaze 自己都说这个分布偏得反常。而零故障「荣誉榜」里有一个型号的暴露量只有 <b>1,499 盘天</b>——平均每块盘才 <b>6 天</b>，那不是耐久性证据，是样本量陈述。给在涨价行情里买盘的家庭机房玩家的方法论：自己算 AFR（故障数 ÷ 盘天 × 365），先读分母再读百分比，机龄比品牌重要，任何型号的小样本季度数字——好也好坏也罢——在终身级盘天出现之前都当噪声处理。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>The question this piece answers: Backblaze just published its highest quarterly drive-failure rate in years — should a homelab buyer care?</b> Short answer: not about the headline number. This piece walks the Q2 2026 report (published September 29, 2026, verified against Backblaze's own post and independent transcriptions on 2026-11-20), shows why the quarterly and lifetime numbers diverging is the real story, and extracts the screening method that survives any market price. It connects to two earlier pieces in this section: the SSD endurance method post (DWPD/TBW — the flash side) and the used-GPU TCO post (the compute side). This one is the spinning-rust side.</p>
+
+        <h2>What did the Q2 2026 report actually say?</h2>
+        <p>The census: <b>359,101</b> drives monitored during the quarter; Backblaze removed <b>3,881</b> boot drives and <b>705</b> others that didn't meet inclusion criteria, leaving <b>354,415</b> drives for analysis. The quarter: <b>31,553,350 drive days</b> and <b>1,498 failures</b>, for a quarterly AFR of <b>1.73%</b> — which the report itself calls "the highest it's been in quite a while," up from <b>1.24%</b> in Q1 2026. The lifetime ledger: <b>353,041</b> drives, <b>558,148,607</b> drive days, <b>21,609</b> total failures, <b>1.41%</b> — described as a slight uptick in a number that has been stable for years.</p>
+        <p>AFR itself is one line of arithmetic: failures ÷ drive days × 365. Drive days exist because models have different population sizes and different exposure windows; annualizing normalizes them into "what share of drives would fail in a year." The formula is trivial. The skill is in remembering that every AFR is a fraction — and asking what the denominator actually contains before reacting to the numerator.</p>
+
+        <h2>Why did the quarterly number spike while the lifetime number didn't move?</h2>
+        <p>Because a handful of old, small cohorts dragged the average, and the report says so with its own quartile analysis. Three models were statistical outliers (defined as AFR above 6.95%): a <b>12TB HGST HUH721212ALN604</b> at <b>7.63%</b>, nearly seven years old; a <b>10TB Seagate ST10000NM0086</b> at <b>9.33%</b>, about 8.5 years old with only <b>965 units</b> in service; and a <b>14TB Seagate ST14000NM0138</b> at <b>8.26%</b> from a population of 1,235 averaging five and a half years old. AFRs that high on old, thin populations are the signature of aging hardware, not of a fleet-wide problem — which is exactly why the lifetime number, dominated by 558 million drive days of mixed-age exposure, registered barely a tremor at 1.41%.</p>
+        <p>Two more quarter-specific facts sharpen the point. First, <b>10 of 31</b> reported models exceeded <b>3.0%</b> AFR — a distribution skew Backblaze explicitly flags as unusual and "something to keep an eye on." Second, the quarter's failure table is also where drives go to die of old age: two models — a <b>4TB HGST</b> at nearly nine years and an <b>8TB HGST</b> at nearly eight — were fully retired this quarter. The spike is partly just the fleet graying: capacity-era cohorts bought in bulk years ago are entering the steep part of the mortality curve, and their small surviving populations make their AFRs volatile.</p>
+
+        <h2>Why is the zero-failure honor roll a trap?</h2>
+        <p>Because zero failures proves nothing without exposure. This quarter's honor roll: Seagate <b>ST8000NM000A</b> (8TB), <b>ST12000NM000J</b> (12TB) and <b>ST14000NM000J</b> (14TB) with zero failures, and <b>ST16000NM000J</b> (16TB) with one. Look at the denominators, though. The ST8000NM000A: <b>239 drives, 1,499 drive days</b> — about <b>62 days of average exposure per drive</b>, with an average age of roughly half a month. A brand-new cohort running for two months without a failure is a statement about the factory escape rate, not about five-year durability. (Backblaze knows this — those same three models fail its own lifetime-table inclusion minimums, precisely because their drive counts and drive days are too small to say anything.) We think the honor roll is best read as an operations report — new deployments, concentrated in 20TB+ capacity, no new drive models for two consecutive quarters — not as a shopping recommendation.</p>
+        <p>The inverse trap is just as real on the bad side: that 14TB Seagate's <b>8.26%</b> came from <b>25 failures across 110,410 drive days</b>. Terrifying percentage, modest absolute event count, tiny denominator. Compare the workhorse <b>Seagate ST16000NM001G</b>: <b>35,100 units</b>, <b>3.16 million drive days</b> in the quarter, 56 failures, <b>0.65%</b> — and <b>0.68% lifetime over 47.2 million drive days</b>. Same fleet, same quarter; the difference between 8.26% and 0.65% is mostly the denominator.</p>
+
+        <h2>What should a homelab buyer actually do with this?</h2>
+        <p>Four screening habits, all of them price-independent — which matters in a market where popular NAS capacities have roughly doubled and the used 14TB tier repriced with them. <b>First, read the denominator before the percentage.</b> Any AFR quoted without drive days is a rumor; Backblaze's own inclusion criteria (over 100 drives and 10,000 drive days for a quarterly table, over 500 and 100,000 for lifetime) are a reasonable minimum standard to demand of anyone else's failure claims too. <b>Second, weight age over brand.</b> The quarter's three outliers span two manufacturers; what they share is 5.5–8.5 years of age. The lifetime table's 0.5–1.2% models are spread across HGST, Seagate, Toshiba and WDC — no vendor monopoly on survival. <b>Third, use the shape of the curve, not just the level.</b> Drive mortality concentrates early (infancy failures) and late (wear-out), which is why Backblaze's multi-year curves have shown elevated first-year and aged-fleet rates since its earliest reports — and why a used drive that has already survived its first year is, statistically, in the calm part of the bathtub. <b>Fourth, screen SMART before price.</b> The attributes that have historically carried signal in fleet-scale analyses are the reallocation cluster — SMART 5 (reallocated sectors), 197 (pending sectors), 198 (offline uncorrectable) — plus error-rate counters; a used drive with any nonzero pending or uncorrectable sectors is a drive you rebuild around, not one you deploy. None of this is a substitute for backups; it is how you avoid buying the rebuild in the first place.</p>
+        <p>One last calibration for scale. A 1.41% lifetime AFR means a single drive is roughly a coin-flip to survive eight years unfailed — probability of survival ≈ (1 − 0.0141)^8 ≈ <b>89%</b> (our arithmetic). That is why the practical unit of homelab reliability is never the drive; it is the redundancy scheme around the drives, plus the restore you have actually tested. The Q2 2026 report's real headline for a homelab reader is not "drives got worse." It is: <b>at 354,415 drives, failures are ordinary, aging is visible, and every dramatic percentage is hiding a denominator that explains it.</b></p>
+      </div>
+
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>Q2 2026 in one line: 354,415 drives, 31,553,350 drive days, 1,498 failures, quarterly AFR 1.73%</b> (highest in a while, up from 1.24% in Q1) — while the <b>lifetime AFR stayed at 1.41%</b> over 558,148,607 drive days.</li>
+          <li><b>The outliers explain the spike: 7.63%, 9.33% and 8.26% AFR</b> — all on drives 5.5–8.5 years old and/or in populations under 1,300 units. 10 of 31 models exceeded 3.0%, a skew Backblaze itself flags as unusual.</li>
+          <li><b>The zero-failure honor roll is an exposure statement, not a durability claim</b> — one honored model had only 1,499 drive days (~62 days per drive), and the same three models miss Backblaze's own lifetime-table minimums.</li>
+          <li><b>Read the denominator first</b>: 8.26% AFR on 110,410 drive days (25 failures) vs 0.68% lifetime on 47.2 million drive days — same fleet, same quarter, different denominators.</li>
+          <li><b>Age beats brand</b>: the quarter's worst drives span two vendors; the best lifetime performers span four. Two models retired this quarter at 8–9 years — that's the failure mode to plan around.</li>
+          <li><b>Survival arithmetic (ours): (1 − 0.0141)^8 ≈ 89%</b> — a single drive is a coin flip over eight years. The unit of reliability is the redundancy scheme plus a tested restore, never the drive.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/12v-2x6-connector-homelab-2026"><i data-i18n="pager.prev">Previous</i>12V-2x6 changed the socket's fail-safe, not your cable (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
