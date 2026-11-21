@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The rebuild window: your RAID's most dangerous hours start when a drive dies (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The rebuild window: your RAID's most dangerous hours start when a drive dies (2026) — DCF">
+  <meta name="twitter:description" content="A 24TB drive rebuilds in about 23 hours at datasheet speed — and closer to three days in a busy array. During that window every surviving drive is carrying full load, and the two scary numbers of RAID folklore have opposite epistemic status: the URE-during-rebuild figure is arithmetic on a datasheet bound, while the second-failure figure is arithmetic under an independence assumption the real world violates.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="Rebuild-window arithmetic for the 20TB+ era: a WD Red Pro 24TB (official datasheet: 287 MB/s max internal transfer, CMR, URE <1 in 10^15) rebuilds in ~23 hours at spec speed, ~67 hours at 100 MB/s in a serving array, ~5.6 days at 50 MB/s. Second-failure probability during the window, computed from Backblaze's verified Q2 2026 fleet AFR of 1.73% (lifetime 1.41%): about 1 in 1,100 rebuilds meets a second failure in a 7-survivor array over a 67-hour window — under independence, which real arrays violate through shared batch, age, thermal history and rebuild load. The URE arithmetic says reading 168 TB at the 10^15 bound implies ~74% odds of one unreadable sector — but the bound is a conservative spec ceiling, not a field measurement, and Backblaze's workhorse drives run 0.65–0.68% AFR, far from the bound. Both risks scale with capacity: parity tax on a fixed 60TB usable goes from 25% (8×10TB) to 50% (4×30TB) while resilver time triples. RAIDZ2/mirrors are table stakes at 2026 capacities; the tested restore is the actual insurance. Figures verified against WD's official datasheet and Backblaze's Q2 2026 report on 2026-11-21." />
+  <link rel="canonical" href="https://forum.omc.network/posts/raid-rebuild-window-homelab-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/raid-rebuild-window-homelab-2026" />
+  <meta property="og:title" content="The rebuild window: your RAID's most dangerous hours start when a drive dies (2026)">
+  <meta property="og:description" content="A drive failure is an incident. The rebuild is the exposure. At 2026 capacities (20–24TB) the window is two to six days long, every survivor runs at full load through it, and the two famous risk numbers — URE and second-disk failure — sit at opposite ends of the credibility spectrum.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"The rebuild window: your RAID's most dangerous hours start when a drive dies (2026)","datePublished":"2026-11-21","dateModified":"2026-11-21","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>The rebuild window: your RAID's most dangerous hours start when a drive dies (2026)</h1>
+        <p class="article-dek">A drive failure is an incident. The rebuild is the exposure. At 2026 capacities — 20 to 24 terabytes on the shelf — the window between "one drive down" and "protected again" stretches from roughly a day to several days, every surviving disk runs its heaviest workload of the year during it, and the two famous risk numbers of RAID folklore sit at opposite ends of the credibility spectrum. This post does the arithmetic so you can do the planning.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 21, 2026</span><span>11 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>The window is the risk, and it is longer than it used to be.</b> Rebuild time is capacity ÷ effective throughput. A <b>WD Red Pro 24TB</b> — official datasheet: <b>287 MB/s</b> max internal transfer, CMR, unrecoverable read errors <b>&lt;1 in 10^15 bits read</b> — rebuilds in <b>~23 hours</b> at spec speed on an idle array, <b>~67 hours</b> at a serving array's 100 MB/s, and <b>~5.6 days</b> if the array stays busy at 50 MB/s. During that window, two risks accumulate. The <b>second-failure risk</b>: using Backblaze's verified Q2 2026 fleet AFR of <b>1.73%</b> (lifetime <b>1.41%</b>), a 7-survivor array rebuilds for 67 hours with roughly <b>1-in-1,100</b> odds of losing another drive (our arithmetic, assuming independence) — but independence is the generous assumption, because array members share model, firmware, batch, thermal history and now a full-load rebuild. The <b>URE risk</b>: reading 168 TB at the datasheet's 10^15 bound implies ~<b>74%</b> odds of one unreadable sector (ours) — but the bound is a conservative spec ceiling, not a field measurement, and real workhorse drives run at 0.65–0.68% AFR, nowhere near it. The parity tax sharpens the trade: a fixed 60 TB usable costs 25% redundancy at 8×10TB, 50% at 4×30TB, while resilver time triples. At 2026 capacities the conclusion is boring and non-negotiable: <b>dual parity or mirrors are table stakes, the window is a planned event (hot spare on the shelf), and the tested restore — not the RAID level — is the actual insurance.</b></p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>重建窗口：RAID 最危险的小时数从一块盘死掉那一刻开始算（2026）。<b>摘要：</b>重建时间 = 容量 ÷ 有效吞吐。<b>WD Red Pro 24TB</b>（官方规格书：最大内部传输 <b>287 MB/s</b>、CMR、不可恢复读错误 &lt;1 in 10^15）在空闲阵列上约 <b>23 小时</b>重建完，在持续服务的阵列里按 100 MB/s 算约 <b>67 小时</b>，按 50 MB/s 算约 <b>5.6 天</b>。窗口内叠加两个风险。<b>二盘故障风险</b>：用 Backblaze 已核实的 2026 Q2 机队 AFR <b>1.73%</b>（终身 1.41%）计算，7 块存活盘 × 67 小时窗口的二盘故障概率约 <b>1/1100</b>（我们按独立性假设推算）——但独立性是最乐观假设，同阵列的盘共享型号、固件、批次、热历史，还要扛全负载重建。<b>URE 风险</b>：按规格书 10^15 上界读 168 TB 约有 74% 概率碰到一个坏扇区（我们的算术）——但那是保守上界不是实测，Backblaze 主力盘实测 AFR 只有 0.65–0.68%，离上界很远。冗余税随容量变贵：同样 60 TB 可用容量，8×10TB 只要 25% 冗余，4×30TB 要 50%， resilver 时间还翻三倍。2026 年的容量点上结论无聊但不可协商：<b>双校验或镜像只是及格线，窗口要当计划事件管理（热备盘上架），真正保险的是演练过的恢复——不是 RAID 级别。</b></p>
+      </div>
+
+      <div class="article-body">
+        <p><b>The question this piece answers: a drive in your array just died — how much danger are you actually in until the rebuild finishes?</b> This is the third post in a chain about the same machine. The SSD method post covered the wear contract (DWPD/TBW); the Backblaze Q2 2026 post covered the survivor statistics (AFR and drive-days). This one covers the interval between those two documents: the rebuild window, the only period in your storage system's life when a single additional event can delete the array. Everything here is arithmetic on two verified inputs — WD's official datasheet for throughput and error bounds, and Backblaze's Q2 2026 fleet statistics for failure rates — plus assumptions we label as ours. No vendor says this out loud, so we will: at 2026 drive capacities, the rebuild window is now long enough to be a planned operational event, not a background chore.</p>
+
+        <h2>How long is the rebuild window, really?</h2>
+        <p>The formula is capacity divided by effective sustained throughput — not the interface number, not the burst cache number, the rate at which a 7200 RPM head can actually stream sequential data. The official WD Red Pro datasheet for the 24TB model (WD241KFGX) lists a maximum internal transfer rate of <b>287 MB/s</b>, with the 18–26TB family spanning 265–287 MB/s; that maximum is outer-track, idle-array, best case. From there the arithmetic is a division table (ours):</p>
+        <p><b>24TB at 287 MB/s ≈ 23.3 hours</b> — the showroom case: empty array, nothing else running, outer tracks. <b>At 150 MB/s ≈ 44.6 hours</b> — a realistic mixed figure as the rebuild head crosses inner tracks (where the datasheet's maximum is not available) while the array serves some load. <b>At 100 MB/s ≈ 67 hours</b> — a serving array doing its normal job plus rebuilding; about <b>2.8 days</b>. <b>At 50 MB/s ≈ 5.6 days</b> — the heavily loaded case, and the honest planning number for a media server or backup target that never sleeps. Scale the same table to a 30TB drive and the busy-case window crosses six days; at 20TB it sits just under five. The direction of history is not subtle: capacity has grown far faster than the areal-density gains that feed sequential throughput, so every generation, the window lengthens. A 2007-era 1TB drive rebuilt in an afternoon; a 2026-era 24TB drive rebuilds across two working days even in the good case.</p>
+
+        <h2>What is the second-failure risk during the window?</h2>
+        <p>Once one drive is down, every surviving member carries the array's full read load plus the reconstruction reads — and the question is whether another one dies before the replacement is synced. The honest input is Backblaze's fleet: Q2 2026 quarterly AFR of <b>1.73%</b> across 354,415 drives (lifetime <b>1.41%</b> over 558 million drive days) — numbers we verified against the source report in the previous post. Convert to hourly rates (ours): 1.73% per year ≈ 1.97×10⁻⁶ per hour per drive. For a 7-survivor array (8 drives, one dead) rebuilding for 67 hours, expected exposure is 7 × 67 ≈ 469 drive-hours, giving a second-failure probability of roughly <b>0.09% — about 1 in 1,100 rebuilds</b> (ours, independence assumed). At Backblaze's lifetime 1.41% the same window gives about 1 in 1,350. A four-bay array has fewer survivors (3) and the same window length, landing near 1 in 2,500.</p>
+        <p>Now the caveat that matters more than the number: <b>those odds assume drives fail independently, and real arrays violate that on purpose.</b> Homelab arrays are built from same-model, same-batch, same-age drives that share firmware, firmware bugs, thermal history, power events and workload — and the rebuild itself is the heaviest continuous load the array ever asks of its survivors. Independent trackers of drive statistics make exactly this point when they caveat their own calculators: batch, heat and rebuild load make real failures cluster. So read our 1-in-1,100 as a floor, not a forecast — the honest statement is "small under independence, unbounded under correlation, and correlation is the regime you actually live in." The practical translations: buy drives in matched pairs from different purchase batches when you can, avoid filling a chassis with eight drives of identical age, and never let a dead drive sit unreplaced for a week because the window does not start at failure — it starts at failure and ends at sync completion, including the days the replacement spends in a shipping box.</p>
+
+        <h2>Is the URE-during-rebuild number as scary as it sounds?</h2>
+        <p>The other famous risk is the unrecoverable read error: during a single-parity rebuild, the array must read every surviving sector, and the datasheet says errors happen at some rate. The arithmetic (ours, on the bound): reading the 7 surviving 24TB drives means 168 TB ≈ 1.34×10¹⁵ bits; at the WD Red Pro's specified <b>&lt;1 unrecoverable read error per 10^15 bits read</b>, the worst-case probability of hitting at least one unreadable sector is about <b>74%</b>. That number circulates widely as "RAID 5 is dead at 12TB+". Treat it with respect and skepticism at once, because the two components have very different epistemic status. The 10^15 figure is a <b>bound, not a measurement</b> — a conservative spec ceiling vendors design toward, and the same framing the drive-statistics community uses when it rebuilds these calculators. Field reality is orders of magnitude gentler: Backblaze's Q2 2026 quarter shows the fleet's workhorse 16TB model at <b>0.65% quarterly AFR / 0.68% lifetime</b> — drives that spend years reading petabytes without approaching the datasheet ceiling. A spec bound tells you the warranty edge, not the expected field rate.</p>
+        <p>But skepticism has a mirror-image trap of its own, and it is the actual lesson of this post: <b>the two scary numbers have opposite error bars.</b> The URE number overstates a risk that is real but rare in field data (bound arithmetic on a spec ceiling); the second-failure number understates a risk that is real and correlated (independence arithmetic on a correlated fleet). A buyer who fears only the URE buys "enterprise NAS drives" and keeps single parity; a buyer who ignores the window entirely runs an 8-drive array of same-batch disks with no hot spare. The correct fear budget inverts the folklore: at 2026 capacities, <b>dual parity (RAID 6 / RAIDZ2) or mirrored pairs are table stakes</b> — not because the URE bound will kill you, but because a two-drive-tolerant layout converts the correlated window risk from fatal to survivable — and because the parity tax has gotten expensive enough that you should choose it deliberately (see below) rather than inherit it.</p>
+
+        <h2>What does the parity tax cost at 2026 capacities?</h2>
+        <p>Fix usable capacity at 60 TB and compare layouts (our arithmetic, datasheet capacities): <b>8×10TB</b> = 80TB raw, 25% of raw capacity spent on redundancy, ~28 hours of resilver per failure at 100 MB/s. <b>5×20TB</b> = 100TB raw, 40% tax, ~56 hours. <b>4×30TB</b> = 120TB raw, <b>50%</b> tax — half of everything you buy is parity or mirror — and ~83 hours of resilver. Fewer, bigger drives win on bays, noise, spin-up surge, power and cabling; they lose on parity tax and window length, roughly symmetrically. Drive count also sets how often you visit the window at all: at Backblaze's 1.73% quarterly fleet AFR, eight drives fail about twice as often as four — so the eight-drive layout rebuilds twice as often, each rebuild a third as long, and comes out ahead on total window exposure while paying for it in parity tax. There is no layout that dodges the trade; there is only choosing which costs you pay in money (drives), space (bays) or risk (window).</p>
+        <p>Three closing disciplines cost nothing and do more than any layout choice. <b>Put a hot spare on the shelf</b> — a spare that is powered and ready collapses the detect-ship-install delay that silently doubles most homelab windows. <b>Scrub on schedule</b> — a monthly scrub finds the latent bad sectors during protected operation instead of during the rebuild, which is when they become a second failure. <b>Test the restore</b> — the rebuild window math assumes the rebuild succeeds; the only way to know your specific array, enclosure and backups can actually absorb a real failure is to have rehearsed it. RAID, at any level, is a availability mechanism. The backup — tested, offsite, versioned — is the data-loss mechanism. Conflating them is how a 1-in-1,100 event becomes a 100% event. Summary: with 24TB drives at a verified fleet AFR of 1.73%, a single-parity array runs a two-to-six-day unprotected window with roughly 1-in-1,100 second-failure odds (floor) per rebuild — dual parity plus a hot spare plus a rehearsed restore is the entire difference between an incident and an obituary.</p>
+      </div>
+
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>Rebuild time = capacity ÷ effective throughput:</b> a WD Red Pro 24TB (datasheet max 287 MB/s) rebuilds in ~23h at spec, ~67h at a serving array's 100 MB/s, ~5.6 days at 50 MB/s — capacity grows faster than throughput, so every generation lengthens the window.</li>
+          <li><b>Second-failure odds during a 67-hour window: ~1 in 1,100</b> (ours, 7 survivors at Backblaze's verified Q2 2026 fleet AFR of 1.73%) — a floor, not a forecast, because array members share batch, firmware, age, heat and the rebuild's own full-load stress.</li>
+          <li><b>The URE bound arithmetic (~74% over 168 TB at 10^15) is a spec ceiling, not field reality</b> — workhorse drives run 0.65–0.68% AFR on Backblaze's fleet, orders of magnitude from the bound.</li>
+          <li><b>The two famous RAID fears have opposite error bars:</b> URE overstates a rare field risk; second-failure understates a correlated one. Fear the window, not the bound.</li>
+          <li><b>Parity tax at fixed 60TB usable: 25% (8×10TB) → 40% (5×20TB) → 50% (4×30TB)</b>, with resilver time tripling — choose which cost you pay in money, space or risk.</li>
+          <li><b>At 2026 capacities, dual parity or mirrors are table stakes</b>; a hot spare collapses the shipping-delay half of the window; scheduled scrubs find bad sectors while protected; and the tested restore — not the RAID level — is the actual insurance.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/hdd-afr-drive-days-homelab-2026"><i data-i18n="pager.prev">Previous</i>A 1.73% quarter, a 1.41% lifetime: reading Backblaze's Q2 2026 drive stats like a homelab buyer →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
