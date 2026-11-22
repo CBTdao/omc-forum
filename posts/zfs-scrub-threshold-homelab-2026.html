@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your weekly scrub schedule is really a 35-day scrub schedule (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Your weekly scrub schedule is really a 35-day scrub schedule (2026) — DCF">
+  <meta name="twitter:description" content="TrueNAS creates a scrub task for every pool by default — but the calendar schedule is only a trigger time. The Threshold days setting (default 35) decides the real interval, so a 'weekly' scrub actually runs about every five weeks. What a ZFS scrub does, how often it should run, how the threshold changes the math, and how to pair it with SMART tests.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="The scrub cadence playbook for homelab ZFS pools, verified against OpenZFS official docs, TrueNAS official docs and two independent walkthroughs: a scrub walks every block and verifies checksums (two phases: metadata scan, then block reads), repairs from redundancy, and is I/O-intensive — monthly is the common baseline for consumer disks per OpenZFS. The trap: TrueNAS's calendar schedule is only a trigger attempt; the default 35-day Threshold means a weekly-selected scrub actually runs roughly every five weeks — about 10 scrubs a year instead of 52 (our arithmetic). A scrub cannot run during a resilver, and a sequential rebuild skips checksum verification and auto-starts a scrub when it finishes — so rebuild windows and scrub windows collide exactly when the array is most fragile. CKSUM errors on a healthy-looking disk usually point at cabling, controller or memory, not the disk (OpenZFS docs). Pair the scrub with SMART short tests weekly and long tests monthly, staggered, and verify completion — a schedule you don't check for completions is a schedule that has already silently failed." />
+  <link rel="canonical" href="https://forum.omc.network/posts/zfs-scrub-threshold-homelab-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/zfs-scrub-threshold-homelab-2026" />
+  <meta property="og:title" content="Your weekly scrub schedule is really a 35-day scrub schedule (2026)">
+  <meta property="og:description" content="The calendar schedule is only a trigger time. TrueNAS's default 35-day threshold turns a weekly scrub into a roughly five-week one — about 10 scrubs a year instead of 52. What a scrub does, how often it should run, and how to pair it with SMART tests.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Your weekly scrub schedule is really a 35-day scrub schedule (2026)","datePublished":"2026-11-22","dateModified":"2026-11-22","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>Your weekly scrub schedule is really a 35-day scrub schedule (2026)</h1>
+        <p class="article-dek">The UI says weekly. The threshold says 35 days. The disk obeys the threshold. A playbook for what ZFS scrubs actually do, how often they should run, why the default setting quietly stretches your cadence fivefold — and how to pair scrubs with SMART tests without the three of them colliding.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 22, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>A scrub is the only thing that finds the corruption nothing is reading.</b> ZFS checksums every block, but normal I/O only verifies blocks you actually touch — media that nothing has read for a year is never checked until a scrub walks all of it and repairs from redundancy. The official OpenZFS docs describe the mechanics and give the cadence baseline: <b>"monthly is a common baseline for consumer disks, quarterly for enterprise ones."</b> The trap is in the scheduler. TrueNAS creates a scrub task for every pool by default (official docs) — but <b>the calendar schedule is only a trigger time; the Threshold days setting decides the real interval</b>, and its default is <b>35 days</b>. Select "weekly" and you still get a scrub roughly every five weeks: about <b>10 scrubs a year instead of 52</b> (our arithmetic), and a latent error waits about half the real interval before anyone looks at it. The window interactions matter too: <b>a scrub cannot run during a resilver</b>, and a sequential rebuild (<code>zpool replace -s</code>) skips checksum verification entirely — OpenZFS auto-starts a scrub when it finishes, which means your rebuild window ends in an unplanned full-pool read. Pair the scrub with SMART short tests weekly and long tests monthly, staggered so they never collide, and — the discipline that beats every cadence debate — <b>verify the completion line in zpool status</b>, because a schedule whose completions nobody checks is a schedule that has already silently failed.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>你的每周 scrub 计划，实际上是一个 35 天的 scrub 计划（2026）。<b>摘要：</b>scrub 是唯一能发现「没有任何人读到的数据」的坏块的机制——ZFS 对每个块算校验和，但日常 I/O 只验证被读到的块，一年没人碰的冷数据要等 scrub 全池巡查并从冗余修复。OpenZFS 官方文档给出节奏基线：<b>「消费级盘每月一次是常见基线，企业级每季度一次」</b>。坑在调度器：TrueNAS 默认给每个池建 scrub 任务（官方文档）——但<b>日历排程只是触发时间，真正决定间隔的是 Threshold days，默认 35 天</b>。选了 weekly，实际还是约五周才跑一次：一年约 <b>10 次而不是 52 次</b>（我们的算术），潜在坏块平均要等半个真实间隔才被发现。窗口交互也要留意：<b>resilver 期间 scrub 不能跑</b>，而顺序重建（zpool replace -s）跳过校验和验证、完成后 OpenZFS 会自动补一次 scrub——重建窗口结束时会接一场计划外的全池读。与 SMART 短测每周、长测每月错峰配对，最后——比所有节奏争论都重要的一条——<b>核对 zpool status 里的完成记录</b>，没人查完成情况的排程，早就已经静默失效了。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>Why this post exists: last week's rebuild-window post ended with one line of advice — "scrub on schedule" — and this post is what that line actually requires.</b> The advice is universal, the settings behind it are not, and one of them (the threshold) systematically misleads people into believing a cadence they do not have. Everything here is verified against official documentation: the OpenZFS project docs for scrub mechanics and cadence guidance, the TrueNAS docs for the default task behavior, plus two independent walkthroughs that documented the threshold behavior on current TrueNAS releases. This is the third storage-operations post in a row; the chain is now method (SSD wear), statistics (AFR), the rebuild window, and the maintenance cadence that keeps you out of the window.</p>
+
+        <h2>What does a scrub actually do — and what does it not do?</h2>
+        <p>The official OpenZFS documentation is precise about the job: a scrub "walks all data in the pool and verifies each block's checksum, repairing damage where redundancy allows." It exists because <b>normal reads only verify the blocks they touch</b> — a photo archive nobody has opened since 2024 can silently rot for two years, and no amount of "the NAS says healthy" will tell you, until a scrub reads it anyway and repairs the bad blocks from a mirror or parity copy while the redundancy is still intact. The docs also describe how it runs, which explains its personality: a scrub executes in <b>two phases — a metadata scan that sorts blocks into large sequential ranges, then the actual block reads</b>; on a live pool the progress figure can exceed 100% because data keeps changing; it is <b>I/O-intensive</b>; and <b>only one scrub or resilver runs at a time</b> — a scrub cannot start while a resilver is in progress. What a scrub does not do is equally important: it verifies checksums, not hardware — a drive that passes checksums but is mechanically dying is SMART's problem, not the scrub's. And it is a check, not a backup: it can only repair what redundancy can rebuild, so a scrub can never save a file whose only copy was corrupt.</p>
+
+        <h2>How often should a homelab pool scrub?</h2>
+        <p>The official baseline comes straight from the OpenZFS docs: <b>"monthly is a common baseline for consumer disks, quarterly for enterprise ones. Most distributions ship a systemd timer or cron job for it — check before adding your own."</b> That last sentence is the first trap: your distro or appliance probably already scheduled one for you. TrueNAS, for instance, <b>automatically creates a recurring scrub task for every pool</b> per its own documentation — you have had a scrub schedule since the day you created the pool, whether or not you ever opened the screen. Independent walkthroughs of current TrueNAS releases (both published guides and community write-ups citing the docs and API) describe the same default: a Sunday-midnight calendar trigger, ready to go on pool creation. So for most homelab readers the question is not "how do I schedule a scrub" but "what is my existing schedule actually doing" — and that question has an unexpected answer.</p>
+
+        <h2>The 35-day threshold: where the weekly schedule quietly becomes monthly-ish</h2>
+        <p>This is the finding that earned the post its title, and it is verified in two independent walkthroughs plus the underlying docs. TrueNAS scrub tasks carry a <b>Threshold days</b> setting — the number of days that must pass since the last <em>completed</em> scrub before the calendar trigger is allowed to start another one. The default is <b>35 days</b>. The calendar schedule you pick (weekly, monthly, whatever) is only an attempt time: the threshold gates the actual run. So a user who selects "weekly, Sunday 00:00" with default settings gets a scrub that <b>actually runs about every five weeks</b> — because each completed scrub blocks the next four weekly trigger attempts. Our arithmetic on what that means: a "weekly" configuration delivers roughly <b>10.4 scrubs a year instead of 52</b>, and with monthly-selected schedules the threshold is usually invisible because 35 days ≈ a month anyway — which is exactly why the misconfiguration survives: it looks normal in the UI, it produces normal-looking history, and it only bites when you assume weekly coverage. The mean time a latent, unrepaired error waits before the next scrub finds it scales with the real interval — call it roughly half the actual cadence — so the difference between believing 7 days and living 35 days is believing your median detection latency is ~3.5 days when it is ~17 (ours). Two independent sources agree on the mechanism and the default value, and both trace it to the same place: the scheduler only attempts, the threshold decides.</p>
+
+        <h2>How to check your own pool in two minutes</h2>
+        <p>Before debating the ideal cadence, verify what you actually have. On current TrueNAS releases (25.04 and 25.10 per one walkthrough) the controls live under Data Protection: the Scheduled Scrub Tasks list shows each pool's calendar trigger, and opening the task reveals the <b>Threshold days</b> field — the number that decides your real cadence. One walkthrough notes the default of 35 in the scrub-task API; the other documents the same behavior and adds the operational warning worth tattooing somewhere: <b>interface locations and defaults shift between versions, so recheck after an upgrade or when creating a new pool, and never take the task's "Enabled" toggle as proof that it runs at the cadence you think.</b> If your pool is mostly cold data (media, archives, photo libraries), the documented fix is simply lowering the threshold — 14 days is the value the walkthroughs suggest for weekly-equivalent real coverage. Then confirm the history: <code>zpool status -v</code> shows the last scan line with a completion timestamp; if that timestamp is further back than your threshold promises, the task is configured but not completing, which is a different and more urgent problem than the cadence debate.</p>
+
+        <h2>How scrubs and rebuilds fight over the same window</h2>
+        <p>Here is where the cadence post meets last week's rebuild-window post, and the interaction is documented in the official OpenZFS pages. <b>A scrub cannot start while a resilver is in progress</b> — the pool runs one background pass at a time. And a rebuild, when it happens, ends with an unplanned scrub: the docs note that <b>sequential reconstruction</b> (<code>zpool replace -s</code> / <code>zpool attach -s</code>) rebuilds the new device fast but <b>"checksums are not verified during the rebuild — so a scrub is started automatically when it finishes."</b> Read those two facts together and the operational consequence writes itself: the moment your array is most fragile — one disk down, survivors at full load — is exactly the moment scrubs are blocked; and when the rebuild completes, a full-pool verification read starts on those same tired survivors with no scheduling input from you. A weekly scrub habit neither prevents nor shortens this; what it does do is shrink the pool of latent bad blocks the rebuild will trip over. The practical scheduling rules fall out directly: run scrubs in idle windows (they are I/O-intensive); leave slack around any planned drive replacement, because the auto-scrub after a sequential rebuild is not optional; and if a scrub is still running when a drive dies, let it finish or pause it deliberately — pausing is safe and survives export/import per the docs, so an emergency resilver does not have to fight a half-finished scrub.</p>
+
+        <h2>Reading the result, and the pairing playbook</h2>
+        <p>A scrub that runs without a result read is half a scrub. The official reading guide: <code>zpool status -v</code> shows the last scan line and the per-device <b>READ / WRITE / CKSUM</b> counters — and the docs are explicit that <b>non-zero CKSUM on an otherwise healthy disk usually points at cabling, a controller, or memory rather than the disk</b>, so a checksum error is a "find the cause" signal, not a "replace the disk" reflex. Persistent errors listed per file mean that data needs restoring from backup, not another scrub. Then pair the scrub with SMART, which watches the hardware the checksums cannot see; the standard homelab pairing (from two independent walkthroughs): <b>SMART short test weekly, SMART long test monthly, scrub every two weeks or monthly</b> — all three staggered so they never run at once, all in idle windows, with the note that one walkthrough's own suggested cadence is a suggestion, not a vendor default. Tightening the threshold from 35 to 14 days is the documented fix for anyone whose data is mostly cold: it restores the calendar schedule's promise. And the discipline that beats all cadence arguments: <b>check the completion line</b> — every scrub should end in a scan summary with an error count you compare against last time. Repair counts that grow every run, scrubs that never appear in history, a threshold that silently stretched your 52 annual scrubs to 10 — all three are the same failure wearing different clothes: a schedule configured once and never verified. Summary: on a consumer-disk homelab pool, the official baseline is monthly, the TrueNAS default threshold quietly delivers ~10 scrubs a year regardless of what the calendar says, a rebuild ends in an auto-scrub you did not schedule, and the only cadence that matters is the one whose completions you actually check.</p>
+      </div>
+
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>A scrub verifies what nothing reads:</b> ZFS checksums every block, but normal I/O only checks touched blocks — the scrub walks all of them and repairs from redundancy while it still exists (OpenZFS official docs).</li>
+          <li><b>The official cadence baseline: monthly for consumer disks, quarterly for enterprise</b> (OpenZFS docs) — and most distributions/appliances already scheduled one for you; check before adding your own.</li>
+          <li><b>The calendar schedule is only a trigger time; the Threshold decides:</b> TrueNAS's default 35-day threshold turns a weekly-selected scrub into a roughly five-week one — ~10 scrubs a year instead of 52 (our arithmetic; two independent walkthroughs + docs).</li>
+          <li><b>Scrubs and rebuilds share one slot:</b> a scrub can't run during a resilver, and a sequential rebuild skips checksum verification and auto-starts a scrub when it finishes — leave slack around drive replacements (OpenZFS docs).</li>
+          <li><b>CKSUM errors usually aren't the disk:</b> cabling, controller or memory is the likelier cause (OpenZFS docs) — find the cause before replacing hardware; persistent per-file errors mean restore from backup.</li>
+          <li><b>The pairing playbook:</b> SMART short weekly, SMART long monthly, scrub every 2–4 weeks in idle windows, staggered; drop the threshold to 14 if your pool is mostly cold data; and verify every completion — an unchecked schedule is a silently failed one.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/raid-rebuild-window-homelab-2026"><i data-i18n="pager.prev">Previous</i>The rebuild window: your RAID's most dangerous hours start when a drive dies →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
