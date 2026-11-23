@@ -306,6 +306,12 @@
           <p class="post-dek">The record: $81.3B IPO + $26B private placement = $107.3B, beating SpaceX's June $75B; day one open $111.50, close $97.17 (+17%) against a falling market. The filing: run-rate $81B (up $10B in a month), Q3 revenue $16.96B (+47% QoQ), operating income swung +$974M → −$567M, ~$9B first-half compute spend — and nearly $900B of compute commitments. Coverage ratio: ~12% (ours). The biggest raise ever is a down payment.</p>
           <span class="post-meta">Nov 22, 2026 · 12 min read</span>
         </article>
+        <article class="post-card">
+          <span class="chip deep">Deep Dive</span>
+          <b><a href="/posts/hyperscaler-capex-funding-q3-2026">Capex is a definition: the $207B quarter three of four hyperscalers could not pay for (2026)</a></b>
+          <p class="post-dek">Q3 2026: Alphabet $51.4B capex (FCF −$9.1B), Amazon $75.9B net (TTM FCF −$42.4B), Microsoft ~$45B (FCF +$18.6B), Meta $34.9B (FCF −$2.1B) — about $207B on four different definitions. Microsoft's 8% guidance cut came from extending building lives 15→25 years, which moved leases out of capex; spending didn't fall. Long-term debt at three of them rose $170.9B→$379.1B in nine months.</p>
+          <span class="post-meta">Nov 23, 2026 · 13 min read</span>
+        </article>
       </div>
     </section>
 
@@ -537,6 +543,12 @@
           <b><a href="/posts/zfs-scrub-threshold-homelab-2026">Your weekly scrub schedule is really a 35-day scrub schedule (2026)</a></b>
           <p class="post-dek">TrueNAS creates a scrub task for every pool — but the calendar schedule is only a trigger time; the Threshold days setting (default 35) decides the real interval, so a "weekly" scrub runs about every five weeks: ~10 a year instead of 52. Scrubs can't run during a resilver, and a sequential rebuild auto-starts one when it finishes. Monthly is the official baseline; verify completions, not toggles.</p>
           <span class="post-meta">Nov 22, 2026 · 10 min read</span>
+        </article>
+        <article class="post-card">
+          <span class="chip lab">Homelab</span>
+          <b><a href="/posts/slog-not-a-cache-4gb-homelab-2026">Your SLOG is not a cache, and the official size is 4 GB (2026)</a></b>
+          <p class="post-dek">OpenZFS is blunt: a SLOG is not a write cache, asynchronous writes never touch the ZIL, and "if your workload has no synchronous writes, a SLOG changes nothing." Sizing: about 4 GB is needed, capped at the maximum ARC size — which makes a 1 TB log device 250× oversized. The spec that decides is power-loss protection: consumer SSDs "will happily report data as stable that a power cut then loses."</p>
+          <span class="post-meta">Nov 23, 2026 · 10 min read</span>
         </article>
       </div>
     </section>

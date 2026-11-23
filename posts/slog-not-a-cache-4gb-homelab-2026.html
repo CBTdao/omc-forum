@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your SLOG is not a cache, and the official size is 4 GB (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Your SLOG is not a cache, and the official size is 4 GB (2026) — DCF">
+  <meta name="twitter:description" content="OpenZFS docs are explicit: a SLOG is not a write cache, asynchronous writes never touch it, and a SLOG changes nothing if your workload has no sync writes. The sizing number is even blunter — about 4 GB is enough, capped at the maximum ARC size. Most homelab builds buy 250× more device than the job requires, and without power-loss protection they buy a faster lie.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="What a SLOG is and is not, verified against OpenZFS official docs and the zfs(4) man page: the ZIL exists on every pool and a log vdev only moves it to a dedicated device; asynchronous writes never touch the ZIL, so a SLOG without sync writes changes nothing. Sizing: OpenZFS says about 4 GB is needed and no workload benefits from more log space than the maximum ARC size (half of RAM on Linux, three-quarters on illumos), and the default 5-second transaction group timeout bounds how much sync data can pile up. Requirements: low latency plus power-loss protection, mirrored if you care, raidz unsupported. The buying mistake: a 1 TB NVMe used as a 4 GB log is 99.6% overprovisioning, which OpenZFS explicitly recommends — but as endurance headroom, not as capacity." />
+  <link rel="canonical" href="https://forum.omc.network/posts/slog-not-a-cache-4gb-homelab-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/slog-not-a-cache-4gb-homelab-2026" />
+  <meta property="og:title" content="Your SLOG is not a cache, and the official size is 4 GB (2026)">
+  <meta property="og:description" content="A SLOG moves the ZFS intent log to a dedicated device. It does not cache anything, it only helps synchronous writes, and OpenZFS puts the requirement at about 4 GB — capped by the maximum ARC size.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Your SLOG is not a cache, and the official size is 4 GB (2026)","datePublished":"2026-11-23","dateModified":"2026-11-23","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>Your SLOG is not a cache, and the official size is 4 GB (2026)</h1>
+        <p class="article-dek">A separate log device does not hold your data, does not speed up ordinary writes, and does nothing at all if your workload is asynchronous. OpenZFS states the sizing requirement plainly — about 4 GB, never more than the maximum ARC size — which makes the 1 TB NVMe in most homelab builds roughly 250× oversized. The one spec that actually matters is the one shoppers skip: power-loss protection.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 23, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>A SLOG is where the ZFS intent log lives, not a write cache.</b> Every pool already has a ZIL — a record of synchronous writes that must be durable before <code>fsync()</code> returns — and adding a <code>log</code> vdev only moves that record onto a dedicated device. The official OpenZFS documentation is blunt about the consequence: <b>"A SLOG is not a write cache. Asynchronous writes never touch the ZIL… If your workload has no synchronous writes, a SLOG changes nothing."</b> The sizing is equally blunt: <b>"Only about 4 GB is needed"</b>, and no workload benefits from more log space than the maximum ARC size — <b>half of system memory on Linux, three-quarters on illumos</b>. With the default <b>5-second</b> transaction-group timeout, 4 GB covers roughly <b>800 MB/s</b> of sustained synchronous writes (ours: 4 GB ÷ 5 s). The requirements that do bite: it must be a low-latency device <b>with power-loss protection</b> — OpenZFS notes that consumer SSDs without it "will happily report data as stable that a power cut then loses" — it can be mirrored but <b>raidz is not supported</b> for the intent log, and if it dies you lose at most the sync writes not yet committed to a transaction group.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>你的 SLOG 不是缓存，官方给的容量是 4 GB（2026）。<b>摘要：</b>SLOG 是 ZFS 意图日志（ZIL）的落脚点，不是写缓存。每个池本来就有 ZIL——记录「必须在 fsync() 返回前落盘」的同步写——加一个 log vdev 只是把这条记录搬到专用设备。OpenZFS 官方文档说得很直白：<b>「SLOG 不是写缓存。异步写根本不经过 ZIL……如果你的负载没有同步写，SLOG 什么都不会改变。」</b> 容量同样直白：<b>「只需要约 4 GB」</b>，而且任何负载都不会从「超过最大 ARC 容量」的日志空间中获益——Linux 上是内存的一半，illumos 上是四分之三。按默认 <b>5 秒</b>事务组提交间隔，4 GB 大约够 <b>800 MB/s</b> 的持续同步写（我们的算术：4 GB ÷ 5 秒）。真正会咬人的是另外两条：必须是低延迟且<b>带掉电保护（PLP）</b>的设备——官方原话是消费级 SSD「会乐于把数据报告为已稳定，然后一次断电就丢了」；可以镜像，但<b>不支持 raidz</b>；它坏了最多丢掉尚未提交到事务组的同步写。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>Why this post exists:</b> the homelab storage series has covered the failure modes (drive statistics, rebuild windows, scrub cadence) and the platform arithmetic (PCIe lanes, power, cooling). This one covers the write path, because it is where homelab buyers most reliably spend money on the wrong thing — a large, fast, unprotected NVMe drive bought to "speed up the pool", installed where it can do nothing for ordinary writes and, without power-loss protection, actively lies about durability. Everything below is checked against the official OpenZFS documentation set: the pool-structure page on caching and auxiliary devices, the workload-tuning page, and the <code>zfs(4)</code> man page for default values.</p>
+
+        <h2>What is a SLOG, in one sentence?</h2>
+        <p><b>A SLOG is a separate device that holds the ZFS Intent Log.</b> ZFS satisfies POSIX durability by writing synchronous operations — anything issued with <code>fsync()</code> or <code>O_SYNC</code> — to a log before acknowledging them. That log exists on <b>every</b> pool by default, allocated from ordinary blocks in the main pool; a <code>log</code> vdev does not create it, it only relocates it onto a dedicated device. On a pool of spinning disks, that relocation is the entire point: an fsync now waits for a small write to a low-latency device instead of waiting for a head to seek.</p>
+        <p>What it is not is a cache, and the distinction is not pedantic — it decides whether the device does anything at all. OpenZFS's own words: <b>"A SLOG is not a write cache. Asynchronous writes never touch the ZIL; they are aggregated in memory and written out at the next transaction group. If your workload has no synchronous writes, a SLOG changes nothing."</b> That sentence rules out the most common homelab expectation. Copying a 40 GB media library onto the pool is asynchronous: those writes gather in RAM and flush at the next transaction group, and a SLOG is not consulted. A SLOG only helps when something is <b>demanding a durability guarantee before it continues</b> — NFS servers honouring a client's commit, databases committing transactions, hypervisors flushing a guest's virtual disk.</p>
+
+        <h2>Why doesn't a bigger SLOG make writes faster?</h2>
+        <p>Because the log is drained constantly and only needs to hold what has not yet been committed to the pool. The transaction group — the unit of commit — defaults to at most <b>5 seconds</b>; the <code>zfs(4)</code> man page lists <code>zfs_txg_timeout=5</code> as the maximum TXG duration. So the peak amount of synchronous data the log must absorb is roughly <b>five seconds of your sustained sync-write rate</b>. At 100 MB/s that is 500 MB; at 500 MB/s it is 2.5 GB; at 1 GB/s it is 5 GB. Capacity beyond that window buys nothing, because the log is not where data waits — it is where data is <b>recorded as promised</b> while the pool catches up.</p>
+        <p>This is also why an oversized SLOG does not hurt, exactly — it just wastes the difference. A 1 TB drive partitioned to a 4 GB log leaves 99.6% of the device unused, and OpenZFS recommends leaving it that way on purpose: <b>the remainder becomes overprovisioning</b>, which raises steady-state random-write performance and endurance. The capacity you did not use is doing work; it just is not doing the work the product page advertised.</p>
+
+        <h2>How big should it actually be?</h2>
+        <p>OpenZFS answers this directly, and the answer is smaller than almost anyone guesses: <b>"Only about 4 GB is needed, so the rest can be left as overprovisioned storage. The choice of 4 GB is somewhat arbitrary. Most systems do not write anything close to 4 GB to ZIL between transaction group commits."</b> The documentation then gives the ceiling: if a workload needs more, "make it no more than the maximum ARC size. Even under extreme workloads, ZFS will not benefit from more SLOG storage than the maximum ARC size" — which is <b>half of system memory on Linux</b> and <b>three-quarters on illumos</b>.</p>
+        <p>Two numbers fall out of that. First, the working range is roughly <b>4 GB to half your RAM</b>; on a 32 GB Linux box, that ceiling is 16 GB, and it is a ceiling rather than a target. Second, the arithmetic that connects the two rules: 4 GB ÷ 5 s = <b>800 MB/s</b> of sustained synchronous writes before the log window can overflow the recommended size. A homelab NFS server pushing 200 MB/s of sync traffic is using under a quarter of the recommended log, and a 4 GB partition on any NVMe is already generous. The 1 TB drive in the shopping cart is not a better SLOG; it is the same SLOG with 996 GB of spare area.</p>
+
+        <h2>What happens when the log device dies?</h2>
+        <p>Less than people fear, and more than they plan for. A failed log device does not corrupt the pool — ZFS falls back and keeps the intent log where it always was, inside the pool. What you lose is the <b>synchronous writes that were recorded in the log but not yet committed to a transaction group</b>: at most the last few seconds, and only those operations that had been acknowledged as durable. That is a real data-loss window for a database and an irrelevant one for a media server, which is precisely why the decision should be made per workload rather than per build.</p>
+        <p>The redundancy options are narrower than for data vdevs. OpenZFS: <b>"Multiple log devices load-balance and can be mirrored; raidz is not supported for the intent log."</b> So the only protection is a <b>mirror</b> of two log devices, and no parity option exists. If you care about the window, mirror it; if you do not, a single device is a defensible choice and an honest one. What is not defensible is a single consumer drive with a volatile write cache, which brings us to the only spec that decides whether the device helps or hurts.</p>
+
+        <h2>Which homelab workloads actually benefit?</h2>
+        <p>The official guidance names the beneficiaries and the precondition in one sentence: <b>"If your workload involves fsync or O_SYNC and your pool is backed by mechanical storage, consider adding one or more SLOG devices."</b> Both halves matter. No fsync means no ZIL activity, so no benefit. And if the pool is already all-flash, the latency gap a SLOG closes largely disappears — you are adding a device to optimise a wait that is already short. The documented typical cases are <b>NFS servers, databases, and VM hosts with sync-heavy guests</b>, which maps neatly onto the three things homelabs actually run: a NAS exporting to other machines, a database container, and Proxmox or ESXi with guests that flush.</p>
+        <p>Equally important is what the dataset properties let you do instead of buying hardware. <code>sync=disabled</code> skips the ZIL entirely, trading recent-write durability for speed — appropriate for a scratch dataset, catastrophic for a database. <code>logbias=throughput</code> bypasses the log devices for a dataset, which OpenZFS recommends specifically to "stop ZIL from writing twice" for database data files. Both are free, both are reversible, and both change the answer to "do I need a SLOG" more than any drive purchase will.</p>
+
+        <h2>What should you buy in 2026?</h2>
+        <p><b>Power-loss protection first, capacity never.</b> OpenZFS's requirement is a "low-latency device with power-loss protection", followed by a warning worth quoting in full because it describes a failure mode that is invisible until it matters: <b>"Consumer SSDs without it will happily report data as stable that a power cut then loses."</b> A drive with a volatile write cache can acknowledge a flush it has not completed; the pool believes the sync write is durable, the SLOG believes it has done its job, and the power cut decides otherwise. That is worse than having no SLOG at all, because without one the write is waiting on the pool's own media.</p>
+        <p>The hardware landscape shifted in a way the docs acknowledge: <b>Optane and other 3D XPoint SSDs "remain the best SLOG devices, but they are no longer manufactured"</b>. The replacement path OpenZFS describes is a NAND SSD with <b>overprovisioned spare area</b> to raise IOPS and endurance — another reason the 4 GB partition on a larger drive is the intended configuration rather than a compromise. And the interface matters less than the spec sheet: a SATA SSD with PLP and consistent latency beats a PCIe 5.0 drive with a volatile cache, because the SLOG's job is to answer "is it on disk?" quickly and truthfully, not to move bulk data.</p>
+        <p>If you want the shortest version: partition 4 GB for the log, leave the rest as overprovisioning, mirror it only if the workload's data loss window matters, and verify the drive actually has power-loss protection before it goes in the case. Then run the test that settles the entire question — measure fsync latency with and without the log device on your real workload. If the pool is all-flash, or the workload is asynchronous, the measurement will show no change, and the correct number of SLOG devices is zero.</p>
+      </div>
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>A SLOG relocates the ZIL; it does not cache anything.</b> Every pool already has an intent log — a <code>log</code> vdev only moves it to a dedicated device (OpenZFS docs).</li>
+          <li><b>No sync writes, no benefit.</b> "Asynchronous writes never touch the ZIL… If your workload has no synchronous writes, a SLOG changes nothing" — the official sentence that rules out most homelab use cases.</li>
+          <li><b>The official size is about 4 GB.</b> Capped at the maximum ARC size (half of RAM on Linux, three-quarters on illumos); 4 GB ÷ the default 5-second TXG timeout covers roughly 800 MB/s of sustained sync writes (ours).</li>
+          <li><b>Power-loss protection is the spec that decides.</b> Consumer SSDs without it "will happily report data as stable that a power cut then loses" — a false durability guarantee is worse than no log device.</li>
+          <li><b>Mirror is the only redundancy; raidz is not supported</b> for the intent log. A failed log device loses at most the uncommitted sync writes, not the pool.</li>
+          <li><b>Try the free knobs before buying hardware:</b> <code>sync=disabled</code> for scratch datasets and <code>logbias=throughput</code> on database data files both change the requirement more than a bigger drive does.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/zfs-scrub-threshold-homelab-2026"><i data-i18n="pager.prev">Previous</i>Your weekly scrub schedule is really a 35-day scrub schedule (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
