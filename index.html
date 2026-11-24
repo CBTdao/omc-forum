@@ -312,6 +312,12 @@
           <p class="post-dek">Q3 2026: Alphabet $51.4B capex (FCF −$9.1B), Amazon $75.9B net (TTM FCF −$42.4B), Microsoft ~$45B (FCF +$18.6B), Meta $34.9B (FCF −$2.1B) — about $207B on four different definitions. Microsoft's 8% guidance cut came from extending building lives 15→25 years, which moved leases out of capex; spending didn't fall. Long-term debt at three of them rose $170.9B→$379.1B in nine months.</p>
           <span class="post-meta">Nov 23, 2026 · 13 min read</span>
         </article>
+        <article class="post-card">
+          <span class="chip deep">Deep Dive</span>
+          <b><a href="/posts/amd-server-cpu-share-record-q3-2026">AMD's record 35.5% server CPU share came with its slowest quarter of gains (2026)</a></b>
+          <p class="post-dek">Q3 2026: server CPU units +20% YoY, the fastest in five years (Mercury Research, 5+ relays; JPR counts 8.13M datacenter units). AMD hit a record 35.5% unit share — yet gained only 0.4 points QoQ in the core EPYC-vs-Xeon SP segment, its smallest gain in a year. Intel's official filing: DCAI +78% on ASPs +54% and units +10%; AMD's: record $8.5B Data Center revenue, +97%, bundled with MI450 GPUs. Both winners are supply-limited, not demand-limited.</p>
+          <span class="post-meta">Nov 24, 2026 · 12 min read</span>
+        </article>
       </div>
     </section>
 
@@ -549,6 +555,12 @@
           <b><a href="/posts/slog-not-a-cache-4gb-homelab-2026">Your SLOG is not a cache, and the official size is 4 GB (2026)</a></b>
           <p class="post-dek">OpenZFS is blunt: a SLOG is not a write cache, asynchronous writes never touch the ZIL, and "if your workload has no synchronous writes, a SLOG changes nothing." Sizing: about 4 GB is needed, capped at the maximum ARC size — which makes a 1 TB log device 250× oversized. The spec that decides is power-loss protection: consumer SSDs "will happily report data as stable that a power cut then loses."</p>
           <span class="post-meta">Nov 23, 2026 · 10 min read</span>
+        </article>
+        <article class="post-card">
+          <span class="chip lab">Homelab</span>
+          <b><a href="/posts/pbs-prune-not-delete-two-gc-runs-2026">Prune is not delete: Proxmox Backup Server frees space only after two GC runs (2026)</a></b>
+          <p class="post-dek">The official PBS documentation is explicit: prune removes only snapshot metadata, and GC never touches chunks inside a 24h5m grace period — a cutoff the docs derive from relatime mounts. Unreferenced chunks are "marked for deletion on the next garbage collection run and removed by a subsequent run": two complete GC runs are the structural minimum, and weekly scheduling is the official recommendation.</p>
+          <span class="post-meta">Nov 24, 2026 · 10 min read</span>
         </article>
       </div>
     </section>

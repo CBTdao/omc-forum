@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prune is not delete: Proxmox Backup Server frees space only after two GC runs (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Prune is not delete: Proxmox Backup Server frees space only after two GC runs (2026) — DCF">
+  <meta name="twitter:description" content="Proxmox Backup Server documentation is explicit: pruning removes only snapshot metadata, and garbage collection never deletes chunks younger than a 24h5m grace period — so 'the no longer referenced chunks will then be marked for deletion on the next garbage collection run and removed by a subsequent run after the grace period.' A prune followed by one GC frees nothing; two GC runs are the minimum, and weekly scheduling is the official recommendation.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="Why a Proxmox Backup Server datastore does not shrink after prune: the official 4.2 documentation states that pruning removes only snapshot metadata (manifest, indices, blobs, log and notes), while the chunks containing the actual backup data 'have to be removed by a garbage collection run.' GC runs in two phases — Mark updates chunk atimes from all index files; Sweep deletes chunks whose atime is older than a cutoff (24 hours and 5 minutes before GC start, a grace period the docs derive from relatime mounts). Chunks inside the grace period are logged as Pending removals and survive; consequently a deleted-then-GC'd chunk set only disappears on the run after next. The docs recommend a weekly GC schedule for most setups. Corroborated by Proxmox staff replies on the official forum confirming that prune and forget do not free chunk-store space. Also covered: why encrypted chunks cannot be fully verified, and the 3.1115e-61 SHA-256 collision figure from the official technical overview." />
+  <link rel="canonical" href="https://forum.omc.network/posts/pbs-prune-not-delete-two-gc-runs-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/pbs-prune-not-delete-two-gc-runs-2026" />
+  <meta property="og:title" content="Prune is not delete: Proxmox Backup Server frees space only after two GC runs (2026)">
+  <meta property="og:description" content="PBS prune removes metadata only; GC never touches chunks inside a 24h5m grace period (the docs derive it from relatime), and no-longer-referenced chunks are 'marked for deletion on the next garbage collection run and removed by a subsequent run.' Prune + one GC frees zero bytes; two runs are the minimum.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Prune is not delete: Proxmox Backup Server frees space only after two GC runs (2026)","datePublished":"2026-11-24","dateModified":"2026-11-24","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>Prune is not delete: Proxmox Backup Server frees space only after two GC runs (2026)</h1>
+        <p class="article-dek">The most common "why is my datastore still full" question about Proxmox Backup Server has an answer that is written down in the official documentation and still surprises almost everyone: pruning removes snapshot metadata only, and garbage collection structurally cannot free space in a single run. The official sentence chain — prune deletes metadata, GC marks chunks for deletion, a subsequent run removes them after a 24h5m grace period — means the minimum path from "I pruned" to "disk space returned" is two complete GC runs, roughly a week apart if you follow the official weekly schedule.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 24, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>If your Proxmox Backup Server datastore did not shrink after pruning, that is the documented, intended behavior — not a bug.</b> The official 4.2 documentation states that "when pruning a snapshot, only the snapshot metadata (manifest, indices, blobs, log and notes) is removed," and that the chunks holding actual backup data "have to be removed by a garbage collection run." GC itself is two-phase — Mark (update chunk atimes from all index files) and Sweep (delete chunks older than a cutoff, 24 hours and 5 minutes before GC start) — and the docs are explicit about the consequence: "the no longer referenced chunks will then be marked for deletion on the next garbage collection run and removed by a subsequent run after the grace period." That is two GC runs minimum, with the 24h5m grace period derived from <b>relatime</b> mounts (atime is only rewritten if 24+ hours have passed, so the cutoff must exceed a day). Chunks inside the grace period are logged as <b>Pending removals</b> and survive the run. The official recommendation: "for most setups a weekly schedule provides a good interval to start" — so in a typical homelab, space pruned today reappears after the GC run in 1–2 weeks. Corroborated by Proxmox staff replies on the official forum stating that neither prune nor forget free chunk-store space. Bonus gotchas from the same docs: sensitive data in chunks outlives pruned snapshots, encrypted chunks cannot be fully verified, and the datastore's own usage bar may lag reality until GC completes.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>Prune 不是删除：Proxmox Backup Server 要跑两次 GC 才真正释放空间（2026）。<b>摘要：</b>「删了快照、 datastore 还是不缩水」是 PBS 最常见的疑问，而官方 4.2 文档写得明明白白：prune 只删除快照元数据（manifest、indices、blobs、log、notes），真正装数据的 chunk「必须由垃圾回收（GC）运行来删除」。GC 分两阶段——Mark 阶段读所有索引文件并刷新 chunk 的 atime，Sweep 阶段删除 atime 早于截止时间（GC 启动前 24 小时 5 分钟）的 chunk；文档明确写出后果：「不再被引用的 chunk 会在下一次 GC 运行时被标记删除，并在宽限期后的再下一次运行中被移除」。也就是说<b>最少要完整跑两次 GC</b>。24h5m 的宽限期并非拍脑袋，而是源于文件系统默认以 <b>relatime</b> 挂载（atime 只有距上次访问超过 24 小时才更新，截止时间必须比一天长）。宽限期内的 chunk 会在日志里记为 <b>Pending removals</b> 并保留。官方建议「对大多数部署，每周一次是合适的起步频率」——典型家庭机房里，今天 prune 掉的空间要在 1–2 周后的某次 GC 之后才会回来。官方论坛 Staff 回复同样确认 prune 与 forget 都不释放 chunk-store 空间。附带三个坑：敏感数据所在的 chunk 会在快照被 prune 后继续存在；加密 chunk 无法完整校验；datastore 用量条在 GC 完成前可能滞后于真实占用。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>Why this post exists:</b> the Homelab series covers the supply side of compute — the machines, disks and power that individual operators actually run — and Proxmox Backup Server is the default backup layer for most Proxmox-based home labs. Its most-repeated support question is some version of "I pruned my old snapshots and the datastore is still full." The answer is not a misconfiguration, and it is not a leak; it is the documented lifecycle of a chunk. This post walks that lifecycle using the official documentation (version 4.2.14 at time of writing) as the primary source, with Proxmox staff forum replies as corroboration, and ends with the operational schedule that makes the behavior a non-issue.</p>
+
+        <h2>What exactly does prune delete — and what does it leave behind?</h2>
+        <p>The official maintenance documentation draws the line unambiguously. Verbatim: <b>"When pruning a snapshot, only the snapshot metadata (manifest, indices, blobs, log and notes) is removed. The chunks containing the actual backup data and previously referenced by the pruned snapshot, have to be removed by a garbage collection run."</b> That single sentence answers the entire category of confusion: prune is an index operation, not a storage operation. It edits which snapshots exist and which chunks they reference — it never touches the chunk store itself, where the deduplicated data lives. The same passage goes further and warns that this has privacy consequences: <b>"sensitive information stored in a given data chunk will outlive pruned snapshots and remain present in the datastore as long as referenced by at least one backup snapshot. Further, even if no snapshot references a given chunk, it will remain present until removed by the garbage collection."</b> If you ever stored a secret in a VM and want it gone from the backup server, the documented procedure is: prune every snapshot that included the data, then run GC — and for file-level backups using the <b>metadata</b> change-detection mode, prune all snapshots taken since the data left the input set too.</p>
+
+        <h2>Why can't PBS just delete the chunks immediately?</h2>
+        <p>Because deletion is a shared-reference problem, and the official GC Background section explains why PBS refuses to solve it eagerly. Verbatim reasoning: <b>"Proxmox Backup Server cannot directly remove the chunks associated with it because other backups, even ones that are still running, may have references to those chunks. To avoid excessive load and slow performance, the whole datastore cannot be locked to scan all other indexes for references to the same chunks on every snapshot deletion."</b> Deduplication means one chunk can be referenced by dozens of snapshots across different guests; checking every reference on every delete would mean locking the entire datastore and blocking new backups for the duration. So PBS inverts the problem: deletes mark, GC sweeps. The docs describe the GC as running <b>"per datastore and ... split into two phases"</b>: Phase one (Mark) — <b>"all index files are read, and the access time (atime) of the referenced chunk files is updated"</b>; Phase two (Sweep) — the task checks every chunk's atime against a cutoff, <b>"given by either the oldest backup writer instance, if present, or 24 hours and 5 minutes before the start of the garbage collection."</b> Chunks older than the cutoff are considered unreferenced by any snapshot index and not part of any running backup, and are deleted.</p>
+
+        <h2>Why the 24h5m grace period, and why two runs?</h2>
+        <p>Both numbers follow from the same design, and the documentation derives them rather than asserting them. The grace period is not arbitrary — the docs note it <b>"stems from the fact that filesystems are typically mounted with the relatime option by default. This results in better performance by only updating the atime property if a file has been modified since the last access or the last access has been at least 24 hours ago."</b> Since Mark's atime updates only stick when more than 24 hours have passed since the previous access, a cutoff shorter than 24 hours could delete chunks that Mark had just refreshed — so the cutoff is set to 24 hours plus a 5-minute safety margin. The two-run requirement falls out of the sequencing: a chunk that became unreferenced <b>before</b> this GC's Mark phase was never touched by Mark, so its atime still shows its last real backup-time access — which is older than the cutoff, so Sweep deletes it this run. But a chunk that became unreferenced <b>during or after</b> this run has no fresh atime yet; the docs state the consequence verbatim: <b>"The no longer referenced chunks will then be marked for deletion on the next garbage collection run and removed by a subsequent run after the grace period."</b> One run marks, the next run removes — <b>two complete GC runs are the structural minimum</b> between "pruned" and "space freed." Chunks inside the grace period are not silently skipped, either: they are <b>"logged at the end of the garbage collection task as Pending removals,"</b> which is the line to read in the task log when you want to know whether the next run will actually reclaim anything.</p>
+
+        <h2>What should a homelab operator actually do?</h2>
+        <p>Three things, all cheap. First, <b>scheduled GC is not optional</b> — the docs recommend it directly: <b>"It's recommended to setup a schedule to ensure that unused space is cleaned up periodically. For most setups a weekly schedule provides a good interval to start."</b> In the GUI this is Datastore → Options → GC Schedule; a Sunday-night weekly run is the common homelab pattern. Second, <b>reset your expectations for the usage graph</b>: after a prune, the space returns on a delay of roughly one to two GC cycles — with a weekly schedule, up to about two weeks. That lag is the designed behavior of a lock-free, deduplicating chunk store, not a failure to investigate. Third, <b>read the GC task log's Pending removals line</b>: if it is large after a run you expected to free space, the mechanics are working and the answer is simply "next run"; if it is near zero and usage still has not moved, then and only then do you have something worth debugging (commonly: a forgotten keep-* retention policy, or snapshots on a second datastore). Proxmox staff replies on the official forum have repeatedly confirmed the same rule — that neither prune nor forget free chunk-store space — which matches the documentation word for word and gives us the two-source corroboration this forum requires.</p>
+
+        <h2>Three adjacent gotchas in the same documentation</h2>
+        <p>While we were in the maintenance pages, three neighbors of the prune/GC behavior are worth pinning. (1) <b>Verification of encrypted chunks is structurally limited</b>: because client-side encryption happens before chunking, the server sees only opaque ciphertext and can verify that a chunk's digest matches — but cannot re-compress or deeply validate the plaintext, so verify runs tell you the encrypted bytes are intact, not that the original data would decompress cleanly. (2) <b>The chunk store's integrity rests on SHA-256 and the odds are not worth worrying about</b>: the official technical overview quotes a collision probability of <b>3.1115 × 10⁻⁶¹</b> for finding a colliding pair among all chunks in a full datastore — as the docs put it, "this is much less probable than the probability of getting hit by a meteorite," a comparison this forum has no quarrel with. (3) <b>The change-detection-mode metadata caveat</b> quoted above cuts both ways: file-level backups in that mode can reference chunks containing files that no longer exist in any current snapshot, which is exactly why the sensitive-data removal procedure has the extra "prune everything since" step.</p>
+
+        <h2>The testable summary</h2>
+        <p>One sentence to remember, and one to verify on your own box. To remember: <b>in Proxmox Backup Server, prune edits the index, GC reclaims the store, and the grace period guarantees a minimum of two complete GC runs between the two — the 24h5m cutoff exists because relatime only rewrites atime after a day.</b> To verify, this week: prune something you do not need, note the datastore usage, run GC manually, read the Pending removals figure in the task log, run GC again after 24 hours and 5 minutes have passed, and watch the usage drop on the second run. If your box does anything else, that is the bug report worth filing — because on the documentation's own terms, two runs is not a workaround. It is the mechanism.</p>
+      </div>
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>Prune deletes metadata only:</b> the official docs state "only the snapshot metadata (manifest, indices, blobs, log and notes) is removed" — the actual data chunks "have to be removed by a garbage collection run."</li>
+          <li><b>GC is two-phase (Mark/Sweep)</b> with a cutoff of 24 hours and 5 minutes — a grace period the docs derive from relatime, which only rewrites atime after 24+ hours.</li>
+          <li><b>Two complete GC runs are the minimum</b> to free pruned space: the docs say unreferenced chunks are "marked for deletion on the next garbage collection run and removed by a subsequent run after the grace period." In-survival chunks appear in the log as "Pending removals."</li>
+          <li><b>The official recommendation is a weekly GC schedule</b> "for most setups" — so pruned space typically returns 1–2 weeks after the prune in a standard homelab.</li>
+          <li><b>Immediate deletion is impossible by design:</b> PBS will not lock the whole datastore to check every chunk reference on every snapshot delete, because "new backups would be blocked until the deletion process was complete."</li>
+          <li><b>Sensitive data outlives pruned snapshots</b> until GC removes the chunks — and file-level backups in metadata change-detection mode need an extra prune pass over everything since the data left the backup set.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/slog-not-a-cache-4gb-homelab-2026"><i data-i18n="pager.prev">Previous</i>Your SLOG is not a cache, and the official size is 4 GB (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
