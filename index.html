@@ -318,6 +318,12 @@
           <p class="post-dek">Q3 2026: server CPU units +20% YoY, the fastest in five years (Mercury Research, 5+ relays; JPR counts 8.13M datacenter units). AMD hit a record 35.5% unit share — yet gained only 0.4 points QoQ in the core EPYC-vs-Xeon SP segment, its smallest gain in a year. Intel's official filing: DCAI +78% on ASPs +54% and units +10%; AMD's: record $8.5B Data Center revenue, +97%, bundled with MI450 GPUs. Both winners are supply-limited, not demand-limited.</p>
           <span class="post-meta">Nov 24, 2026 · 12 min read</span>
         </article>
+        <article class="post-card">
+          <span class="chip deep">Deep Dive</span>
+          <b><a href="/posts/ai-prompt-energy-measurement-boundary-2026">How much electricity does one AI prompt use? Every answer uses a different ruler (2026)</a></b>
+          <p class="post-dek">Google's August 2025 methodology paper measures the median Gemini Apps text prompt at 0.24 Wh / 0.03 gCO2e / 0.26 mL water — and its own accelerator-only boundary gives 0.10 Wh, a 2.4× spread inside one company. Altman says 0.34 Wh for ChatGPT; Epoch modeled 0.3; EPRI's famous 2.9 Wh assumed long answers on loaded A100s; Mistral's ISO lifecycle assessment puts water at 173× Google's figure. Our arithmetic: Google's 33× one-year gain implies a ~8 Wh median in May 2024 — the ruler moved, not the physics.</p>
+          <span class="post-meta">Nov 25, 2026 · 12 min read</span>
+        </article>
       </div>
     </section>
 
@@ -561,6 +567,12 @@
           <b><a href="/posts/pbs-prune-not-delete-two-gc-runs-2026">Prune is not delete: Proxmox Backup Server frees space only after two GC runs (2026)</a></b>
           <p class="post-dek">The official PBS documentation is explicit: prune removes only snapshot metadata, and GC never touches chunks inside a 24h5m grace period — a cutoff the docs derive from relatime mounts. Unreferenced chunks are "marked for deletion on the next garbage collection run and removed by a subsequent run": two complete GC runs are the structural minimum, and weekly scheduling is the official recommendation.</p>
           <span class="post-meta">Nov 24, 2026 · 10 min read</span>
+        </article>
+        <article class="post-card">
+          <span class="chip lab">Homelab</span>
+          <b><a href="/posts/zfs-ecc-not-required-official-2026">Does ZFS require ECC RAM? The official docs say "not really a requirement" (2026)</a></b>
+          <p class="post-dek">The OpenZFS FAQ's exact words: "This isn't really a requirement, but it's highly recommended." The wiki's Hardware page adds the mechanism forum arguments skip: a bit flip before the checksum is calculated is written to disk silently — the one window ZFS cannot see and only ECC covers. TrueNAS's own guide: many systems run daily without ECC; RAM failures cluster in the first three months, so test all RAM before deployment.</p>
+          <span class="post-meta">Nov 25, 2026 · 10 min read</span>
         </article>
       </div>
     </section>

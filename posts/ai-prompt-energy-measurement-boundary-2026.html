@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How much electricity does one AI prompt use? Every answer uses a different ruler (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="How much electricity does one AI prompt use? Every answer uses a different ruler (2026) — DCF">
+  <meta name="twitter:description" content="Google measured the median Gemini Apps text prompt at 0.24 Wh (August 2025) — but on its own narrow, accelerator-only boundary the same prompt is 0.10 Wh, and on Mistral's lifecycle boundary the comparable water figure is 173× larger. From EPRI's 2.9 Wh to reasoning models above 33 Wh, every per-prompt number is a boundary choice, not a fact of nature.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="How much electricity does a single AI text prompt consume? Every published answer measures a different boundary. Google's August 2025 methodology paper measures the median Gemini Apps text prompt (May 2025) at 0.24 Wh of energy, 0.03 gCO2e and 0.26 mL of water — while Google's own accelerator-only calculation of the same workload gives 0.10 Wh, a 2.4× spread the company itself publishes. Sam Altman wrote in June 2025 that an average ChatGPT query uses about 0.34 Wh, without a published methodology; Epoch AI independently modeled a typical GPT-4o query at roughly 0.3 Wh the same February. The famous older figure — about 2.9 Wh, roughly ten times a web search, from EPRI's 2024 Powering Intelligence report — assumed long answers on fully loaded servers. Mistral's July 2025 lifecycle assessment (with Carbone 4 and ADEME, under ISO 14040/44) puts a 400-token Le Chat response at about 1.14 gCO2e and 45 mL of water — 173× Google's water number, because it counts hardware manufacturing and upstream impacts. Jegham et al. (2025) measured reasoning models exceeding 33 Wh on long prompts. Our arithmetic: Google's 33× one-year efficiency gain implies a May 2024 median of roughly 8 Wh per prompt — the old estimates were roughly right for their time; the ruler changed, not the physics." />
+  <link rel="canonical" href="https://forum.omc.network/posts/ai-prompt-energy-measurement-boundary-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/ai-prompt-energy-measurement-boundary-2026" />
+  <meta property="og:title" content="How much electricity does one AI prompt use? Every answer uses a different ruler (2026)">
+  <meta property="og:description" content="Google measures the median Gemini text prompt at 0.24 Wh (comprehensive) and 0.10 Wh (accelerator-only) — a 2.4× spread inside one company. Altman says 0.34 Wh for ChatGPT; Epoch modeled 0.3 Wh; EPRI's old figure was 2.9 Wh; Mistral's lifecycle water number is 173× Google's. Every per-prompt energy number is a measurement-boundary choice.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"How much electricity does one AI prompt use? Every answer uses a different ruler (2026)","datePublished":"2026-11-25","dateModified":"2026-11-25","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip deep">Deep Dive</span>
+        <h1>How much electricity does one AI prompt use? Every answer uses a different ruler (2026)</h1>
+        <p class="article-dek">Google measured the median Gemini Apps text prompt at 0.24 watt-hours. Altman puts an average ChatGPT query at 0.34. Epoch modeled 0.3. EPRI's famous older figure was 2.9. Mistral's lifecycle water number is 173 times Google's. None of these numbers are wrong, and none are comparable — each one draws the measurement boundary somewhere else, and the boundary, not the physics, is what moves the digit in front of the decimal point.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 25, 2026</span><span>12 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>"How much electricity does one AI query use" has no single answer, because every published figure measures a different boundary.</b> Google's August 2025 methodology paper measures the <b>median Gemini Apps text prompt (May 2025) at 0.24 Wh of energy, 0.03 gCO2e and 0.26 mL of water</b> — and Google itself publishes that counting only active accelerator power, as older estimates did, gives <b>0.10 Wh</b>, a 2.4× gap between two boundaries in one company. Sam Altman wrote in June 2025 that an <b>average ChatGPT query uses about 0.34 Wh</b>, without a published methodology; Epoch AI had independently modeled <b>~0.3 Wh for a typical GPT-4o query</b> in February 2025. The most-quoted older figure — <b>about 2.9 Wh, ten times a web search, from EPRI's 2024 report</b> — assumed long answers on fully loaded hardware. Mistral's July 2025 lifecycle assessment (with Carbone 4 and ADEME, ISO 14040/44) puts a 400-token Le Chat response at <b>1.14 gCO2e and 45 mL of water — 173× Google's water figure</b> on a boundary that includes hardware manufacturing. Jegham et al. 2025 measured <b>reasoning models exceeding 33 Wh on long prompts</b>. Our arithmetic: Google's own 33× one-year efficiency claim implies a May 2024 median near 8 Wh — <b>the old estimates were roughly right for their moment; the ruler moved</b>.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>一次 AI 提示词到底用多少电？每个答案用的尺子都不一样（2026）。<b>摘要：</b>「一次 AI 查询用多少电」没有单一答案——每个已发表数字量的边界都不一样。Google 2025 年 8 月的方法论论文测得 <b>Gemini 应用中文本提示的中位数能耗为 0.24 Wh、0.03 克 CO2 当量、0.26 毫升水</b>，而 Google 自己同时公布：只算活跃加速器功耗（许多旧估算的做法）是 <b>0.10 Wh</b>——同一家公司两套口径差 2.4 倍。Altman 2025 年 6 月称 <b>ChatGPT 平均每次查询约 0.34 Wh</b>（未公布方法论）；Epoch AI 当年 2 月独立建模 GPT-4o 典型查询约 <b>0.3 Wh</b>。流传最广的旧数字——<b>EPRI 2024 年报告的约 2.9 Wh（约为一次网页搜索的 10 倍）</b>——假设的是满载服务器上的长回答。Mistral 2025 年 7 月与 Carbone 4、ADEME 合作、按 ISO 14040/44 做的全生命周期评估：Le Chat 一次 400 token 回复约 <b>1.14 克 CO2 当量、45 毫升水——水是 Google 口径的 173 倍</b>，因为边界包含硬件制造。Jegham 等人 2025 年测得<b>推理模型长提示超过 33 Wh</b>。我们的算术：Google 自己「一年能效提升 33 倍」的说法反推 2024 年 5 月中位数约 8 Wh——<b>旧估算对它们的当时大致是对的；动的是尺子，不是物理</b>。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>Why this post exists:</b> the forum has covered AI's electricity at every scale except the smallest one — queue positions for gas turbines, take-or-pay capacity auctions, BESS shifting load behind the meter, even the water footprint of the power plants supplying it all. This post goes all the way down to the unit everything above is ultimately denominated in: <b>the single prompt</b>. It is also the layer with the worst signal-to-noise on the internet, because the headline numbers disagree by two orders of magnitude and most citations don't say which boundary they're quoting. All figures below are dated, attributed, and — where two sources conflict — presented as boundaries rather than reconciled into a false average.</p>
+
+        <h2>What did Google actually measure, and what boundary did it draw?</h2>
+        <p>Google published its methodology and production measurements on August 21, 2025, in a cloud blog post and an accompanying technical report (authored by its AI energy and emissions researchers). The headline numbers: <b>the median Gemini Apps text prompt, measured in May 2025, used 0.24 watt-hours of energy, emitted 0.03 grams of CO2-equivalent, and consumed 0.26 milliliters of water — about five drops</b>. The company's own comparison: that energy is equivalent to <b>watching television for less than nine seconds</b>. Over a recent twelve-month window, Google reports the median prompt's energy fell <b>33-fold</b> and its carbon footprint fell <b>44-fold</b>, while response quality improved.</p>
+        <p>The boundary is the interesting part. The methodology explicitly includes four things many older estimates left out: <b>idle machines</b> (provisioned capacity held ready for traffic spikes), <b>host CPU and RAM</b> (not just the TPUs), <b>data center overhead</b> via PUE (cooling and power distribution), and <b>on-site cooling water</b>. And Google quantifies the cost of that completeness itself: computing the same median prompt with the narrow method — <b>active accelerator power only — gives 0.10 Wh, 0.02 gCO2e and 0.12 mL</b>. In its own words, the narrow method "is an optimistic scenario at best and substantially underestimates the real operational footprint." So the cleanest published measurement-boundary experiment in this whole debate lives inside one vendor: <b>same fleet, same prompt, same month, 2.4× apart</b> depending on what you count. The scope also has edges worth stating: the study excludes training, the network to the user, and end-user devices.</p>
+
+        <h2>Why do OpenAI's, Epoch's and EPRI's numbers disagree with Google's?</h2>
+        <p>Because each is a different ruler, and the differences are definitional. <b>Sam Altman</b>, in his June 2025 essay "The Gentle Singularity," wrote that <b>an average ChatGPT query uses about 0.34 Wh</b> — a figure CBS News and others relayed alongside Google's, and the only number in this set with no published methodology behind it. <b>Epoch AI</b>, in a February 2025 analysis, modeled a typical GPT-4o query at <b>roughly 0.3 Wh</b> from model size, token counts and H100 power draw — an independent estimate that lands near the company figures. The two company numbers and the independent model cluster around a third of a watt-hour for short text prompts on efficient, well-utilized production systems.</p>
+        <p>The famous older number sits far above that cluster for stated reasons. <b>EPRI's 2024 "Powering Intelligence" report</b> used <b>about 2.9 Wh</b> per ChatGPT query — the origin of the most-quoted statistic in the genre, "a ChatGPT query uses ten times the electricity of a Google search." The underlying assumptions, as dissected by later analyses including Epoch's: long answers (roughly 4,000 input and 2,000 output tokens), older A100-class hardware, servers at full load. In other words, the 2.9 Wh measured a heavier workload on less efficient equipment — a real configuration in 2023, not the modal one in 2026. Independent academic work now brackets both ends: <b>Jegham et al.'s 2025 "How Hungry is AI?" benchmark put a short GPT-4o prompt near 0.42 Wh</b>, and found <b>reasoning models such as o3 and DeepSeek-R1 exceeding 33 Wh on long prompts</b> — a spread of roughly two orders of magnitude within a single benchmark.</p>
+
+        <h2>Why is Mistral's water number 173 times Google's?</h2>
+        <p>Because it measures a different thing with a stricter standard. In July 2025, <b>Mistral AI published a full lifecycle assessment of Mistral Large 2, conducted with consultancy Carbone 4 and validated under ISO 14040/44 with France's environment agency ADEME</b> — the first frontier-model vendor to do so. Its headline: a <b>400-token response from the Le Chat assistant carries a marginal footprint of about 1.14 gCO2e and 45 milliliters of water</b>. Set the two water numbers side by side — Google's 0.26 mL, Mistral's 45 mL — and the ratio is <b>173× (our arithmetic)</b>. The gap is almost entirely boundary: Google counts water evaporated on-site for cooling; Mistral's LCA follows the ISO methodology upstream, counting impacts embedded in hardware manufacturing and the supply chain, and reports training plus 18 months of serving as a single lifecycle (about 20.4 kilotonnes CO2e and 281,000 cubic meters of water in total). Mistral's own framing is the honest one: the larger figure reflects "a wider boundary," not "a less efficient system."</p>
+        <p>The same boundary logic explains the academic criticism of Google's number. <b>Shaolei Ren</b>, a UC Riverside researcher whose water-footprint work CBS News cited alongside Google's announcement, pointed out that <b>Google's 0.26 mL counts only on-site cooling water and excludes the water consumed generating the electricity</b> — which, on Lawrence Berkeley National Laboratory's US data-center-average figure of about 4.5 liters per kWh, would add roughly another milliliter per prompt on that boundary alone (our arithmetic on LBNL's published ratio). Critics also flagged Google's market-based carbon accounting — netting purchased clean-energy certificates against emissions — versus location-based accounting that reflects the actual grid. Both criticisms are boundary claims, not error claims: Google's report states its scope explicitly.</p>
+
+        <h2>What does the arithmetic say that no single source will tell you?</h2>
+        <p>Three derivations, all ours and all labeled as such. <b>First, the old estimates were probably right for their year.</b> Google states the median prompt's energy fell 33-fold over a twelve-month window ending May 2025. Run that backwards: 0.24 Wh × 33 ≈ <b>7.9 Wh as the implied May 2024 median</b> — comfortably in EPRI's 2.9 Wh neighborhood for a 2023-24-era workload. The "AI uses ten times a Google search" talking point was likely true when it was written; the two company figures (0.24 and 0.34 Wh) have since crossed below the 0.3 Wh line that separates "ten searches" from "one search." <b>Second, the individual's bill is trivial and the fleet's bill is not.</b> A heavy user sending 100 prompts a day at Altman's 0.34 Wh consumes about <b>34 Wh daily — roughly 12 kWh a year, on the order of two dollars of electricity</b>. But OpenAI reported around 2.5 billion daily prompts in mid-2025 (widely relayed), and at 0.34 Wh that is roughly <b>850 MWh of electricity per day (our arithmetic)</b> — the output of a mid-sized power plant, continuously, for one product. <b>Third, the spread is the point.</b> From 0.3 Wh (a short GPT-4o query) to 33+ Wh (a reasoning model chewing a long prompt) is a hundredfold range inside one modality — which means any policy argument, procurement estimate or carbon claim built on "the per-query number" without a workload definition is built on sand.</p>
+
+        <h2>How should anyone actually use these numbers?</h2>
+        <p>Treat per-prompt energy the way an accountant treats estimated overhead: as a boundary-sensitive ratio, never a constant. For back-of-envelope fleet estimates, the defensible 2026 anchor is <b>a few tenths of a watt-hour for a short text prompt on an efficient production system</b> (three independent sources within 0.24–0.42), multiplied by your query count, then inflated for workload mix — reasoning and long-context prompts at tens of watt-hours per Jegham's measurements, images at several times text per the Luccioni et al. measurements of 2.9 Wh per image. For comparisons across vendors, insist on the boundary: does the number include idle capacity, host CPU, PUE, on-site water, upstream hardware? Google's own two-method table is the template every estimate should copy — <b>publish the narrow number and the comprehensive number together, and the reader can see the size of the definitional bet</b>. What the numbers do not yet support: any claim that "AI's electricity per query" is a single knowable quantity, or that any vendor's figure is directly comparable to any other's. For the individual user, the honest conclusion is the anticlimactic one — a year of heavy chatbot use costs less electricity than a single load of laundry, and the real energy story remains at the fleet, plant, and grid layers this forum usually covers.</p>
+      </div>
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>Google's official measurement (Aug 2025): median Gemini Apps text prompt = 0.24 Wh, 0.03 gCO2e, 0.26 mL water</b> (May 2025) — with idle machines, host CPU/RAM, PUE and on-site cooling water all included.</li>
+          <li><b>Google's own narrow method gives 0.10 Wh for the same prompt</b> — a 2.4× boundary gap published by the company itself; the study excludes training, networking, and end devices.</li>
+          <li><b>ChatGPT numbers: Altman says 0.34 Wh average (no methodology); Epoch AI modeled ~0.3 Wh for GPT-4o (Feb 2025)</b>; EPRI's famous 2.9 Wh (2024) assumed long answers on fully loaded A100s — a different workload, honestly measured.</li>
+          <li><b>Mistral's ISO-14040/44 lifecycle assessment (Jul 2025): 1.14 gCO2e and 45 mL water per 400-token response — 173× Google's water figure</b> on a boundary that includes hardware manufacturing; UC Riverside's Ren notes Google excludes power-plant water and uses market-based carbon accounting.</li>
+          <li><b>Workload dominates everything:</b> Jegham et al. 2025 — short GPT-4o ~0.42 Wh; reasoning models on long prompts exceed 33 Wh; a hundredfold range inside one benchmark.</li>
+          <li><b>Our arithmetic: Google's 33× gain implies a ~8 Wh median in May 2024</b> — the old "10× a search" claim was roughly true for its year; and 2.5B daily ChatGPT prompts at 0.34 Wh ≈ 850 MWh/day (ours) — trivial per user, a power plant in aggregate.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/water-footprint-power-plant-2026"><i data-i18n="pager.prev">Previous</i>The 12x water multiplier: 92% of a data center's water footprint sits at the power plant (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
