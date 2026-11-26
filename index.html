@@ -324,6 +324,12 @@
           <p class="post-dek">Google's August 2025 methodology paper measures the median Gemini Apps text prompt at 0.24 Wh / 0.03 gCO2e / 0.26 mL water — and its own accelerator-only boundary gives 0.10 Wh, a 2.4× spread inside one company. Altman says 0.34 Wh for ChatGPT; Epoch modeled 0.3; EPRI's famous 2.9 Wh assumed long answers on loaded A100s; Mistral's ISO lifecycle assessment puts water at 173× Google's figure. Our arithmetic: Google's 33× one-year gain implies a ~8 Wh median in May 2024 — the ruler moved, not the physics.</p>
           <span class="post-meta">Nov 25, 2026 · 12 min read</span>
         </article>
+        <article class="post-card">
+          <span class="chip deep">Deep Dive</span>
+          <b><a href="/posts/neocloud-interest-bill-coreweave-2026">A neocloud does not earn its growth, it borrows it: CoreWeave's $846M interest bill against $207M of operating income (2026)</a></b>
+          <p class="post-dek">Q3 2026 per the 8-K: revenue $3.661B, operating income $207M, net interest expense $846M, net loss $709M, adjusted EBITDA $2.256B, cash capex $9.441B, backlog $132.5B. Operating income is 4.1× smaller than the interest bill; adjusted operating income covers 45% of it; Q4's guided interest is 1.3–1.4× the quarter's implied operating profit. The backlog is 10.1 years of revenue, the debt is $46.9B against $4.0B of equity — and the unsecured market prices the next dollar near 15%.</p>
+          <span class="post-meta">Nov 26, 2026 · 12 min read</span>
+        </article>
       </div>
     </section>
 
@@ -573,6 +579,12 @@
           <b><a href="/posts/zfs-ecc-not-required-official-2026">Does ZFS require ECC RAM? The official docs say "not really a requirement" (2026)</a></b>
           <p class="post-dek">The OpenZFS FAQ's exact words: "This isn't really a requirement, but it's highly recommended." The wiki's Hardware page adds the mechanism forum arguments skip: a bit flip before the checksum is calculated is written to disk silently — the one window ZFS cannot see and only ECC covers. TrueNAS's own guide: many systems run daily without ECC; RAM failures cluster in the first three months, so test all RAM before deployment.</p>
           <span class="post-meta">Nov 25, 2026 · 10 min read</span>
+        </article>
+        <article class="post-card">
+          <span class="chip lab">Homelab</span>
+          <b><a href="/posts/zfs-ashift-4k-alignment-2026">Why ashift=12 is the one ZFS setting you cannot fix later (2026)</a></b>
+          <p class="post-dek">2^ashift is the smallest I/O a vdev will ever issue, and it is fixed at vdev creation. On a 512e drive — 4,096-byte physical sectors presenting 512 — the automatic calculation lands on ashift=9, so one 4 KB write becomes eight 512-byte writes, each of which can force a read-modify-write of a full physical sector. The official docs state the penalty in one sentence and admit ZFS trusts the drive's reported sector size; FreeBSD says use -o ashift=12 explicitly. The fix is a migration, so check zdb -C before the first byte.</p>
+          <span class="post-meta">Nov 26, 2026 · 10 min read</span>
         </article>
       </div>
     </section>

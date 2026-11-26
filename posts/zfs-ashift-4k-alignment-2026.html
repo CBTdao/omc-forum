@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why ashift=12 is the one ZFS setting you cannot fix later (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Why ashift=12 is the one ZFS setting you cannot fix later (2026)">
+  <meta name="twitter:description" content="ashift is the smallest I/O a vdev will ever issue — 2^ashift bytes — and it is fixed at vdev creation. On a 512e drive that reports 512-byte sectors while storing 4,096, an ashift of 9 turns every 4 KB write into eight 512-byte writes, each of which can force the drive to read, modify and rewrite a whole physical sector.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="ashift is ZFS's alignment shift: 2^ashift is the smallest I/O a vdev issues, it is set at vdev creation and immutable, and it is calculated from the sector size the drive reports. Drives that store 4,096-byte sectors while presenting 512 (512e) get ashift=9 unless you force it, and then a 4 KB write becomes eight 512-byte writes — each of which can trigger a read-modify-write of a full 4 KiB physical sector inside the drive. The OpenZFS docs state the penalty in one sentence and note that ZFS assumes the reported sector size is correct; the FreeBSD Handbook tells you to create such pools with an explicit -o ashift=12. The fix is a rebuild, so the check belongs before the first byte." />
+  <link rel="canonical" href="https://forum.omc.network/posts/zfs-ashift-4k-alignment-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/zfs-ashift-4k-alignment-2026" />
+  <meta property="og:title" content="Why ashift=12 is the one ZFS setting you cannot fix later (2026)">
+  <meta property="og:description" content="2^ashift is the smallest I/O a ZFS vdev will issue, it is chosen at vdev creation from the sector size the drive reports, and it cannot be changed afterwards. On a 512e drive the report says 512 while the platter uses 4,096 — and the official docs describe the penalty for getting it wrong in exactly one sentence.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Why ashift=12 is the one ZFS setting you cannot fix later (2026)","datePublished":"2026-11-26","dateModified":"2026-11-26","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>Why ashift=12 is the one ZFS setting you cannot fix later (2026)</h1>
+        <p class="article-dek">ashift is the alignment shift of a ZFS vdev: two to the power of ashift is the smallest I/O that vdev will ever issue, and it is decided once, at vdev creation, from the sector size the drive reports. Set it too small and every write gets chopped into pieces the hardware has to read back before it can change them. The official documentation says so in one sentence, and then says something most tuning guides skip: ZFS assumes the reported sector size is correct. On the drives most homelabs actually buy, that assumption is wrong by a factor of eight.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 26, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>ashift is ZFS's alignment shift, and 2^ashift is the smallest possible I/O on a vdev — it is set at vdev creation and it is immutable.</b> The OpenZFS workload-tuning documentation states both facts and then the mechanism: <b>"Configuring ashift correctly is important because partial sector writes incur a penalty where the sector must be read into a buffer before it can be written."</b> The same page adds the assumption that makes this a homelab problem rather than a theoretical one — <b>"ZFS makes the implicit assumption that the sector size reported by drives is correct"</b> — and notes that flash media wants <b>ashift=12 (4 KiB sectors) or 13 (8 KiB sectors)</b>. Most current drives are "512e": they store 4,096-byte physical sectors but present 512-byte logical ones for compatibility, so an automatic detection can land on <b>ashift=9</b> (512 B). The FreeBSD Handbook is direct about the fix: <b>"Some drives report 512-byte sectors for compatibility while using 4096-byte sectors internally. Create pools on such drives with an explicit -o ashift=12"</b> — and adds that ashift is a property of each vdev, <b>"fixed when creating the vdev and cannot change afterwards."</b> Our arithmetic on what a wrong value costs: a 4 KiB logical write becomes eight 512-byte writes, and each partial-sector write can force the drive to read, merge and rewrite a full 4 KiB physical sector — <b>at worst 32 KiB of reads plus 4 KiB of writes for 4 KiB of data</b>. That 9:1 byte ratio is an upper bound, not a measurement: drives coalesce adjacent writes in cache, which is why the honest advice is "set it right at creation" rather than "expect a 9× slowdown."</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>为什么 ashift=12 是 ZFS 里唯一一个「建完就改不了」的设置（2026）。<b>摘要：</b>ashift 是 ZFS vdev 的对齐位移，<b>2^ashift 就是这个 vdev 会发出的最小 I/O</b>——它在建 vdev 时确定，之后不可更改。OpenZFS 官方 Workload Tuning 文档把这两件事都写了，还写了机制：<b>「正确配置 ashift 很重要，因为部分扇区写入要付代价：该扇区必须先读入缓冲区才能被写入。」</b>同一页还写了让这件事从理论变成家庭机房问题的那个前提——<b>「ZFS 隐含假设磁盘上报的扇区大小是正确的」</b>——并指出闪存介质应用 <b>ashift=12（4 KiB 扇区）或 13（8 KiB 扇区）</b>。如今多数盘是「512e」：物理扇区 4,096 字节，但为兼容性上报 512 字节逻辑扇区，所以自动探测可能落到 <b>ashift=9</b>（512 B）。FreeBSD 手册对修法说得很直接：<b>「有些盘上报 512 字节扇区，内部却用 4096 字节。在这类盘上建池时要显式加 -o ashift=12」</b>——并补充 ashift 是每个 vdev 的属性，<b>「在建 vdev 时固定，之后无法更改。」</b>我们算了一下设错要付多少：一次 4 KiB 逻辑写被拆成八个 512 字节写，而每一次部分扇区写都可能迫使盘读入、合并、再写回整个 4 KiB 物理扇区——<b>最坏是 4 KiB 数据要读 32 KiB、写 4 KiB</b>。这个 9:1 的字节比是<b>上界而非实测</b>：盘会在缓存里合并相邻写，所以诚实的建议是「建池时一次设对」，而不是「准备好吃 9 倍变慢」。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>Why this post exists:</b> the forum's storage series has covered the disk's wear contract (TBW/DWPD), survivor statistics (AFR), the rebuild window, scrub scheduling, the SLOG write path and backup lifecycle, and the RAM above the pool. This one goes one level below all of them, to the unit every one of those layers ultimately writes in: the sector. It is also the only setting in the series that a homelab builder can get wrong once and never repair without moving every byte of data — which makes it worth understanding before the pool exists rather than after the benchmark disappoints.</p>
+
+        <h2>What is ashift, in one sentence?</h2>
+        <p><b>ashift is the base-2 logarithm of the smallest I/O a vdev will issue, so 2^ashift bytes is that floor.</b> The official OpenZFS documentation on workload tuning defines it precisely: top-level vdevs contain an internal property called ashift, which "stands for alignment shift. It is set at vdev creation and it is immutable. It can be read using the zdb command. It is calculated as the maximum base 2 logarithm of the physical sector size of any child vdev and it alters the disk format such that writes are always done according to it. This makes 2^ashift the smallest possible IO on a vdev." Four claims sit in that paragraph, and each one matters: it is derived from the <i>physical</i> sector size of the children, it takes the <i>maximum</i> across children, it is fixed at creation, and it is readable after the fact with <code>zdb</code>. The last point is the only mercy in the whole topic — you can always find out what you got, even when you cannot change it.</p>
+
+        <h2>Why does a 512e drive end up with the wrong value?</h2>
+        <p>Because the number ashift is built from is reported by the drive, and the drive has a reason to lie. A 512e drive ("e" for emulation) stores data in 4,096-byte physical sectors but presents 512-byte logical sectors so that legacy operating systems and controllers continue to work. The OpenZFS page describes exactly this history: sector size was 512 bytes on every device before flash; flash-based SSDs arrived around 2007 reporting 512-byte sectors "but the actual flash pages, which roughly correspond to sectors, are never 512-bytes"; and "Advanced Format" hard drives were later built with a 4,096-byte sector size. Then comes the sentence that turns hardware behaviour into a configuration problem: <b>"ZFS makes the implicit assumption that the sector size reported by drives is correct and calculates ashift based on that."</b> When the report says 512, the calculation produces 9, and 2^9 is 512 — a floor eight times smaller than the hardware's real unit.</p>
+        <p>The documentation does not leave you to guess the workaround. Because "many devices misreport their sector sizes and ZFS relies on the block device layer for this information," each platform developed its own fix: <code>sd.conf</code> on illumos, <code>gnop(8)</code> on FreeBSD, and <code>-o ashift=</code> on ZFS on Linux — with a database of known misreporting drives maintained in the Linux port so that common models are corrected automatically. The FreeBSD Handbook states the practical rule without hedging: <b>"Some drives report 512-byte sectors for compatibility while using 4096-byte sectors internally. Create pools on such drives with an explicit -o ashift=12"</b>, and notes that setting <code>vfs.zfs.vdev.min_auto_ashift=12</code> applies the same floor not just at <code>zpool create</code> but to later <code>zpool add</code> and <code>zpool attach</code> — which matters, because the disks you add in 2028 will be created under the same assumption as the pool you built today.</p>
+
+        <h2>What does a partial-sector write actually cost?</h2>
+        <p>The official sentence is short: <b>"partial sector writes incur a penalty where the sector must be read into a buffer before it can be written."</b> The mechanism behind it is in every drive vendor's Advanced Format documentation, and it is the same on flash and on spinning media: a drive cannot rewrite half a physical sector, so when the host asks to write less than a full 4,096-byte sector, the drive reads the whole sector into memory, merges the changed bytes, and writes the whole sector back. On a hard drive that read-modify-write also costs an extra rotation, which is why the penalty was first described as a performance problem rather than a durability one.</p>
+        <p>Now do the arithmetic on a pool built with ashift=9 on 512e drives. A 4 KiB logical write — one 4 KiB block of a ZFS record — is 4,096 ÷ 512 = <b>eight</b> writes at the vdev's floor. If each of those lands inside a different physical sector, each can trigger its own read-modify-write: <b>8 × 4 KiB of reads plus 4 KiB of writes for 4 KiB of data</b>, a 9:1 byte ratio at the drive interface. That is where the "8× write amplification" folklore comes from — and where it goes wrong. The 8 is a block-count ratio, not a measurement: drives buffer and coalesce adjacent writes, so a sequential 4 KiB write arriving in eight pieces often lands in one physical sector after merging, and the real penalty is workload-dependent. We are stating the upper bound because it is the honest number, and because the actionable conclusion does not depend on which end of the range you land on: you cannot tune your way out of a floor that is fixed at creation, so the value has to be right before the first block is written.</p>
+
+        <h2>Why can't it be fixed later?</h2>
+        <p>Because ashift is baked into the on-disk format, not stored as a preference. The OpenZFS documentation says it "alters the disk format such that writes are always done according to it," and the FreeBSD Handbook repeats the consequence for operators: ashift is "a property of each vdev, not of the pool as a whole. It is fixed when creating the vdev and cannot change afterwards, so verify it before committing data to a pool." The community documentation is equally blunt — the only way to change it after the fact is to recreate the pool — and adds a detail worth knowing before you decide: using a larger ashift also <b>slightly reduces usable capacity</b>, because the minimum allocation unit grows with the floor.</p>
+        <p>Two consequences follow for a homelab. The first is that "fix it later" means a full data migration: create a new pool with the right value, replicate with <code>zfs send -R | zfs recv</code> if you have spare bays, or back up, destroy and restore if you do not — with the old pool read-only during the copy so you are not chasing a moving target. The second is that the choice is made per vdev, from the maximum across its children: mixing an old 512-byte-native disk with a new 4Kn disk in one vdev gives you the larger value for the whole vdev, which is the correct direction (a too-large floor wastes a little space; a too-small one costs writes). The failure mode to watch for is the layer that hides the number entirely — a hardware RAID controller or a USB bridge presenting a virtual disk whose sector size has nothing to do with the platters underneath. In that case the automatic detection has no chance, and the explicit <code>-o ashift=12</code> is not belt-and-braces, it is the only correct input.</p>
+
+        <h2>What does ashift=12 cost you in space?</h2>
+        <p>Less than the folklore suggests, and only in one place. A larger floor raises the minimum allocation unit from 512 bytes to 4,096, so anything smaller than 4 KiB pads up to 4 KiB. For the workloads homelabs actually run this is close to a non-issue: the default recordsize is 128 KiB, which divides by 4 KiB exactly 32 times, so large files, media, VM images and backups waste nothing at all; a 4 KiB volblocksize or an 8 KiB database record also divides evenly. The cost lands on the tail — many tiny files, small metadata-heavy datasets, or a workload whose records are deliberately set below 4 KiB. Compare that with the cost of getting it wrong in the other direction: a floor of 512 bytes on a drive with 4,096-byte physical sectors, which is a permanent tax on every write for as long as the pool exists. Trading a measurable amount of capacity for a permanent write penalty is the right trade in essentially every homelab case, and the official guidance for flash media goes further still, recommending 12 for 4 KiB and <b>13 (8 KiB)</b> for SSDs with 8 KiB pages.</p>
+
+        <h2>How should a homelab builder check and decide?</h2>
+        <p>Four steps, in order, all of them before the pool exists. <b>First, read the platters.</b> <code>lsblk -o NAME,LOG-SEC,PHY-SEC</code> (or <code>smartctl -i</code>) prints the logical and physical sector sizes the system sees; if logical is 512 and physical is 4096, the drive is 512e and the automatic calculation will want 9. <b>Second, read what ZFS actually chose.</b> <code>zdb -C</code> prints the pool configuration, including <code>ashift</code> per vdev — the OpenZFS docs name <code>zdb</code> as the way to read it. If 2^ashift is smaller than the physical sector size, the vdev is misaligned, and no amount of recordsize or compression tuning will fix it. <b>Third, decide once.</b> For anything built on 4 KiB media, the documented answer is <code>-o ashift=12</code> explicitly rather than trusting detection; on FreeBSD, set <code>vfs.zfs.vdev.min_auto_ashift=12</code> so future <code>add</code> and <code>attach</code> inherit it. <b>Fourth, write the value down.</b> Record ashift, vdev layout and RAIDZ width next to the pool's purpose, because the person who replaces a disk in three years will assume the pool was built correctly — and the only evidence either way is the <code>zdb</code> output nobody thought to save.</p>
+      </div>
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>One number, one chance:</b> 2^ashift is the smallest I/O a vdev will issue; it is calculated from the maximum physical sector size of its children and it is immutable after creation (OpenZFS, FreeBSD Handbook).</li>
+          <li><b>512e is the trap:</b> drives that store 4,096-byte sectors while reporting 512 get ashift=9 unless you force 12 — and the official docs admit ZFS "makes the implicit assumption that the sector size reported by drives is correct."</li>
+          <li><b>Partial-sector writes cost a read:</b> a write smaller than a physical sector makes the drive read, merge and rewrite the whole sector; at ashift=9 one 4 KiB write becomes eight 512-byte writes.</li>
+          <li><b>The 9:1 byte ratio is a bound, not a benchmark:</b> 32 KiB of reads plus 4 KiB of writes per 4 KiB of data assumes no write coalescing — real drives merge adjacent writes, so treat it as the ceiling of the penalty, not the expected one.</li>
+          <li><b>The fix is a migration:</b> send/recv into a new pool or back up, destroy and restore — with hardware RAID and USB bridges hiding the real sector size, explicit <code>-o ashift=12</code> is the only reliable input.</li>
+          <li><b>Space cost is small and local:</b> 128 KiB records divide by 4 KiB exactly 32 times, so large files lose nothing; the padding lands on sub-4 KiB records and very small files, which is a better trade than a permanent write tax.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/zfs-ecc-not-required-official-2026"><i data-i18n="pager.prev">Previous</i>Does ZFS require ECC RAM? The official docs say "not really a requirement" (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
