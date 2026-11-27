@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your UPS battery ages by calendar, not by outage count (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Your UPS battery ages by calendar, not by outage count (2026)">
+  <meta name="twitter:description" content="APC's official FAQ: most UPS VRLA batteries last three to five years, and every 8°C above 25°C cuts battery life in half — 4 years at 25°C becomes 2 years at 33°C. Eaton's official spec page says 3.5–6 years depending on maintenance and temperature. The clock runs even when the power never fails.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="UPS battery aging is float chemistry, not cycle wear: APC's official FAQ states most batteries last 3–5 years and that every 8°C above 25°C halves battery life (4 years at 25°C → 2 years at 33°C), warns the battery runs hotter than the room, limits runtime calibrations to 1–2 per year, and says replace at ~5 years because sulfation and hydrogen sulfide emissions come with age. Eaton's official page gives 3.5–6 years. An unused spare ages on the shelf too: recharge stored batteries every 6 months below 30°C." />
+  <link rel="canonical" href="https://forum.omc.network/posts/ups-battery-calendar-aging-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/ups-battery-calendar-aging-2026" />
+  <meta property="og:title" content="Your UPS battery ages by calendar, not by outage count (2026)">
+  <meta property="og:description" content="APC's official FAQ: most UPS VRLA batteries last three to five years, and every 8°C above 25°C cuts battery life in half — 4 years at 25°C becomes 2 years at 33°C. Eaton's official spec page says 3.5–6 years. The clock runs even when the power never fails.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Your UPS battery ages by calendar, not by outage count (2026)","datePublished":"2026-11-27","dateModified":"2026-11-27","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+                <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>Your UPS battery ages by calendar, not by outage count (2026)</h1>
+        <p class="article-dek">The most common way to lose a homelab to a power event is not a storm — it is a UPS whose battery quietly died in year six because the owner never saw an outage worth counting. Two vendors' official documents agree on the mechanism: VRLA batteries age by calendar and chemistry whether or not they are ever discharged, temperature accelerates the clock on a fixed schedule, and the folk rule most people quote (10°C per doubling) is actually more optimistic than the manufacturer's own number (8°C per doubling).</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 27, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>A UPS battery is a consumable with a date stamp, and the date runs in float charge, not in outages.</b> APC's official FAQ (FA158934): "Most APC batteries should last three to five years," and — the number most people get wrong — <b>"every 8°C (15°F) increase in temperature will cut the battery's life in half,"</b> with the worked example: <b>4 years at 25°C becomes about 2 years at 33°C</b>. A companion APC FAQ states Smart-UPS batteries "require replacement every 3-5 years," and the FAQ's end-of-life note is blunt: replace by ~5 years because aging brings sulfation, reduced runtime — and possible hydrogen sulfide gas emission. Eaton's official spec page for a current VRLA-based online UPS independently states typical battery life of <b>3.5 to 6 years "depending on the maintenance and environmental temperature."</b> APC's sustainability blog rounds the same figure: <b>li-ion lasts "typically 10+ years vs. 3-5 years for VRLA."</b> The operational rules that follow from the same documents: the battery's internal temperature is <b>always higher than room temperature</b>, so ventilation matters; runtime calibrations (deep discharges) belong <b>once or twice a year at most</b>; a spare battery on a shelf is aging too and needs a full recharge <b>every 6 months below 30°C</b> (every 3 months at 30–45°C); and keep load <b>at or below 80%</b> of rating. Our arithmetic: a rack closet that drifts from 25°C to 30°C takes a nominal 4-year battery to roughly <b>2.6 years</b> (4 ÷ 2^(5/8)); the official example's 33°C already halves it. The battery you never discharged is not the battery you bought.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>UPS 电池按日历老化，不按停电次数老化（2026）。<b>摘要：</b>UPS 电池是带生产日期的耗材，时钟走的是浮充化学、不是放电次数。APC 官方 FAQ（FA158934）：「大多数 APC 电池应能使用三到五年」，而且——多数人背错的那个数字——<b>「温度每升高 8°C（15°F），电池寿命减半」</b>，官方还给了算例：<b>25°C 下 4 年的电池，33°C 下只剩约 2 年</b>。另一篇 APC 官方 FAQ 写明 Smart-UPS 电池「每 3–5 年需要更换」，且寿命终点措辞直接：约 5 年前就应更换，因为老化伴随硫化、续航缩水——以及<b>可能释放硫化氢气体</b>。Eaton 官方规格页对现售 VRLA 在线式 UPS 独立给出：典型电池寿命 <b>3.5 至 6 年，「取决于维护与环境温度」</b>。APC 官方博客同一口径的另一面：<b>锂电「通常 10 年以上 vs VRLA 的 3–5 年」</b>。同一批文档给的可执行规则：电池内部温度<b>永远高于室温</b>，所以通风重要；深度放电校准<b>每年最多 1–2 次</b>；备件电池在货架上同样在老化，<b>30°C 以下每 6 个月</b>必须完整充一次电（30–45°C 每 3 个月）；负载保持在额定 <b>80% 以下</b>。我们的算术：机柜间从 25°C 漂移到 30°C，标称 4 年的电池大约只剩 <b>2.6 年</b>（4 ÷ 2^(5/8)）；官方算例里的 33°C 已经直接减半。你从没放过的电，不等于电池还是你买的那块。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>The one-sentence version:</b> a VRLA UPS battery is on a 3–6 year calendar clock from the day it is manufactured, the clock runs faster in a warm closet even if the power never fails once, and both of the largest UPS vendors' official documents say so in writing.</p>
+
+        <p>Homelab folklore treats the UPS battery like a disk: its life is measured in events. Outages, transfers, brownouts — the mental model says a battery that has "only been used" a few times is nearly new. Lead-acid float chemistry says otherwise, and this time the vendor documents are unusually specific about it, which is why this post can be built almost entirely from two manufacturers' first-party text instead of forum anecdotes. The two claims that matter — calendar life and the temperature multiplier — come from APC (Schneider Electric) and Eaton independently, and they agree within the range you would expect of two vendors describing the same electrochemistry.</p>
+
+        <h2>What do the vendors' own documents actually say?</h2>
+        <p>APC's official FAQ on VRLA battery life (FA158934, published on apc.com) opens with the sentence most people have half-heard: <b>"Most APC batteries should last three to five years. There are many factors which affect Battery life including environment and number of discharges."</b> A second APC FAQ (FA156520, on Smart-UPS battery replacement) states it as a requirement rather than an expectation: "Smart-UPS batteries require replacement every 3-5 years." Eaton's official product page for a current 20 kVA online UPS with VRLA batteries puts the same fact as a spec line: <b>"Typical Battery Life: Between 3.5 years and up to 6 years depending on the maintenance and environmental temperature."</b> Two vendors, one statement: the replacement window is roughly three to six years regardless of how often the unit actually transfers to battery. APC's own sustainability blog adds the comparison that frames the upgrade decision: <b>li-ion "typically 10+ years vs. 3-5 years for VRLA."</b></p>
+        <p>The temperature rule is where the official text outruns the folklore. The rule most homelabbers repeat is Arrhenius-flavored: "every 10°C above 25°C halves battery life." APC's FAQ says <b>8°C</b>: "every 8°C (15°F) increase in temperature will cut the battery's life in half. For example, a battery expected to last 4 years at 25°C (77°F) would only last about 2 years if operated at 33°C (95°F)." The example is internally consistent — 15°F is 8.3°C, and one doubling fits inside it — and it is more aggressive than the folk version by 2°C per doubling. The FAQ adds the detail that matters in a real home rack: <b>"the internal battery temperature of a UPS is always higher than the ambient room temperature"</b> — the unit's own heat load sits on top of whatever the closet is doing, and the recommendation is airflow, ventilation and adequate cooling for the UPS itself, not just the room.</p>
+
+        <h2>What does the arithmetic look like for a real closet?</h2>
+        <p>Take the official example as the model and extend it one step (our arithmetic, clearly labeled as ours): the halving rule is exponential, so a battery with a nominal 4-year life at 25°C has <b>4 ÷ 2^(ΔT/8)</b> years at ΔT degrees above that. At 30°C — a rack closet in a warm apartment in summer — that is 4 ÷ 2^0.625 ≈ <b>2.6 years</b>. At the official example's 33°C it is exactly <b>2 years</b>. At 35°C, roughly 4 ÷ 2^1.25 ≈ <b>1.7 years</b>. These are not failure predictions; they are the same curve APC drew with its own example, extended by the rule APC itself printed. The practical translation: the calendar date on the battery is only valid at the temperature you actually run, and a closet that exceeds 30°C for a couple of months a year eats more battery life than a dozen deep discharges would.</p>
+        <p>The same FAQ gives the other calendar clocks people forget. A spare or shelf-stored battery is aging too: new batteries ship at about 80% charge and APC says <b>do not store them longer than six months</b> before putting them into service — and stored batteries need a full recharge <b>at least every 6 months if kept between −15°C and +30°C, every 3 months at +30–45°C</b>. That means the "spare battery in the basement" strategy has its own maintenance schedule; a five-year-old spare that was never recharged is not a spare, it is scrap with a terminal. And the load rule compounds: APC recommends <b>not exceeding 80% of the UPS's rated capacity</b>, which mirrors the NEC branch-circuit arithmetic this forum covered in an earlier post — the same 80% figure shows up at both the wire and the battery, for the same reason: heat.</p>
+
+        <h2>Why is "I never lost power" irrelevant?</h2>
+        <p>Because the aging mechanism is not discharge — it is sulfation during float. APC's FAQ describes it as the aging chemistry itself: as a VRLA (AGM) battery ages, <b>lead sulfate crystals harden on the plates</b>, reducing charge and discharge efficiency, with the observable symptoms being longer charging times, excessive heat buildup that can eventually "boil out" the electrolyte, shorter runtimes, and — at end of life — the reason APC tells you to replace at ~5 years rather than run to failure: <b>possible hydrogen sulfide gas emission from failing aging batteries</b>. Discharges do add wear (the FAQ explicitly warns that a UPS "is not designed for frequent deep-discharge cycles" and should not be used as a portable power pack), but the baseline clock runs with the unit plugged in and doing nothing. A UPS that rode through zero outages for five years is still a five-year-old battery.</p>
+        <p>The testing discipline follows from the chemistry and is also in the official text: runtime calibrations — the deliberate deep-discharge tests people run to verify runtime — should be done <b>"only once or twice per year, and only if truly necessary,"</b> because performing them too frequently <b>"can significantly shorten the lifespan"</b> of the battery. In other words, the battery self-test your UPS runs monthly (a short electronic check, not a discharge) is the routine health check, and the full runtime calibration is an annual-at-most instrument, not a monthly ritual. People who "exercise" the battery every month are doing the one thing the manufacturer says ages it faster.</p>
+
+        <h2>What is the actual playbook?</h2>
+        <p>Four rules, all traceable to the two vendors' documents. <b>One: date the battery at install</b> — write the install date (not the purchase date, if you can avoid it) on the unit or in your inventory, and plan replacement at 4–5 years at 25°C, sooner per the temperature curve. <b>Two: log the room temperature</b> next to the rack, not somewhere else in the house; if the closet regularly exceeds 30°C, either fix the cooling (see this forum's CFM post for the fan arithmetic) or shorten the replacement interval to match the 8°C rule. <b>Three: schedule the calibration</b> — at most one or two full runtime calibrations a year, and let the monthly electronic self-test do the routine monitoring. <b>Four: treat spares as inventory, not safety stock</b> — a spare battery needs a recharge cycle every six months, so buy the replacement when you need it rather than keeping one on the shelf.</p>
+        <p>One upgrade note completes the picture: APC's own framing of li-ion ("typically 10+ years vs. 3-5 years for VRLA") is why newer Smart-UPS models ship lithium by default — for a homelab rack that runs warm or a closet nobody wants to open twice a decade, the li-ion premium is a calendar-cost decision, not a performance one. Our view, marked as a view: for most 1–2 kVA homelab racks on VRLA, the correct mental model is "a $80–150 consumable on a 4-year fuse with a temperature multiplier," and the cheapest resilience upgrade in the entire stack is a calendar reminder — because the battery that fails at year six usually fails during the first real outage after two quiet years, which is precisely when you needed it.</p>
+
+        <h2>What would change this reading?</h2>
+        <p>Two things, both checkable. <b>One: vendor temperature curves that quantify further.</b> Both documents give the halving rule and a worked example, but neither publishes the full life-vs-temperature table for specific battery SKUs; if a manufacturer datasheet with a real curve surfaces, the extension arithmetic in this post (2^(ΔT/8) beyond the printed example) should be replaced by the table. <b>Two: fleet data.</b> The 3–6 year window is the vendors' service-life guidance, not a measured distribution; if a large replacement-log dataset ever becomes public, the real distribution may be wider at both tails — early failures cluster in the first months (which is why TrueNAS's guidance for RAM, quoted in this forum's ECC post, applies to batteries too), and the tail may run past 6 years in genuinely cool rooms. Until either lands, the vendors' printed windows are the only numbers with a manufacturer standing behind them.</p>
+      </div>
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>Calendar, not cycles:</b> APC official FAQ — "Most APC batteries should last three to five years"; companion FAQ — Smart-UPS batteries "require replacement every 3-5 years." Eaton's official spec: 3.5–6 years "depending on the maintenance and environmental temperature."</li>
+          <li><b>The temperature rule is 8°C, not 10°C:</b> APC's exact words — every 8°C (15°F) above cuts battery life in half; 4 years at 25°C ≈ 2 years at 33°C. The folk rule is more optimistic than the manufacturer's own.</li>
+          <li><b>The battery is warmer than the room:</b> APC states internal battery temperature is always higher than ambient — the UPS's own heat sits on top of the closet's.</li>
+          <li><b>Ours, extended by APC's own rule:</b> 30°C closet → nominal 4-year battery ≈ 2.6 years (4 ÷ 2^(5/8)); 35°C ≈ 1.7 years. Labeled as our arithmetic, not a measured distribution.</li>
+          <li><b>Float chemistry is the clock:</b> aging is sulfation — hardened lead sulfate crystals — running while the unit sits on charge; end-of-life risks include electrolyte boil-out and possible hydrogen sulfide emission, which is why APC says replace by ~5 years.</li>
+          <li><b>The playbook:</b> date the battery at install; log closet temperature; runtime calibrations at most 1–2×/year (monthly "exercising" ages the battery faster); spares need a full recharge every 6 months below 30°C (3 months at 30–45°C); keep load ≤80%; li-ion (10+ years) is the upgrade if the closet runs warm.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/ups-sizing-va-vs-watts-2026"><i data-i18n="pager.prev">Previous</i>UPS sizing: VA versus watts, and why the 80% rule applies twice (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
