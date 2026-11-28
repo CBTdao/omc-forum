@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Replacing the UPS battery is not the same as restoring its runtime estimate (2026) — DCF</title>
+  <meta property="og:image" content="https://forum.omc.network/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Replacing the UPS battery is not the same as restoring its runtime estimate (2026)">
+  <meta name="twitter:description" content="APC's own docs separate a 10-second self-test from a full runtime calibration: 24h/48h charge, at least 30% load within ±5%, output actually cut, discharge to shutdown. Swap the cartridge and the display can still be wrong.">
+  <meta name="twitter:image" content="https://forum.omc.network/og-image.png">
+  <meta name="description" content="A Homelab guide built from Schneider Electric/APC official FAQs FA156520, FA405317 and FA156538 plus Eaton's official maintenance and battery-service pages: how to select the right replacement cartridge, why VRLA is 3–5 years and Li-ion 8–10, and why a 10-second self-test does not reset the runtime model after a battery swap. Zero crypto content." />
+  <link rel="canonical" href="https://forum.omc.network/posts/ups-battery-replacement-runtime-calibration-2026" />
+  <meta property="og:url" content="https://forum.omc.network/posts/ups-battery-replacement-runtime-calibration-2026" />
+  <meta property="og:title" content="Replacing the UPS battery is not the same as restoring its runtime estimate (2026)">
+  <meta property="og:description" content="APC's own FAQ distinguishes the automatic 10-second self-test from manual runtime calibration: charge 24h (48h with external batteries), load at least 30% and stable within ±5%, output will be cut, discharge until the unit shuts off. Eaton independently says plan replacement at four years for small UPSs.">
+  <meta property="og:type" content="article" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2694516805115904" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"Replacing the UPS battery is not the same as restoring its runtime estimate (2026)","datePublished":"2026-11-28","dateModified":"2026-11-28","author":{"@type":"Organization","name":"DCF Editorial"},"publisher":{"@type":"Organization","name":"Decentralized Compute Forum"}}
+  </script>
+  <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin>
+  <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com">
+</head>
+<body>
+  <div id="progress"></div>
+  <header class="site-header">
+    <div class="container header-in">
+      <a class="logo" href="/"><span class="logo-badge">DCF</span><span class="logo-text">Decentralized Compute Forum</span></a>
+      <nav class="nav-links">
+        <a href="/#hot">Hot Takes</a>
+        <a href="/#deep">Deep Dives</a>
+        <a href="/#pricing">Pricing Watch</a>
+        <a href="/#landscape">Landscape</a>
+        <a href="/#gaming">Gaming</a>
+        <a href="/#homelab">Homelab</a>
+        <a href="/tracker">Tracker</a>
+        <a href="https://game.omc.network" data-i18n="nav.game">Real or AI</a>
+      </nav>
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <div class="article-hero">
+        <span class="chip lab">Homelab</span>
+        <h1>Replacing the UPS battery is not the same as restoring its runtime estimate (2026)</h1>
+        <p class="article-dek">APC's own documentation draws a hard line between three things people call "testing the UPS": an automatic 10-second self-test, a runtime calibration that deliberately cuts output power, and a battery replacement. Do the first after a swap and the second never, and the front-panel minutes can stay wrong for the life of the new cartridge.</p>
+        <div class="article-meta"><span>DCF Editorial</span><span>Nov 28, 2026</span><span>10 min read</span></div>
+      </div>
+
+      <div class="tldr">
+        <b class="tldr-h" data-i18n="tldr.label">TL;DR</b>
+        <p><b>A new battery cartridge does not automatically give you a correct runtime display.</b> Schneider Electric's APC FAQ <b>FA156520</b> (last modified 2026-10-12) says Smart-UPS batteries need replacement <b>every 3–5 years</b> and that you should look up the cartridge by the <b>UPS model number</b>, not by the old battery's part number; the US version adds that most units come out the front and generally need a <b>Phillips #2</b> screwdriver. APC's official replacement-battery selector puts <b>VRLA at 3–5 years</b> and <b>lithium-ion at 8–10 years</b>, with <b>2-year</b> and <b>5-year</b> cartridge warranties respectively. Eaton's own maintenance page independently says to plan replacement for small UPSs at <b>four years or older</b> and gives batteries as the <b>#1 cause of UPS failure</b>. The step almost everybody skips is in APC FAQ <b>FA156538</b>: <b>manual runtime calibration is not the same as a PowerChute calibration</b> — charge the unit <b>24 hours</b> (<b>48</b> with external packs), attach <b>at least 30% load</b> fluctuating no more than <b>±5%</b>, stop PowerChute and disconnect the serial cable, then let the UPS discharge <b>until it shuts off</b>. Output power <i>will</i> be cut. A self-test is only <b>~10 seconds</b> on battery every two weeks (<b>FA405317</b>). Our reading: swapping metal is the mechanical half of the job; resetting the microprocessor's runtime model is the other half.</p>
+        <p lang="zh"><b>中文摘要 · 标题：</b>换 UPS 电池 ≠ 恢复续航估算（2026）。<b>摘要：</b>施耐德 APC 官方 FAQ <b>FA156520</b>（2026-10-12 更新）：Smart-UPS 电池 <b>每 3–5 年</b>更换，应按 <b>UPS 主机型号</b>查替换电池盒（RBC），而不是按旧电池型号；美版补充多数机型从前面板取出、一般用 <b>Phillips #2</b> 十字螺丝刀。APC 官方选型工具给出 <b>铅酸 VRLA 3–5 年、锂电 8–10 年</b>，电池盒保修分别 <b>2 年 / 5 年</b>。Eaton 官方维护页独立给出：小型 UPS <b>满四年</b>就应计划更换，电池是 UPS 故障的 <b>第一大原因</b>。最常被跳过的一步写在 APC FAQ <b>FA156538</b>：<b>手动 runtime calibration 与 PowerChute 的校准不是一回事</b>——先充电 <b>24 小时</b>（带外置电池 <b>48 小时</b>），负载 <b>≥30%</b> 且波动不超过 <b>±5%</b>，停掉 PowerChute 并断开串口线，然后让 UPS 放电<b>直到自动关机</b>；这个过程会真的切断输出。而自检（FA405317）只在电池上跑 <b>约 10 秒</b>、默认每两周一次。我们的判断：换电池只完成机械那一半，重置微处理器的续航模型是另一半。</p>
+      </div>
+
+      <div class="article-body">
+        <p><b>The one-sentence version:</b> after a Smart-UPS battery swap, the automatic self-test will still pass in about 10 seconds while the front panel keeps reporting a runtime calculated from the old battery — because APC's documented fix for that state is a full manual runtime calibration, not another self-test.</p>
+
+        <p>This post continues the Homelab power series from a different angle. Earlier entries covered sizing (VA versus watts), topology and hold-up time, branch-circuit limits, outlet connectors, cooling, and the calendar chemistry of battery aging. The 2026-11-27 post explained <i>when</i> a VRLA battery dies on a clock rather than on outage count. This one is the workshop companion: <i>what to do</i> on replacement day, and which of the vendor's three different procedures you are actually performing.</p>
+
+        <h2>Which replacement cartridge do I actually need?</h2>
+        <p>Start with APC's own instruction in <b>FAQ FA156520</b>, published 2012-08-10 and last modified 2026-10-12: "Smart-UPS batteries require replacement every 3-5 years." The resolution tells you to use the replacement-battery selector <b>by the exact UPS model number</b>, then find the procedure in that model's user manual on the product page's Documentation tab. It also says that if the unit is not listed, it may not have user-replaceable batteries and you should contact support. The US version of the same FAQ adds the practical details: most popular Smart-UPS units are removed from the front and generally require a <b>Phillips #2 screwdriver</b>; your particular unit may vary.</p>
+        <p>The selector tool itself is worth reading before you buy. Schneider's official APC replacement-battery page warns not to enter your existing battery's model or the replacement cartridge's own model — enter the <b>UPS model</b>. The same page gives the chemistry split that the short FAQ omits: <b>VRLA batteries last about 3–5 years</b>, <b>lithium-ion about 8–10 years</b>, with <b>2-year</b> warranty on VRLA cartridges and <b>5-year</b> on lithium-ion cartridges. A household rack that has been running an old VRLA cartridge is therefore not comparing like with like if the replacement offered is lithium: different life, different warranty, different price, same socket. The page also points to APC-authorized recycling for the old unit.</p>
+        <p>Two independent vendor pages anchor the schedule. <b>APC FAQ FA158934</b> says most APC batteries last three to five years and halves life for every 8°C above 25°C. <b>Eaton's official maintenance advice</b> says batteries are the number one cause of UPS failure, recommends a yearly preventive check, and for smaller UPSs says to "note their age and plan a replacement if they are four years or older" — and to run a self-test and remove the front panel to look for swelling or damage. Eaton's separate UPS-battery service page describes two replacement formats, a hot-swappable <b>Easy Battery+</b> tray versus loose batteries swapped one by one, and states plainly that without the right safety training, equipment and tools, owners can perform only limited service themselves. That is not an argument against doing your own homelab swap; it is a reminder that the procedure belongs to your exact model.</p>
+
+        <h2>What is the difference between a self-test and a runtime calibration?</h2>
+        <p>They are different procedures with different durations, different purposes and different risks. According to <b>APC FAQ FA405317</b> (last modified 2025-10-06), every Smart-UPS runs an <b>automatic true-load self-test</b> at initial power-on and then <b>once every two weeks</b> by default; the interval can be adjusted through PowerChute, the LCD or the network management card, but cannot be scheduled for a particular day. During a self-test the UPS runs on battery for <b>approximately 10 seconds</b>, exercising its internal subsystems and the battery. For the result to be valid the battery should be charged to <b>100%</b> first. If a problem is found the test aborts and the unit returns to online operation; a failing battery is signalled by the replace-battery LED or LCD and by PowerChute or the management card. Manual self-tests can be started from PowerChute, SmartConnect, the management card, the LCD's Test &amp; Diags menu, or by holding the I/Test button on legacy units.</p>
+        <p><b>FAQ FA156538</b> (last modified 2026-04-22) describes a completely different operation. It opens with a sentence that is easy to miss: "This is a manual procedure and should not be confused with the runtime calibration performed through PowerChute software." The microprocessor calculates remaining runtime mainly from attached load and battery capacity, and "sometimes it is necessary to reset this microprocessor, <b>especially after the installation of new batteries</b>." The stated preconditions and steps are precise:</p>
+        <ul>
+          <li><b>Charge first:</b> the UPS must have been online and charging for at least <b>24 hours</b>, or <b>48 hours</b> if it has external battery packs.</li>
+          <li><b>Disconnect management:</b> stop PowerChute software and disconnect the serial cable.</li>
+          <li><b>Load window:</b> at least <b>30% load</b>, fluctuating no more than <b>±5%</b>.</li>
+          <li><b>Expect an outage:</b> the procedure "will cause the UPS to shut off and cut power to its power outlets" — attach a non-critical load, then force the UPS onto battery by disconnecting utility power.</li>
+          <li><b>Run to shutdown:</b> let the unit run on battery until it turns off completely.</li>
+          <li><b>Recharge and recheck:</b> plug it back in and let it recharge (faster with the unit off and unloaded); the "runtime remaining" calculation should then be more accurate. The FAQ adds a caveat: on an older model, runtime will not improve significantly.</li>
+        </ul>
+        <p>Our reading, stated as analysis: the self-test answers <b>is the battery capable of supporting the load at all</b>; the calibration answers <b>how many minutes the display should promise</b>. They are not substitutes. A self-test after a swap is useful — APC's own procedure says a battery test should start at 100% charge — but it does not teach the microprocessor the new capacity curve.</p>
+
+        <h2>How do I know the display is lying before I do any of this?</h2>
+        <p>FA156538 gives an observable symptom. The five-LED battery bar graph flashes in unison when the calculated remaining runtime is <b>less than two minutes above the low-battery signal warning time</b>. Its worked example: a UPS with 15 minutes of full-charge runtime and a 7-minute warning threshold starts flashing at 8 minutes or less. The default low-battery warning is <b>two to two and a half minutes</b>, adjustable through PowerChute or the management card; PowerChute Business Edition fixes it at <b>5 minutes</b> and cannot be changed. The FAQ also notes that software can report "battery discharged" even at 100% capacity, because it is reporting against the calculated runtime, not the state of charge.</p>
+        <p>That last detail is the homelab trap. After a cartridge swap the chemistry is new but the model inside the microprocessor may still be the old one, so the unit can warn early, shut down early, or display a runtime that no longer matches reality. The conventional upgrade advice — reduce the load, or in XL units add an external pack — treats a capacity problem; the calibration procedure treats a <b>model</b> problem. Know which one you have before changing hardware.</p>
+
+        <h2>What is the safe order of operations?</h2>
+        <p>Combine the vendor documents into a sequence, with the caveat that your model's manual wins if it differs. <b>One:</b> identify the UPS by model number and order the correct cartridge; check whether the unit is user-serviceable. <b>Two:</b> record the current runtime reading and note the battery's install date — Eaton's advice to plan at four years only works if you know the date. <b>Three:</b> shut down attached systems cleanly; the calibration later in the process will cut outlet power. <b>Four:</b> swap the cartridge following the model manual, using the documented front-access and screwdriver guidance where applicable, and recycle the old battery through an authorized channel. <b>Five:</b> let the unit charge for 24 hours (48 with external packs). <b>Six:</b> run the manual runtime calibration with a non-critical ≥30% load stable within ±5%, no PowerChute process and no serial cable. <b>Seven:</b> recharge, then compare the new runtime reading against the old one — a large jump means the model had been stale; no change on an older unit is the outcome APC explicitly warns about.</p>
+        <p>Two more constraints come straight from the official pages. <b>Calibration frequency:</b> APC's battery-life FAQ recommends calibration discharge only <b>once or twice a year, and only if truly necessary</b> — the full-discharge procedure is not a monthly habit. <b>Spare stock:</b> the same FAQ says a spare battery sitting on a shelf ages too, and should be recharged every six months in normal storage. If you buy a spare cartridge for a future failure, the clock starts on the day it arrives, not the day you install it.</p>
+
+        <h2>What would change this advice?</h2>
+        <p>Three things. <b>First, the chemistry:</b> if your unit is a lithium-ion model, APC's selector gives 8–10 years and a 5-year cartridge warranty rather than VRLA's 3–5 and 2 years — the calendar trigger moves, and Eaton notes lithium batteries must be shipped by ground in some exchange plans. <b>Second, the form factor:</b> Eaton's hot-swappable tray design removes the powered-down swap step but not the runtime-model question. <b>Third, the manual:</b> APC's own FAQ defers to the per-model user guide twice, and explicitly says some units are not user-replaceable. The numbers in this post are the vendor's published cross-model defaults; the procedure for your rack is the one in the PDF that shipped with it.</p>
+      </div>
+      <div class="takeaways">
+        <b class="tk-h" data-i18n="tk.label">Key takeaways</b>
+        <ul>
+          <li><b>Selection:</b> APC FAQ FA156520 — Smart-UPS batteries need replacement every 3–5 years; choose the cartridge by <b>UPS model number</b>, not the old battery's part number; most units come out the front and generally take a Phillips #2 screwdriver.</li>
+          <li><b>Chemistry:</b> APC's official selector gives VRLA 3–5 years and Li-ion 8–10 years, with 2-year and 5-year cartridge warranties; Eaton independently says plan replacement at four years for small UPSs and calls batteries the #1 cause of UPS failure.</li>
+          <li><b>Self-test ≠ calibration:</b> the automatic self-test is ~10 seconds on battery every two weeks and needs a 100% charge; manual runtime calibration is a full discharge that cuts outlet power.</li>
+          <li><b>Calibration preconditions:</b> 24h charge (48h with external batteries), ≥30% load stable within ±5%, PowerChute stopped and serial cable disconnected, run until the unit shuts off, then recharge — per APC FAQ FA156538.</li>
+          <li><b>The symptom:</b> a flashing battery bar graph means calculated runtime is within two minutes of the low-battery warning; software can report "discharged" at 100% state of charge because it reads the runtime model, not the chemistry.</li>
+          <li><b>Cadence:</b> calibration is recommended only once or twice a year and only if truly necessary; a spare cartridge ages on the shelf and needs a recharge every six months.</li>
+        </ul>
+      </div>
+      <div class="omc-card">
+        <b>About this site</b>
+        <p>DCF is written and operated by the Omniverse Compute (OMC) team &mdash; a decentralized GPU network project on BNB Chain, currently in public testnet. We disclose that up front because it should be disclosed: coverage of OMC and its competitors plays by the same rules as everything else on this forum &mdash; dated numbers, linked primary sources, public corrections.</p>
+        <a href="https://omc.network/about">About OMC &rarr;</a>
+      </div>
+      <div class="comments">
+        <h3>Comments</h3>
+        <div id="giscus-slot"></div>
+      </div>
+      <div class="pager">
+        <a href="/posts/ups-battery-calendar-aging-2026"><i data-i18n="pager.prev">Previous</i>Your UPS battery ages by calendar, not by outage count (2026) →</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-in">
+      <span><b>DCF</b> · <span data-i18n="footer.tag">Honest numbers, strong opinions.</span></span>
+      <div class="footer-links">
+        <a href="https://omc.network">OMC project site</a>
+        <a href="https://top.omc.network">AITop comparisons</a>
+        <a href="https://game.omc.network" data-i18n="footer.game">Real or AI — daily game</a>
+        <a href="https://x.com/Omniverse_Depin">X / Twitter</a>
+        <a href="/tracker">Compute Tracker</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </div>
+      <span data-i18n="footer.rights">© 2026 DCF · Decentralized Compute Forum</span>
+    </div>
+  </footer>
+
+  <script>window.DCF_GISCUS = { repo: "CBTdao/omc-forum", repoId: "R_kgDOU5ybzg", category: "Announcements", categoryId: "DIC_kwDOU5ybzs4DG770" };</script>
+  <script src="../assets/js/i18n.js"></script>
+  <script src="../assets/js/lang/en.js"></script>
+  <script src="../assets/js/lang/zh.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
